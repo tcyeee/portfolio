@@ -5,7 +5,7 @@ import { SITE_TITLE, LINK } from '../consts';
 
 <header class="sticky top-0 px-3 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
   <nav class="w-full flex items-center justify-between px-4 z-50 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
-    <a href="/">@{SITE_TITLE}</a>
+    <a class="text-black" href="/">@{SITE_TITLE}</a>
     <div>
       <HeaderLink href="/">主页</HeaderLink>
       <HeaderLink href="/blog">博客</HeaderLink>
@@ -19,15 +19,3 @@ import { SITE_TITLE, LINK } from '../consts';
     </div>
   </nav>
 </header>
-
-<style scoped>
-  a {
-    color: var(--black);
-    border-bottom: 4px solid transparent;
-    text-decoration: none;
-  }
-  a.active {
-    text-decoration: none;
-    border-bottom-color: var(--accent);
-  }
-</style>
