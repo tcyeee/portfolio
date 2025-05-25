@@ -2,7 +2,7 @@
 
 :root {
   /* 自定义主题 */
-  /* --color-primary: green; */
+  --color-black: #151825;
 
   --accent: #2337ff;
   --accent-dark: #000d8a;
@@ -40,13 +40,6 @@ body {
   color: rgb(var(--gray-dark));
   font-size: 20px;
   line-height: 1.7;
-}
-
-main {
-  width: 820px;
-  max-width: calc(100% - 2em);
-  margin: auto;
-  padding: 3em 1em;
 }
 
 h1,h2,h3,h4,h5,h6 {

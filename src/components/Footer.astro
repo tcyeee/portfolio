@@ -4,29 +4,20 @@ const today = new Date();
 ---
 
 <footer>
-  <div class="fixed bottom-0 left-0 w-full z-50 py-8 px-4 text-center bg-gray-200">
-    <span>&copy; {today.getFullYear()} {BASE_INFO.author}. All rights reserved.</span>
+  <div class="w-full py-8 px-4 text-center bg-gray-200">
+    <span class="text-gray-500">&copy; {today.getFullYear()} {BASE_INFO.author}. All rights reserved.</span>
     <div class="flex justify-center items-center gap-3">
-      <a
-        class="inline-flex no-underline filter grayscale hover:filter-none transition duration-200"
-        href={LINK.bilibili}
-        target="_blank">
+      <a class="inline-flex no-underline filter grayscale hover:filter-none transition duration-200" href={LINK.bilibili} target="_blank">
         <span class="sr-only">Follow Me on Bilibili</span>
         <span class="icon-bilibili"></span>
       </a>
 
-      <a
-        class="inline-flex no-underline filter grayscale hover:filter-none transition duration-200"
-        href={LINK.github}
-        target="_blank">
+      <a class="inline-flex no-underline filter grayscale hover:filter-none transition duration-200" href={LINK.github} target="_blank">
         <span class="sr-only">Follow Me on Github</span>
         <span class="icon-github"></span>
       </a>
 
-      <a
-        class="inline-flex no-underline filter grayscale hover:filter-none transition duration-200"
-        href={LINK.redNote}
-        target="_blank">
+      <a class="inline-flex no-underline filter grayscale hover:filter-none transition duration-200" href={LINK.redNote} target="_blank">
         <span class="sr-only">Follow Me on RedNote</span>
         <span class="icon-redNote"></span>
       </a>
