@@ -1,9 +1,8 @@
 @import './theme.tailwind.css';
-@import './tag.scss';
 
 :root {
   /* 自定义主题 */
-  --color-primary: green;
+  /* --color-primary: green; */
 
   --accent: #2337ff;
   --accent-dark: #000d8a;
@@ -42,8 +41,9 @@ body {
   font-size: 20px;
   line-height: 1.7;
 }
+
 main {
-  width: 720px;
+  width: 820px;
   max-width: calc(100% - 2em);
   margin: auto;
   padding: 3em 1em;
@@ -69,8 +69,7 @@ h4 {
 h5 {
   font-size: 1.25em;
 }
-strong,
-b {
+strong,b {
   font-weight: 700;
 }
 a {
