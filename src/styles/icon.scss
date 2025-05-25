@@ -19,7 +19,8 @@ $icon-bilibili: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
 
 // prettier-ignore
 .icon {
-  &-github {@include icon(45px, #202328, $icon-github)}
+  &-github {@include icon(45px, #7D359F, $icon-github)}
+  &-github-mini {@include icon(30px, #202328, $icon-github)}
   &-redNote {@include icon(75px, #EA3F4A, $icon-redNote)}
   &-bilibili {@include icon(45px, #EA7A99, $icon-bilibili)}
 }

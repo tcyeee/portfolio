@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+@plugin "daisyui";
+/* @plugin "daisyui"; */
+/* 自定义tailwind 颜色 */
+/* @theme {} */
