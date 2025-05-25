@@ -10,6 +10,9 @@ export default defineConfig({
       mdx(), 
       sitemap()
   ],
+  devToolbar:{
+    enabled: false
+  },
   vite: {
     plugins: [tailwindcss()]
   }
