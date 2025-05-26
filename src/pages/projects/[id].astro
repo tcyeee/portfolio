@@ -16,33 +16,41 @@ const project = projectList.find((p) => p.id === id);
   <!-- 手机端 -->
   <div class="flex gap-3 sm:gap-5 md:gap-10 lg:gap-15">
     <PhoneShow images={project?.mobileImg} />
-    <div class="pt-3">
+    <div class="pt-3 relative">
       <h1 class="text-3xl pb-5">{project?.title}</h1>
       <div class="mt-5">{project?.descriptionCN}</div>
       <div class="flex flex-col gap-5 mt-10">
         <div class="flex items-center">
-          <span class="font-bold text-gray-600 w-[100px] text-end mr-5">Keywords:</span>
+          <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Keywords:</span>
           {project?.keywords.map((keyword) => <span class="badge badge-ghost mr-2">{keyword}</span>)}
         </div>
         <div class="flex items-center">
-          <span class="font-bold text-gray-600 w-[100px] text-end mr-5">Platform:</span>
+          <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Platform:</span>
           <PlatformTag tags={project?.platform} />
         </div>
         <div class="flex items-center">
-          <span class="font-bold text-gray-600 w-[100px] text-end mr-5">Tech Stack:</span>
+          <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Tech Stack:</span>
           <TechStack tags={project?.techStack} />
         </div>
+      </div>
+
+      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+        <button class="btn btn-outline btn-primary" onclick="window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })">
+          查看Web展示
+          <span class="icon-down"></span>
+        </button>
       </div>
     </div>
   </div>
 
   <!-- Web端 -->
-  <div>
-    <div class="mockup-browser border-base-300 border w-full mt-[20vh]">
+  <div class="mt-20">
+    <h1 class="text-2xl font-bold mb-3">Web端页面</h1>
+    <div class="mockup-browser border-gray-500 border-5 w-full shadow-lg">
       <div class="mockup-browser-toolbar">
-        <div class="input">https://daisyui.com</div>
+        <div class="input text-gray-500">https://thnc.zgqt.zj.cn</div>
       </div>
-      <div class="grid place-content-center border-t border-base-300 h-80">Hello!</div>
+      <img src="/public/project/1_5.png" alt="#" />
     </div>
   </div>
 </LayoutProject>
