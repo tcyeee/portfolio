@@ -22,7 +22,7 @@ $icon-bilibili: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
 .icon {
   &-bilibili {@include icon(35px, #EA7A99, $icon-bilibili)}
   &-github {@include icon(33px, #7D359F, $icon-github)}
-  &-twitter {@include icon(25px, #7D359F, $icon-twitter)}
+  &-twitter {@include icon(25px, #665efa, $icon-twitter)}
   &-redNote {@include icon(55px, #EA3F4A, $icon-redNote)}
 
   &-github-mini {@include icon(30px, #202328, $icon-github)}

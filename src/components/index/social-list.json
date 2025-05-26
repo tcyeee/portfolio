@@ -1,0 +1,11 @@
+[
+  { "name": "Bilibili", "description": "Follow Me on Bilibili", "icon": "icon-bilibili", "link": "https://space.bilibili.com/10879225" },
+  { "name": "twitter", "description": "Follow Me on Twitter", "icon": "icon-twitter", "link": "https://x.com/tcyeee" },
+  { "name": "Github", "description": "Follow Me on Github", "icon": "icon-github", "link": "https://github.com/tcyeee" },
+  {
+    "name": "RedNote",
+    "description": "Follow Me on RedNote",
+    "icon": "icon-redNote",
+    "link": "https://www.xiaohongshu.com/user/profile/5b9cf40e9a9c9300014062b4"
+  }
+]
