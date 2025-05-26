@@ -1,0 +1,22 @@
+---
+import LayoutProject from '@layouts/Project.astro';
+import PhoneShow from '@components/projects/PhoneShow.astro';
+import projectList from '@content/projects/project-list.json';
+
+export function getStaticPaths() {
+  return projectList.map((project) => ({ params: { id: project.id } }));
+}
+const { id } = Astro.params;
+const project = projectList.find((p) => p.id === id);
+---
+
+<LayoutProject>
+  <div class="flex gap-3 sm:gap-5 md:gap-10 lg:gap-15">
+    <PhoneShow />
+
+    <div class="pt-3">
+      <h1 class="text-3xl pb-5">{project?.title}</h1>
+      <div>{project?.description}</div>
+    </div>
+  </div>
+</LayoutProject>
