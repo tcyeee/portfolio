@@ -1,7 +1,6 @@
 ---
-// import Layout from '../layouts/BlogPost.astro';
 import { getEntry, render } from 'astro:content';
-import Layout from '../layouts/Ac.astro';
+import Layout from '@layouts/Ac.astro';
 
 const post = await getEntry('about', 'about-me')!;
 const { Content } = await render(post);
