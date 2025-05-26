@@ -1,0 +1,6 @@
+---
+import PlatformWeb from '@components/projects/PlatformWeb.astro';
+const { project } = Astro.props;
+---
+
+{project?.platform.includes('web') && <PlatformWeb web={project.web} />}

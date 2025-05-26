@@ -1,9 +1,8 @@
 ---
 import LayoutProject from '@layouts/Project.astro';
-import PlatformMobile from '@components/projects/PlatformMobile.astro';
 import projectList from '@content/projects/project-list.json';
-import PlatformWeb from '@components/projects/PlatformWeb.astro';
-import ProjectProfile from '@components/layout/ProjectProfile.astro';
+import ProjectMobile from '@components/projects/ProjectMobile.astro';
+import ProjectWeb from '@components/projects/ProjectWeb.astro';
 
 export function getStaticPaths() {
   return projectList.map((project) => ({ params: { id: project.id } }));
@@ -13,17 +12,10 @@ const project = projectList.find((p) => p.id === id);
 ---
 
 <LayoutProject>
-  <!-- 手机端 If project?.platform.includes('mobile') -->
-  <div class="flex gap-3 sm:gap-5 md:gap-10 lg:gap-15">
-    <PlatformMobile images={project?.mobileImg} />
-    <ProjectProfile {project} />
-  </div>
-
-  <!-- Web端 If project?.platform.includes('web') -->
-  <div class="mt-20">
-    <!-- TODO 这里组件内拿不到.web 和.webImg -->
-    {project?.platform.includes('web') && <PlatformWeb web={project.web} />}
-  </div>
+  <!-- 手机端 -->
+  <ProjectMobile {project} />
+  <!-- Web端-->
+  <ProjectWeb {project} />
 </LayoutProject>
 
 <style scoped>
