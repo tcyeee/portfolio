@@ -35,12 +35,15 @@ const total = images.length;
 <script>
   const carousel = document.querySelector('.carousel');
   const items = document.querySelectorAll('.carousel-item');
+  let current = 1;
+  const total = items.length;
 
   // 手动播放
   document.querySelectorAll('.carousel a[href^="#slide"]').forEach((link) => {
     link.addEventListener('click', (e: any) => {
       e.preventDefault();
       const targetId = e.currentTarget.getAttribute('href')?.replace('#', '');
+      current = targetId.split('slide')[1];
       const target = document.getElementById(targetId);
       if (target && carousel) {
         carousel.scrollTo({
@@ -52,8 +55,6 @@ const total = images.length;
   });
 
   // 自动轮播
-  let current = 1;
-  const total = items.length;
   setInterval(() => {
     current = (current % total) + 1;
     const target = document.getElementById(`slide${current}`);
