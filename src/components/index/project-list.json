@@ -4,6 +4,12 @@
         "descriptionCN": "为增加浙江省丽水市政府政策曝光,基于Cocos引擎开发的种植养成游戏,用户阅读政策文件获取水滴,使用水滴种植植物,种植成熟时即可兑换本地对应农作物.",
         "description":"To increase the visibility of government policies in Lishui, Zhejiang Province, a planting and cultivation game was developed using the Cocos engine. Users can earn water droplets by reading policy documents, which can then be used to grow virtual plants. Once the plants mature, they can be exchanged for corresponding local agricultural products." ,
         "tags":["Cocos","Game","Kotlin","Netty"],
+        "img":[
+            "/project/1_1.png",
+            "/project/1_2.png",
+            "/project/1_3.png",
+            "/project/1_4.png"
+        ],
         "route":"project/01"
     },{ 
         "title": "Lishui Municipal Government Portal for Investment and Business Opportunities", 
