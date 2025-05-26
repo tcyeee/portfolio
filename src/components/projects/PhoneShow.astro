@@ -32,26 +32,36 @@ const total = images.length;
     </div>
   </div>
 </div>
-
 <script>
+  const carousel = document.querySelector('.carousel');
+  const items = document.querySelectorAll('.carousel-item');
+
+  // 手动播放
   document.querySelectorAll('.carousel a[href^="#slide"]').forEach((link) => {
     link.addEventListener('click', (e: any) => {
       e.preventDefault();
-      const target = document.querySelector(e.currentTarget.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const targetId = e.currentTarget.getAttribute('href')?.replace('#', '');
+      const target = document.getElementById(targetId);
+      if (target && carousel) {
+        carousel.scrollTo({
+          left: target.offsetLeft,
+          behavior: 'smooth'
+        });
       }
     });
   });
 
-  // 自动轮播逻辑
+  // 自动轮播
   let current = 1;
-  const total = document.querySelectorAll('.carousel-item').length;
+  const total = items.length;
   setInterval(() => {
     current = (current % total) + 1;
     const target = document.getElementById(`slide${current}`);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (target && carousel) {
+      carousel.scrollTo({
+        left: target.offsetLeft,
+        behavior: 'smooth'
+      });
     }
   }, 3000);
 </script>
