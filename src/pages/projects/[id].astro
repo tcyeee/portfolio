@@ -17,7 +17,12 @@ const project = projectList.find((p) => p.id === id);
     <PhoneShow images={project?.mobileImg} />
     <div class="pt-3">
       <h1 class="text-3xl pb-5">{project?.title}</h1>
-      <div class="flex flex-col gap-2 mt-3">
+      <div class="mt-5">{project?.descriptionCN}</div>
+      <div class="flex flex-col gap-5 mt-10">
+        <div class="flex items-center">
+          <span class="font-bold text-gray-600 w-[100px] text-end mr-5">Keywords:</span>
+          {project?.keywords.map((keyword) => <span class="badge badge-ghost mr-2">{keyword}</span>)}
+        </div>
         <div class="flex items-center">
           <span class="font-bold text-gray-600 w-[100px] text-end mr-5">Platform:</span>
           <PlatformTag tags={project?.platform} />
@@ -27,7 +32,6 @@ const project = projectList.find((p) => p.id === id);
           <TechStack tags={project?.techStack} />
         </div>
       </div>
-      <div class="mt-5">{project?.description}</div>
     </div>
   </div>
 </LayoutProject>
