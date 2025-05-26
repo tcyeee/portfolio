@@ -9,7 +9,8 @@
     "techStack": ["Cocos", "Vue", "Spring", "Kotlin", "Redis", "Postgresql"],
     "keywords": ["游戏", "Cocos", "政策宣传", "政府项目"],
     "web":{
-      "website": "https://thnc.zgqt.zj.cn"
+      "website": "https://thnc.zgqt.zj.cn",
+      "webImg":["/public/project/1_5.png"]
     }
   },
   {

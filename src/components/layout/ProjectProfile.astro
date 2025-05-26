@@ -1,0 +1,32 @@
+---
+import PlatformTag from '@components/projects/PlatformTag.astro';
+import TechStack from '@components/projects/TechStack.astro';
+
+const { project = {} } = Astro.props;
+---
+
+<div class="pt-3 relative">
+  <h1 class="text-3xl pb-5">{project?.title}</h1>
+  <div class="mt-5">{project?.descriptionCN}</div>
+  <div class="flex flex-col gap-5 mt-10">
+    <div class="flex items-center">
+      <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Tech Stack:</span>
+      <TechStack tags={project?.techStack} />
+    </div>
+    <div class="flex items-center">
+      <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Keywords:</span>
+      {project?.keywords.map((keyword: string) => <span class="badge badge-ghost mr-2">{keyword}</span>)}
+    </div>
+    <div class="flex items-center">
+      <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Platform:</span>
+      <PlatformTag tags={project?.platform} />
+    </div>
+  </div>
+
+  <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+    <button class="btn btn-outline btn-primary btn-lg" onclick="window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })">
+      查看Web展示
+      <span class="icon-down float"></span>
+    </button>
+  </div>
+</div>

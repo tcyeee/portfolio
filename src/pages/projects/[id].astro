@@ -1,10 +1,9 @@
 ---
 import LayoutProject from '@layouts/Project.astro';
 import PlatformMobile from '@components/projects/PlatformMobile.astro';
-import PlatformTag from '@components/projects/PlatformTag.astro';
 import projectList from '@content/projects/project-list.json';
-import TechStack from '@components/projects/TechStack.astro';
 import PlatformWeb from '@components/projects/PlatformWeb.astro';
+import ProjectProfile from '@components/layout/ProjectProfile.astro';
 
 export function getStaticPaths() {
   return projectList.map((project) => ({ params: { id: project.id } }));
@@ -14,43 +13,16 @@ const project = projectList.find((p) => p.id === id);
 ---
 
 <LayoutProject>
-  <!-- 手机端 -->
+  <!-- 手机端 If project?.platform.includes('mobile') -->
   <div class="flex gap-3 sm:gap-5 md:gap-10 lg:gap-15">
-    <div>
-      <PlatformMobile images={project?.mobileImg} />
-    </div>
-    <div class="pt-3 relative">
-      <h1 class="text-3xl pb-5">{project?.title}</h1>
-      <div class="mt-5">{project?.descriptionCN}</div>
-      <div class="flex flex-col gap-5 mt-10">
-        <div class="flex items-center">
-          <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Keywords:</span>
-          {project?.keywords.map((keyword) => <span class="badge badge-ghost mr-2">{keyword}</span>)}
-        </div>
-        <div class="flex items-center">
-          <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Platform:</span>
-          <PlatformTag tags={project?.platform} />
-        </div>
-        <div class="flex items-center">
-          <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Tech Stack:</span>
-          <TechStack tags={project?.techStack} />
-        </div>
-      </div>
-
-      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-        <button
-          class="btn btn-outline btn-primary btn-lg"
-          onclick="window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })">
-          查看Web展示
-          <span class="icon-down float"></span>
-        </button>
-      </div>
-    </div>
+    <PlatformMobile images={project?.mobileImg} />
+    <ProjectProfile {project} />
   </div>
 
-  <!-- Web端 -->
+  <!-- Web端 If project?.platform.includes('web') -->
   <div class="mt-20">
-    {project?.platform.includes('web') && <PlatformWeb web={project?.web} />}
+    <!-- TODO 这里组件内拿不到.web 和.webImg -->
+    {project?.platform.includes('web') && <PlatformWeb web={project.web} />}
   </div>
 </LayoutProject>
 

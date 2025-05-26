@@ -1,10 +1,11 @@
 ---
-const { web = {} } = Astro.props;
+const { web } = Astro.props;
+console.log('传进来的数据', web);
 ---
 
-<div class="mockup-browser border-gray-500 border-5 w-full shadow-lg">
+<div class="mockup-browser border-gray-500 border-4 w-full shadow-lg">
   <div class="mockup-browser-toolbar">
     <div class="input text-gray-500">{web.website}</div>
   </div>
-  <img src="/public/project/1_5.png" alt="#" />
+  <img src={web.webImg[0]} alt="#" />
 </div>
