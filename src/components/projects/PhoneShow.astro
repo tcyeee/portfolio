@@ -43,4 +43,15 @@ const total = images.length;
       }
     });
   });
+
+  // 自动轮播逻辑
+  let current = 1;
+  const total = document.querySelectorAll('.carousel-item').length;
+  setInterval(() => {
+    current = (current % total) + 1;
+    const target = document.getElementById(`slide${current}`);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, 2000);
 </script>

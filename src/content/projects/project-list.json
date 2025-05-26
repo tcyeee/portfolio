@@ -4,18 +4,17 @@
     "title": "Lishui Municipal Government's Online Farm Mini-Game",
     "descriptionCN": "为增加浙江省丽水市政府政策曝光,基于Cocos引擎开发的种植养成游戏,用户阅读政策文件获取水滴,使用水滴种植植物,种植成熟时即可兑换本地对应农作物.",
     "description": "To increase the visibility of government policies in Lishui, Zhejiang Province, a planting and cultivation game was developed using the Cocos engine. Users can earn water droplets by reading policy documents, which can then be used to grow virtual plants. Once the plants mature, they can be exchanged for corresponding local agricultural products.",
-    "tags": ["Cocos", "Game", "Kotlin", "Netty"],
-    "platform":["mobile","web"],
-    "techStack":["Cocos", "Kotlin", "Netty", "Redis", "MySQL"],
-    "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"]
+    "platform": ["mobile", "web"],
+    "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"],
+    "techStack": ["Cocos", "Vue", "Spring", "Kotlin", "Redis", "Postgresql"]
   },
   {
     "id": "e1722e79df69",
     "title": "Lishui Municipal Government Portal for Investment and Business Opportunities",
     "descriptionCN": "为丽水市政府开发的一套招商信息分发网站,包含项目库,人才库,最近政策发布和投资信息广场,项目基于vue3与SpringBoot开发",
     "description": "A set of investment promotion information distribution websites developed for the Lishui Municipal Government, including a project database, talent database, recent policy releases, and an investment information plaza. The project is developed based on Vue 3 and Spring Boot.",
-    "tags": ["Nuxt", "Kotlin", "ElasticSearch", "RabbitMQ"],
-    "platform":["mobile","web"],
-    "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"]
+    "platform": ["mobile", "web"],
+    "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"],
+    "techStack": ["Typescript", "Cocos", "Kotlin", "Redis", "Postgresql"]
   }
 ]
