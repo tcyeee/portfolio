@@ -15,7 +15,9 @@ const project = projectList.find((p) => p.id === id);
 <LayoutProject>
   <!-- 手机端 -->
   <div class="flex gap-3 sm:gap-5 md:gap-10 lg:gap-15">
-    <PhoneShow images={project?.mobileImg} />
+    <div>
+      <PhoneShow images={project?.mobileImg} />
+    </div>
     <div class="pt-3 relative">
       <h1 class="text-3xl pb-5">{project?.title}</h1>
       <div class="mt-5">{project?.descriptionCN}</div>
@@ -35,9 +37,11 @@ const project = projectList.find((p) => p.id === id);
       </div>
 
       <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-        <button class="btn btn-outline btn-primary" onclick="window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })">
+        <button
+          class="btn btn-outline btn-primary btn-lg"
+          onclick="window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })">
           查看Web展示
-          <span class="icon-down"></span>
+          <span class="icon-down float"></span>
         </button>
       </div>
     </div>
@@ -45,7 +49,6 @@ const project = projectList.find((p) => p.id === id);
 
   <!-- Web端 -->
   <div class="mt-20">
-    <h1 class="text-2xl font-bold mb-3">Web端页面</h1>
     <div class="mockup-browser border-gray-500 border-5 w-full shadow-lg">
       <div class="mockup-browser-toolbar">
         <div class="input text-gray-500">https://thnc.zgqt.zj.cn</div>
@@ -54,3 +57,19 @@ const project = projectList.find((p) => p.id === id);
     </div>
   </div>
 </LayoutProject>
+
+<style scoped>
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .float {
+    animation: float 2s ease-in-out infinite;
+  }
+</style>
