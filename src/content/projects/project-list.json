@@ -7,7 +7,10 @@
     "platform": ["mobile", "web"],
     "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"],
     "techStack": ["Cocos", "Vue", "Spring", "Kotlin", "Redis", "Postgresql"],
-    "keywords": ["游戏", "Cocos", "政策宣传", "政府项目"]
+    "keywords": ["游戏", "Cocos", "政策宣传", "政府项目"],
+    "web":{
+      "website": "https://thnc.zgqt.zj.cn"
+    }
   },
   {
     "id": "e1722e79df69",

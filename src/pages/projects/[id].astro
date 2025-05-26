@@ -1,9 +1,10 @@
 ---
 import LayoutProject from '@layouts/Project.astro';
-import PhoneShow from '@components/projects/PhoneShow.astro';
+import PlatformMobile from '@components/projects/PlatformMobile.astro';
 import PlatformTag from '@components/projects/PlatformTag.astro';
 import projectList from '@content/projects/project-list.json';
 import TechStack from '@components/projects/TechStack.astro';
+import PlatformWeb from '@components/projects/PlatformWeb.astro';
 
 export function getStaticPaths() {
   return projectList.map((project) => ({ params: { id: project.id } }));
@@ -16,7 +17,7 @@ const project = projectList.find((p) => p.id === id);
   <!-- 手机端 -->
   <div class="flex gap-3 sm:gap-5 md:gap-10 lg:gap-15">
     <div>
-      <PhoneShow images={project?.mobileImg} />
+      <PlatformMobile images={project?.mobileImg} />
     </div>
     <div class="pt-3 relative">
       <h1 class="text-3xl pb-5">{project?.title}</h1>
@@ -49,12 +50,7 @@ const project = projectList.find((p) => p.id === id);
 
   <!-- Web端 -->
   <div class="mt-20">
-    <div class="mockup-browser border-gray-500 border-5 w-full shadow-lg">
-      <div class="mockup-browser-toolbar">
-        <div class="input text-gray-500">https://thnc.zgqt.zj.cn</div>
-      </div>
-      <img src="/public/project/1_5.png" alt="#" />
-    </div>
+    {project?.platform.includes('web') && <PlatformWeb web={project?.web} />}
   </div>
 </LayoutProject>
 
