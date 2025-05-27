@@ -18,7 +18,7 @@
     "id": "e1722e79df69",
     "title": "丽水市招商引资信息分发平台",
     "description": "为丽水市政府开发的一套招商信息分发网站,包含项目库,人才库,最近政策发布和投资信息广场,项目基于vue3与SpringBoot开发",
-    "techStack": ["Typescript", "Cocos", "Kotlin", "Redis", "Postgresql"],
+    "techStack": ["Typescript", "Kotlin", "Redis", "Postgresql"],
     "keywords": ["独立开发", "政府主页", "招商引资", "资讯分发"],
     "platform": ["web"],
     "web":{

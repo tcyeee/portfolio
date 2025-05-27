@@ -10,15 +10,15 @@ const { project = {} } = Astro.props;
   <div class="mt-5">{project?.description}</div>
   <div class="flex flex-col gap-5 mt-10">
     <div class="flex items-center">
-      <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Tech Stack:</span>
+      <span class="font-bold text-gray-600 w-[100px] text-start mr-5">技术栈:</span>
       <TechStack tags={project?.techStack} />
     </div>
     <div class="flex items-center">
-      <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Keywords:</span>
+      <span class="font-bold text-gray-600 w-[100px] text-start mr-5">关键词:</span>
       {project?.keywords.map((keyword: string) => <span class="badge badge-ghost mr-2">{keyword}</span>)}
     </div>
     <div class="flex items-center">
-      <span class="font-bold text-gray-600 w-[100px] text-start mr-5">Platform:</span>
+      <span class="font-bold text-gray-600 w-[100px] text-start mr-5">部署平台:</span>
       <PlatformTag tags={project?.platform} />
     </div>
   </div>
