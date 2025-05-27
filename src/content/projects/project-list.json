@@ -6,7 +6,7 @@
     "description": "To increase the visibility of government policies in Lishui, Zhejiang Province, a planting and cultivation game was developed using the Cocos engine. Users can earn water droplets by reading policy documents, which can then be used to grow virtual plants. Once the plants mature, they can be exchanged for corresponding local agricultural products.",
     "techStack": ["Cocos", "Vue", "Spring", "Kotlin", "Redis", "Postgresql"],
     "keywords": ["游戏", "Cocos", "政策宣传", "政府项目"],
-    "platform": ["mobile", "web"],
+    "platform": [ "web","mobile"],
     "web":{
       "website": "https://thnc.zgqt.zj.cn",
       "webImg":["/public/project/1_5.png"]
@@ -20,9 +20,15 @@
     "title": "Lishui Municipal Government Portal for Investment and Business Opportunities",
     "descriptionCN": "为丽水市政府开发的一套招商信息分发网站,包含项目库,人才库,最近政策发布和投资信息广场,项目基于vue3与SpringBoot开发",
     "description": "A set of investment promotion information distribution websites developed for the Lishui Municipal Government, including a project database, talent database, recent policy releases, and an investment information plaza. The project is developed based on Vue 3 and Spring Boot.",
-    "platform": ["mobile", "web"],
-    "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"],
     "techStack": ["Typescript", "Cocos", "Kotlin", "Redis", "Postgresql"],
-    "keywords": ["游戏", "Cocos", "政策宣传", "政府项目"]
+    "keywords": ["游戏", "Cocos", "政策宣传", "政府项目"],
+    "platform": ["web"],
+    "web":{
+      "website": "https://thnc.zgqt.zj.cn",
+      "webImg":["/public/project/1_5.png"]
+    },
+    "mobile":{
+      "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"]
+    }
   }
 ]
