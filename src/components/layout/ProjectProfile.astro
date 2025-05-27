@@ -22,11 +22,4 @@ const { project = {} } = Astro.props;
       <PlatformTag tags={project?.platform} />
     </div>
   </div>
-
-  <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-    <button class="btn btn-outline btn-primary btn-lg" onclick="window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })">
-      查看Web展示
-      <span class="icon-down float"></span>
-    </button>
-  </div>
 </div>

@@ -1,35 +1,19 @@
 ---
 import LayoutProject from '@layouts/Project.astro';
 import projectList from '@content/projects/project-list.json';
-import ProjectMobile from '@components/projects/ProjectMobile.astro';
-import ProjectWeb from '@components/projects/ProjectWeb.astro';
+import PlatformWeb from '@components/projects/PlatformWeb.astro';
+import PlatformMobile from '@components/projects/PlatformMobile.astro';
 
 export function getStaticPaths() {
   return projectList.map((project) => ({ params: { id: project.id } }));
 }
 const { id } = Astro.params;
 const project = projectList.find((p) => p.id === id);
+// 获取当前平台
+var current: string = project?.platform[0]!;
 ---
 
 <LayoutProject>
-  <!-- 手机端 -->
-  <ProjectMobile {project} />
-  <!-- Web端-->
-  <ProjectWeb {project} />
+  {current == 'mobile' && <PlatformMobile {project} />}
+  {current == 'web' && <PlatformWeb {project} />}
 </LayoutProject>
-
-<style scoped>
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-5px);
-    }
-  }
-
-  .float {
-    animation: float 2s ease-in-out infinite;
-  }
-</style>
