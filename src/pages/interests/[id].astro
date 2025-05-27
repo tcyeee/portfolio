@@ -1,0 +1,15 @@
+---
+import LayoutProject from '@layouts/Project.astro';
+import ImgShow from '@components/interests/ImgShow.astro';
+import interestList from '@content/projects/interest-list.json';
+
+export function getStaticPaths() {
+  return interestList.map((project) => ({ params: { id: project.id } }));
+}
+const { id } = Astro.params;
+const item = interestList.find((p) => p.id === id);
+---
+
+<LayoutProject>
+  <ImgShow {item} />
+</LayoutProject>

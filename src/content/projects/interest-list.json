@@ -1,22 +1,15 @@
 [
-    {
-        "id": "2a3b4c5d6e7f",
-        "title": "丽水市招商引资信息分发平台",
-        "description": "为丽水市政府开发的一套招商信息分发网站,包含项目库,人才库,最近政策发布和投资信息广场,项目基于vue3与SpringBoot开发",
-        "techStack": ["Typescript", "Kotlin", "Redis", "Postgresql"],
-        "keywords": ["独立开发", "政府主页", "招商引资", "资讯分发"],
-        "platform": ["WEB"],
-        "web": {
-          "website": "https://jiushaninfo.com",
-          "webImg": [
-            "/public/project/2_1.png",
-            "/public/project/2_2.png",
-            "/public/project/2_3.png",
-            "/public/project/2_4.png",
-            "/public/project/2_5.png",
-            "/public/project/2_6.png",
-            "/public/project/2_7.png"
-          ]
-        }
-      }
+  {
+    "id": "2a3b4c5d6e7f",
+    "title": "客制化键盘",
+    "description": "为满足日常使用场景而设计制作的一款客制化键盘, 代码图纸已经开源, 且已有商店在量产售卖, 包含软件与硬件部分, 使用3D打印制作.",
+    "keywords": ["客制化", "Shapr3D", "3D打印"],
+    "platform": ["3D_MODEL"],
+    "images": [
+      "/public/interest/1_1.png",
+      "/public/interest/1_2.png",
+      "/public/interest/1_3.png",
+      "/public/interest/1_4.png"
+    ]
+  }
 ]

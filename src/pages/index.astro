@@ -3,6 +3,7 @@ import BaseHead from '@components/layout/BaseHead.astro';
 import Footer from '@components/layout/Footer.astro';
 import SocialList from '@components/index/SocialList.astro';
 import ProjectItem from '@components/index/ProjectItem.astro';
+import InterestItem from '@components/index/InterestItem.astro';
 import projectList from '@content/projects/project-list.json';
 import interestList from '@content/projects/interest-list.json';
 import { SITE_TITLE, SITE_DESCRIPTION, BASE_INFO } from '@config';
@@ -45,7 +46,7 @@ import { SITE_TITLE, SITE_DESCRIPTION, BASE_INFO } from '@config';
       </div>
 
       <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {interestList.map((item) => <ProjectItem item={item} />)}
+        {interestList.map((item) => <InterestItem {item} />)}
       </div>
     </main>
     <Footer />
