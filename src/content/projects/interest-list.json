@@ -2,11 +2,12 @@
   {
     "id": "2a3b4c5d6e7f",
     "title": "客制化键盘",
-    "description": "为满足日常使用场景而设计制作的一款客制化键盘, 代码图纸已经开源, 且已有商店在量产售卖, 包含软件与硬件部分, 使用3D打印制作.",
+    "description": "为满足日常使用场景而设计制作的一款客制化键盘, 代码以及图纸我已经开源, 并且有商店在量产售卖(当然我是没有任何版权收益的).\r\n项目包含软件分为三个部分:\r\n1:固件源码\r\n2:设计图纸\r\n3:基于mac的相关脚本.",
     "keywords": ["客制化", "Shapr3D", "3D打印"],
     "platform": ["3D_MODEL"],
     "address":"https://github.com/tcyeee/omega40_cases",
     "images": [
+      "/public/interest/1_5.jpg",
       "/public/interest/1_1.png",
       "/public/interest/1_2.png",
       "/public/interest/1_3.png",
@@ -15,13 +16,57 @@
   },{
     "id": "85760883d80f",
     "title": "Podcast Shortcut Helper",
-    "description": "Podcast Shortcut Helper 是一个 Chrome 扩展，专门用于为 没有快捷键的 Podcast 网页 绑定 播放、暂停、快进、后退 等便捷的键盘操作，让你的收听体验更流畅！",
+    "description": "Podcast Shortcut Helper 是一个 Chrome 扩展，专门用于为 没有快捷键的 Podcast 网页 绑定 播放、暂停、快进、后退 等便捷的键盘操作，让你的收听体验更流畅！\r\n插件目前已上架谷歌应用市场.",
     "keywords": ["浏览器插件", "快捷键"],
     "platform": ["EXTENSION"],
     "address":"https://chromewebstore.google.com/detail/podcastshortcuts/kfpjgalpaajacpngajeebifbkgpjolgm",
     "images": [
       "/public/interest/2_1.png",
       "/public/interest/2_2.png"
+    ]
+  },{
+    "id": "4ed3df1d69e1",
+    "title": "Minecraft AFK MOD",
+    "description": "Minecraft AFK MOD 是一个 Minecraft 插件，专门用于在 Minecraft 中自动执行 AFK(Away From Keyboard)操作,帮助玩家在游戏中保持在线状态.",
+    "keywords": ["游戏MOD","我的世界", "Minecraft"],
+    "platform": ["GAME_MOD"],
+    "address":"https://github.com/tcyeee/BB-AFK",
+    "images": [
+      "/public/interest/3_1.png"
+    ]
+  },{
+    "id": "2d1b15ffbf3c",
+    "title": "Bookmarkify",
+    "description": "Bookmarkify是一个书签分享, 管理和发现平台, 旨在帮助用户更好地组织和分享他们的书签, 使得书签的使用更加高效和便捷.\r\nps:项目暂时没有更新计划, 但仍然可以使用.",
+    "keywords": ["浏览器书签","WEB应用"],
+    "platform": ["WEB"],
+    "address":"https://bookmarkify.cc",
+    "images": [
+      "/public/interest/4_1.png",
+      "/public/interest/4_2.png",
+      "/public/interest/4_3.png"
+    ]
+  },{
+    "id": "7e90d089cf85",
+    "title": "NFT交易小站",
+    "description": "Nft交易小站是一个基于Sepolia测试网络的NFT交易平台, 目前托管于Vercel, 交易货币可以在任意Faucet获取.\r\nps:项目大概永远不会并入ETH主网",
+    "keywords": ["NFT交易", "以太坊", "智能合约"],
+    "platform": ["ETH"],
+    "address":"https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app/",
+    "images": [
+      "/public/interest/5_1.png",
+      "/public/interest/5_2.png"
+    ]
+  },{
+    "id": "79ab17424ec5",
+    "title": "ETH质押合约",
+    "description": "依然是位于Sepolia测试网的项目, 用户可以质押ETH, 并且可以随时解锁, 质押的ETH会被转入合约地址, 质押的用户可以获得奖励, 目前奖励是随机的.\r\nps:这个项目大概也一样永远不会并入ETH主网",
+    "keywords": ["区块链", "智能合约","去中心化APP"],
+    "platform": ["BLOCK_CHAIN"],
+    "address":"https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app/",
+    "images": [
+      "/public/interest/5_1.png",
+      "/public/interest/5_2.png"
     ]
   }
 ]

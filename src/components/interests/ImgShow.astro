@@ -6,7 +6,7 @@ const total = item.images.length;
 ---
 
 <div>
-  <div class="select-none mockup-browser border-gray-500 border-4 w-full shadow-lg max-h-[712px]">
+  <div class="select-none mockup-browser border-gray-500 border-4 w-full shadow-lg">
     <div class="mockup-browser-toolbar"></div>
     <div class="carousel w-full">
       {
@@ -18,7 +18,7 @@ const total = item.images.length;
           const nextId = `slide${next}`;
           return (
             <div id={slideId} class="carousel-item relative w-full">
-              <img src={src} class="w-full" alt={`image ${index + 1}`} />
+              <img src={src} class="w-full max-h-[500px] object-contain" alt={`image ${index + 1}`} />
               <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
                 <a href={`#${prevId}`} class="btn btn-circle">
                   ❮
