@@ -4,6 +4,7 @@ import Footer from '@components/layout/Footer.astro';
 import SocialList from '@components/index/SocialList.astro';
 import ProjectItem from '@components/index/ProjectItem.astro';
 import InterestItem from '@components/index/InterestItem.astro';
+import JobHistory from '@components/jobs/history.astro';
 import projectList from '@content/projects/project-list.json';
 import interestList from '@content/projects/interest-list.json';
 import { SITE_TITLE, SITE_DESCRIPTION, BASE_INFO } from '@config';
@@ -33,6 +34,9 @@ import { SITE_TITLE, SITE_DESCRIPTION, BASE_INFO } from '@config';
       <div class="mt-[10rem]">
         <h1 class="font-bold text-2xl">{BASE_INFO.workTitle}</h1>
         <p class="text-gray-500 mt-2 whitespace-pre-line">{BASE_INFO.workDescription}</p>
+      </div>
+      <div class="mt-10">
+        <JobHistory />
       </div>
 
       <!-- technical support -->

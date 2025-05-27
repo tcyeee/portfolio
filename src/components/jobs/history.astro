@@ -1,0 +1,26 @@
+---
+import history from './history.json';
+---
+
+<ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
+  {
+    history.map((item, index) => (
+      <li>
+        {index !== 0 && <hr />}
+        <div class="timeline-middle">
+          <span class="icon-check" />
+        </div>
+        <div class={`timeline-${item.position} mb-10 ${item.position === 'start' ? 'md:text-end' : ''}`}>
+          <time class="font-mono italic">{item.year}</time>
+          <div class="text-lg font-black my-2">{item.title}</div>
+          <p class="whitespace-pre-line">{item.description}</p>
+
+          {item.keywords.map((tag) => (
+            <div class="badge badge-neutral badge-outline mx-1 my-2">{tag}</div>
+          ))}
+        </div>
+        {index !== history.length - 1 && <hr />}
+      </li>
+    ))
+  }
+</ul>
