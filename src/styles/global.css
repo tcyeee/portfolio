@@ -56,4 +56,5 @@
 }
 body {
   font-family: 'Atkinson', sans-serif;
+  background: var(--color-base-200);
 }

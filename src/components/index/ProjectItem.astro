@@ -6,9 +6,9 @@ const { item } = Astro.props;
 <div
   onclick={`window.location.href='/projects/${item.id}'`}
   class="card bg-base-100 shadow-sm hover:shadow-lg transition-shadow duration-300 p-4">
-  <h3 class="text-lg font-bold mb-2">
-    <span>{item.title}</span>
+  <h3 class="mb-2 flex items-center gap-2">
     <PlatformTag tag={item.platform[0]} />
+    <span class="text-lg font-bold mt-1">{item.title}</span>
   </h3>
   <p class="text-gray-600 text-sm line-clamp-3">{item.description}</p>
   <span class="flex flex-wrap gap-2 mt-3">
