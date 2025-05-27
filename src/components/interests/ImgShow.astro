@@ -1,5 +1,5 @@
 ---
-import ProjectProfile from '@components/projects/ProjectProfile.astro';
+import InterestProfile from './InterestProfile.astro';
 
 const { item } = Astro.props;
 const total = item.images.length;
@@ -33,7 +33,9 @@ const total = item.images.length;
       }
     </div>
   </div>
-  <div class="mt-10"></div>
+  <div class="mt-10">
+    <InterestProfile project={item} />
+  </div>
 </div>
 <script>
   const carousel = document.querySelector('.carousel');

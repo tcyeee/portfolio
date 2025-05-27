@@ -1,0 +1,27 @@
+---
+import PlatformTag from '@components/projects/PlatformTag.astro';
+
+const { project = {} } = Astro.props;
+---
+
+<div class="pt-3 relative">
+  <h1 class="text-3xl pb-5">{project?.title}</h1>
+  <div class="flex items-center">
+    {project?.keywords.map((keyword: string) => <span class="badge badge-primary mr-2 pt-0.5">{keyword}</span>)}
+  </div>
+  <div class="mt-5">{project?.description}</div>
+  <div class="flex flex-col gap-5 mt-10">
+    <div class="flex items-center">
+      <span class="font-bold text-gray-600 w-[70px] text-start mr-5">项目类型:</span>
+      <div class="flex flex-wrap items-center gap-3">
+        {project?.platform.map((tag: string) => <PlatformTag {tag} />)}
+      </div>
+    </div>
+    <div class="flex items-center">
+      <span class="font-bold text-gray-600 w-[70px] text-start mr-5">项目地址:</span>
+      <div class="flex flex-wrap items-center gap-3">
+        <a href={project.address}>{project.address}</a>
+      </div>
+    </div>
+  </div>
+</div>

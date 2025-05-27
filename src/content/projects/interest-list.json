@@ -5,6 +5,7 @@
     "description": "为满足日常使用场景而设计制作的一款客制化键盘, 代码图纸已经开源, 且已有商店在量产售卖, 包含软件与硬件部分, 使用3D打印制作.",
     "keywords": ["客制化", "Shapr3D", "3D打印"],
     "platform": ["3D_MODEL"],
+    "address":"https://github.com/tcyeee/omega40_cases",
     "images": [
       "/public/interest/1_1.png",
       "/public/interest/1_2.png",
