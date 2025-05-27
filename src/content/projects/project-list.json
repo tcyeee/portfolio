@@ -6,12 +6,19 @@
     "techStack": ["Cocos", "Vue", "Spring", "Kotlin", "Redis", "Postgresql"],
     "keywords": ["独立开发", "游戏", "政府项目", "Cocos"],
     "platform": [ "mobile","web"],
+    "mobile":{
+      "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"]
+    }
+  },{
+    "id": "f1c3b8d2e4a1",
+    "title": "农场游戏后台",
+    "description": "用户在农场种植小游戏中种植的植物,需要后台进行管理,包括植物的种类,成熟时间,兑换物品等,基于SpringBoot与Vue3开发",
+    "techStack": ["Nuxt", "Kotlin", "RabbitMQ", "Postgresql"],
+    "keywords": ["独立开发", "后台管理", "政府项目"],
+    "platform": [ "web","mobile"],
     "web":{
       "website": "https://thnc.zgqt.zj.cn",
       "webImg":["/public/project/1_5.png"]
-    },
-    "mobile":{
-      "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"]
     }
   },
   {
