@@ -14,6 +14,6 @@ var current: string = project?.platform[0]!;
 ---
 
 <LayoutProject>
-  {current == 'mobile' && <PlatformMobile {project} />}
-  {current == 'web' && <PlatformWeb {project} />}
+  {current == 'MOBILE' && <PlatformMobile {project} />}
+  {current == 'WEB' && <PlatformWeb {project} />}
 </LayoutProject>

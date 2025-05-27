@@ -19,7 +19,9 @@ const { project = {} } = Astro.props;
     </div>
     <div class="flex items-center">
       <span class="font-bold text-gray-600 w-[100px] text-start mr-5">部署平台:</span>
-      <PlatformTag tags={project?.platform} />
+      <div class="flex flex-wrap items-center gap-3">
+        {project?.platform.map((tag: string) => <PlatformTag {tag} />)}
+      </div>
     </div>
   </div>
 </div>

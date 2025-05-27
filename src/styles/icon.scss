@@ -28,7 +28,7 @@ $icon-down: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBo
   &-twitter {@include icon(25px, #665efa, $icon-twitter)}
   &-redNote {@include icon(55px, #EA3F4A, $icon-redNote)}
   &-github-mini {@include icon(30px, #202328, $icon-github)}
-  &-mobile {@include icon(15px, white, $icon-mobile)}
-  &-web {@include icon(17px, white, $icon-web)}
+  &-mobile {@include icon(14px, white, $icon-mobile)}
+  &-web {@include icon(15px, white, $icon-web)}
   &-down {@include icon(17px, gray, $icon-down)}
 }

@@ -1,15 +1,9 @@
 ---
-const { tags = Array<String> } = Astro.props;
+const { tag } = Astro.props;
 ---
 
-<div class="flex flex-wrap items-center gap-3">
-  {
-    tags.map((tag: string) => (
-      <div class="badge badge-info px-2 py-3">
-        {tag === 'web' && <span class="icon-web" />}
-        {tag === 'mobile' && <span class="icon-mobile" />}
-        <span class="text-gray-100 font-bold">{tag}</span>
-      </div>
-    ))
-  }
+<div class="badge badge-info p-2">
+  {tag === 'WEB' && <span class="icon-web" />}
+  {tag === 'MOBILE' && <span class="icon-mobile" />}
+  <span class="text-gray-100 font-bold text-[13px] mt-1 ml-[-4px]">{tag}</span>
 </div>

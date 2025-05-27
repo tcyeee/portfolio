@@ -3,37 +3,66 @@
     "id": "85760883d80f",
     "title": "农场种植小游戏",
     "description": "为增加浙江省丽水市政府政策曝光,基于Cocos引擎开发的种植养成游戏,用户阅读政策文件获取水滴,使用水滴种植植物,种植成熟时即可兑换本地对应农作物.",
-    "techStack": ["Cocos", "Vue", "Spring", "Kotlin", "Redis", "Postgresql"],
-    "keywords": ["独立开发", "游戏", "政府项目", "Cocos"],
-    "platform": [ "mobile","web"],
-    "mobile":{
+    "techStack": ["Cocos", "Spring", "Kotlin", "Redis", "Postgresql"],
+    "keywords": ["独立开发", "政府项目", "游戏", "Cocos"],
+    "platform": ["MOBILE", "WEB"],
+    "mobile": {
       "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"]
     }
-  },{
+  },
+  {
     "id": "f1c3b8d2e4a1",
-    "title": "农场游戏后台",
+    "title": "农场种植游戏-后台",
     "description": "用户在农场种植小游戏中种植的植物,需要后台进行管理,包括植物的种类,成熟时间,兑换物品等,基于SpringBoot与Vue3开发",
     "techStack": ["Nuxt", "Kotlin", "RabbitMQ", "Postgresql"],
-    "keywords": ["独立开发", "后台管理", "政府项目"],
-    "platform": [ "web","mobile"],
-    "web":{
+    "keywords": ["独立开发","消息队列", "Netty"],
+    "platform": ["WEB", "MOBILE"],
+    "web": {
       "website": "https://thnc.zgqt.zj.cn",
-      "webImg":["/public/project/1_5.png"]
+      "webImg": ["/public/project/1_5.png"]
+    }
+  },
+  {
+    "id": "d3f4e5b6c7a8",
+    "title": "AI供需匹配平台",
+    "description": "为浙江省丽水市政府开发的供需匹配平台, AI信息审核, AI关键词切分, AI供需匹配, 将供需双方进行匹配, 基于SpringBoot与Vue3开发",
+    "techStack": ["Nuxt", "Spring", "Kotlin", "Postgresql"],
+    "keywords": ["独立开发", "商城","AI" ,"人工智能", "小程序"],
+    "platform": ["MOBILE", "WEB"],
+    "mobile": {
+      "mobileImg": ["/project/3_1.png", "/project/3_2.png", "/project/3_3.png", "/project/3_4.png"]
     }
   },
   {
     "id": "e1722e79df69",
+    "title": "行业供需匹配平台-后台",
+    "description": "用户在农场种植小游戏中种植的植物,需要后台进行管理,包括植物的种类,成熟时间,兑换物品等,基于SpringBoot与Vue3开发",
+    "techStack": ["Nuxt", "Kotlin", "RabbitMQ", "Postgresql"],
+    "keywords": ["独立开发", "后台管理", "政府项目"],
+    "platform": ["WEB", "MOBILE"],
+    "web": {
+      "website": "https://thnc.zgqt.zj.cn",
+      "webImg": ["/public/project/1_5.png"]
+    }
+  },
+  {
+    "id": "2a3b4c5d6e7f",
     "title": "丽水市招商引资信息分发平台",
     "description": "为丽水市政府开发的一套招商信息分发网站,包含项目库,人才库,最近政策发布和投资信息广场,项目基于vue3与SpringBoot开发",
     "techStack": ["Typescript", "Kotlin", "Redis", "Postgresql"],
     "keywords": ["独立开发", "政府主页", "招商引资", "资讯分发"],
-    "platform": ["web"],
-    "web":{
+    "platform": ["WEB"],
+    "web": {
       "website": "https://jiushaninfo.com",
-      "webImg":["/public/project/2_1.png", "/public/project/2_2.png", "/public/project/2_3.png", "/public/project/2_4.png", "/public/project/2_5.png", "/public/project/2_6.png", "/public/project/2_7.png"]
-    },
-    "mobile":{
-      "mobileImg": ["/project/1_1.png", "/project/1_2.png", "/project/1_3.png", "/project/1_4.png"]
+      "webImg": [
+        "/public/project/2_1.png",
+        "/public/project/2_2.png",
+        "/public/project/2_3.png",
+        "/public/project/2_4.png",
+        "/public/project/2_5.png",
+        "/public/project/2_6.png",
+        "/public/project/2_7.png"
+      ]
     }
   }
 ]
