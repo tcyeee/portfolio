@@ -7,11 +7,11 @@
     "platform": ["3D_MODEL"],
     "address":"https://github.com/tcyeee/omega40_cases",
     "images": [
-      "/public/interest/1_5.jpg",
-      "/public/interest/1_1.png",
-      "/public/interest/1_2.png",
-      "/public/interest/1_3.png",
-      "/public/interest/1_4.png"
+      "/interest/1_5.jpg",
+      "/interest/1_1.png",
+      "/interest/1_2.png",
+      "/interest/1_3.png",
+      "/interest/1_4.png"
     ]
   },{
     "id": "85760883d80f",
@@ -21,8 +21,8 @@
     "platform": ["EXTENSION"],
     "address":"https://chromewebstore.google.com/detail/podcastshortcuts/kfpjgalpaajacpngajeebifbkgpjolgm",
     "images": [
-      "/public/interest/2_1.png",
-      "/public/interest/2_2.png"
+      "/interest/2_1.png",
+      "/interest/2_2.png"
     ]
   },{
     "id": "4ed3df1d69e1",
@@ -32,7 +32,7 @@
     "platform": ["GAME_MOD"],
     "address":"https://github.com/tcyeee/BB-AFK",
     "images": [
-      "/public/interest/3_1.png"
+      "/interest/3_1.png"
     ]
   },{
     "id": "2d1b15ffbf3c",
@@ -42,9 +42,9 @@
     "platform": ["WEB"],
     "address":"https://bookmarkify.cc",
     "images": [
-      "/public/interest/4_1.png",
-      "/public/interest/4_2.png",
-      "/public/interest/4_3.png"
+      "/interest/4_1.png",
+      "/interest/4_2.png",
+      "/interest/4_3.png"
     ]
   },{
     "id": "7e90d089cf85",
@@ -54,8 +54,8 @@
     "platform": ["ETH"],
     "address":"https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app/",
     "images": [
-      "/public/interest/5_1.png",
-      "/public/interest/5_2.png"
+      "/interest/5_1.png",
+      "/interest/5_2.png"
     ]
   },{
     "id": "79ab17424ec5",
@@ -65,8 +65,8 @@
     "platform": ["BLOCK_CHAIN"],
     "address":"https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app/",
     "images": [
-      "/public/interest/5_1.png",
-      "/public/interest/5_2.png"
+      "/interest/5_1.png",
+      "/interest/5_2.png"
     ]
   }
 ]

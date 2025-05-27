@@ -19,7 +19,7 @@
     "platform": ["WEB", "MOBILE"],
     "web": {
       "website": "https://thnc.zgqt.zj.cn",
-      "webImg": ["/public/project/1_5.png"]
+      "webImg": ["/project/1_5.png"]
     }
   },
   {
@@ -42,7 +42,7 @@
     "platform": ["WEB", "MOBILE"],
     "web": {
       "website": "https://meta-shanhai.com",
-      "webImg": ["/public/project/4_1.png", "/public/project/4_2.png", "/public/project/4_3.png", "/public/project/4_4.png"]
+      "webImg": ["/project/4_1.png", "/project/4_2.png", "/project/4_3.png", "/project/4_4.png"]
     }
   },
   {
@@ -55,13 +55,13 @@
     "web": {
       "website": "https://jiushaninfo.com",
       "webImg": [
-        "/public/project/2_1.png",
-        "/public/project/2_2.png",
-        "/public/project/2_3.png",
-        "/public/project/2_4.png",
-        "/public/project/2_5.png",
-        "/public/project/2_6.png",
-        "/public/project/2_7.png"
+        "/project/2_1.png",
+        "/project/2_2.png",
+        "/project/2_3.png",
+        "/project/2_4.png",
+        "/project/2_5.png",
+        "/project/2_6.png",
+        "/project/2_7.png"
       ]
     }
   }
