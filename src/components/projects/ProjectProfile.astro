@@ -7,7 +7,7 @@ const { project = {} } = Astro.props;
 
 <div class="pt-3 relative">
   <h1 class="text-3xl pb-5">{project?.title}</h1>
-  <div class="mt-5">{project?.description}</div>
+  <div class="mt-5 whitespace-pre-line">{project?.description}</div>
   <div class="flex flex-col gap-5 mt-10">
     <div class="flex items-center">
       <span class="font-bold text-gray-600 w-[100px] text-start mr-5">技术栈:</span>

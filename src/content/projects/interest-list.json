@@ -12,5 +12,16 @@
       "/public/interest/1_3.png",
       "/public/interest/1_4.png"
     ]
+  },{
+    "id": "85760883d80f",
+    "title": "Podcast Shortcut Helper",
+    "description": "Podcast Shortcut Helper 是一个 Chrome 扩展，专门用于为 没有快捷键的 Podcast 网页 绑定 播放、暂停、快进、后退 等便捷的键盘操作，让你的收听体验更流畅！",
+    "keywords": ["浏览器插件", "快捷键"],
+    "platform": ["EXTENSION"],
+    "address":"https://chromewebstore.google.com/detail/podcastshortcuts/kfpjgalpaajacpngajeebifbkgpjolgm",
+    "images": [
+      "/public/interest/2_1.png",
+      "/public/interest/2_2.png"
+    ]
   }
 ]
