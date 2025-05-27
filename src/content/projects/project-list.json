@@ -15,7 +15,7 @@
     "title": "农场种植游戏-后台",
     "description": "用户在农场种植小游戏中种植的植物,需要后台进行管理,包括植物的种类,成熟时间,兑换物品等,基于SpringBoot与Vue3开发",
     "techStack": ["Nuxt", "Kotlin", "RabbitMQ", "Postgresql"],
-    "keywords": ["独立开发","消息队列", "Netty"],
+    "keywords": ["独立开发", "消息队列", "Netty"],
     "platform": ["WEB", "MOBILE"],
     "web": {
       "website": "https://thnc.zgqt.zj.cn",
@@ -25,9 +25,9 @@
   {
     "id": "d3f4e5b6c7a8",
     "title": "AI供需匹配平台",
-    "description": "为浙江省丽水市政府开发的供需匹配平台, AI信息审核, AI关键词切分, AI供需匹配, 将供需双方进行匹配, 基于SpringBoot与Vue3开发",
+    "description": "为浙江省丽水市政府开发的供需匹配平台, AI信息审核, AI关键词切分, AI供需匹配, 将供需双方进行匹配, 基于Uniapp开发",
     "techStack": ["Nuxt", "Spring", "Kotlin", "Postgresql"],
-    "keywords": ["独立开发", "商城","AI" ,"人工智能", "小程序"],
+    "keywords": ["独立开发", "Uniapp", "商城", "AI", "人工智能"],
     "platform": ["MOBILE", "WEB"],
     "mobile": {
       "mobileImg": ["/project/3_1.png", "/project/3_2.png", "/project/3_3.png", "/project/3_4.png"]
@@ -35,14 +35,14 @@
   },
   {
     "id": "e1722e79df69",
-    "title": "行业供需匹配平台-后台",
-    "description": "用户在农场种植小游戏中种植的植物,需要后台进行管理,包括植物的种类,成熟时间,兑换物品等,基于SpringBoot与Vue3开发",
+    "title": "AI供需匹配平台-后台",
+    "description": "与AI供需匹配平台匹配的后台管理, 包括供需信息的审核, AI关键词切分, AI供需匹配等功能, 基于SpringBoot与Nuxt开发",
     "techStack": ["Nuxt", "Kotlin", "RabbitMQ", "Postgresql"],
-    "keywords": ["独立开发", "后台管理", "政府项目"],
+    "keywords": ["独立开发", "消息队列", "AI审核", "AI匹配"],
     "platform": ["WEB", "MOBILE"],
     "web": {
-      "website": "https://thnc.zgqt.zj.cn",
-      "webImg": ["/public/project/1_5.png"]
+      "website": "https://meta-shanhai.com",
+      "webImg": ["/public/project/4_1.png", "/public/project/4_2.png", "/public/project/4_3.png", "/public/project/4_4.png"]
     }
   },
   {
