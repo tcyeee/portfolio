@@ -1,16 +1,76 @@
 ---
 import ProjectProfile from '@components/projects/ProjectProfile.astro';
+
 const { project } = Astro.props;
+const total = project.mobile.mobileImg.length;
 ---
 
 <div>
-  <div class="mockup-browser border-gray-500 border-4 w-full shadow-lg">
+  <div class="mockup-browser border-gray-500 border-4 w-full shadow-lg h-[712px]">
     <div class="mockup-browser-toolbar">
       <div class="input text-gray-500">{project.web.website}</div>
     </div>
-    <img src={project.web.webImg[0]} alt="#" />
+    <!-- <img src={project.web.webImg[0]} alt="#" /> -->
+    <div class="carousel w-full">
+      {
+        project.web.webImg.map((src: string, index: number) => {
+          const prev = index === 0 ? total : index;
+          const next = index + 2 > total ? 1 : index + 2;
+          const slideId = `slide${index + 1}`;
+          const prevId = `slide${prev}`;
+          const nextId = `slide${next}`;
+          return (
+            <div id={slideId} class="carousel-item relative w-full">
+              <img src={src} class="w-full" alt={`image ${index + 1}`} />
+              <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+                <a href={`#${prevId}`} class="btn btn-circle">
+                  ❮
+                </a>
+                <a href={`#${nextId}`} class="btn btn-circle">
+                  ❯
+                </a>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
   </div>
   <div class="mt-10">
     <ProjectProfile {project} />
   </div>
 </div>
+<script>
+  const carousel = document.querySelector('.carousel');
+  const items = document.querySelectorAll('.carousel-item');
+  let current = 1;
+  const total = items.length;
+
+  // 手动播放
+  document.querySelectorAll('.carousel a[href^="#slide"]').forEach((link) => {
+    link.addEventListener('click', (e: any) => {
+      e.preventDefault();
+      const targetId = e.currentTarget.getAttribute('href')?.replace('#', '');
+      current = targetId.split('slide')[1];
+      const target = document.getElementById(targetId);
+      if (target && carousel) {
+        carousel.scrollTo({
+          left: target.offsetLeft,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // 自动轮播
+  setInterval(() => {
+    current = (current % total) + 1;
+    const target = document.getElementById(`slide${current}`);
+    if (target && carousel) {
+      carousel.scrollTo({
+        left: target.offsetLeft,
+        behavior: 'smooth'
+      });
+    }
+  }, 8000);
+</script>
