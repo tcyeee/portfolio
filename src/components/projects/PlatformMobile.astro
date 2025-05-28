@@ -5,11 +5,11 @@ const { project } = Astro.props;
 const total = project.mobile.mobileImg.length;
 ---
 
-<div class="flex gap-3 sm:gap-5 md:gap-10 lg:gap-15">
-  <div class="mockup-phone select-none min-w-[424px] shadow-xl">
+<div class="flex flex-col md:flex-row gap-3 sm:gap-5 md:gap-10 lg:gap-15">
+  <div class="mockup-phone w-[390px] sm:min-w-[390px] select-none shadow-xl">
     <div class="mockup-phone-camera"></div>
-    <div class="mockup-phone-display">
-      <div class="carousel w-full">
+    <div class="mockup-phone-display min-w-[358px] max-w-[358px] h-[766px]">
+      <div class="carousel">
         {
           project.mobile.mobileImg.map((src: string, index: number) => {
             const prev = index === 0 ? total : index;
@@ -32,7 +32,9 @@ const total = project.mobile.mobileImg.length;
       </div>
     </div>
   </div>
-  <ProjectProfile {project} />
+  <div class="mt-10 sm:mt-0">
+    <ProjectProfile {project} />
+  </div>
 </div>
 <script>
   const carousel = document.querySelector('.carousel');
