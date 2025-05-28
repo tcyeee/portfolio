@@ -19,8 +19,8 @@ const { project = {} } = Astro.props;
     </div>
     <div class="flex items-center">
       <span class="font-bold text-gray-600 min-w-[70px] text-start mr-5">项目地址:</span>
-      <div class="flex flex-wrap items-center gap-3">
-        <a class="line-clamp-1" href={project.address}>{project.address}</a>
+      <div class="flex flex-wrap items-center gap-3 line-clamp-1">
+        <a href={project.address}>{project.address}</a>
       </div>
     </div>
   </div>
