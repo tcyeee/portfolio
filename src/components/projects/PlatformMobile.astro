@@ -6,9 +6,9 @@ const total = project.mobile.mobileImg.length;
 ---
 
 <div class="flex flex-col md:flex-row gap-3 sm:gap-5 md:gap-10 lg:gap-15">
-  <div class="mockup-phone w-[90vw] sm:min-w-[390px] select-none shadow-xl">
+  <div class="mockup-phone w-[390px] min-w-[390px] select-none shadow-xl">
     <div class="mockup-phone-camera"></div>
-    <div class="mockup-phone-display w-[calc(90vw-32px)] h-[calc(90vw*1.92)] sm:min-w-[358px] sm:max-w-[358px] sm:h-[766px]">
+    <div class="mockup-phone-display w-[358px] h-[766px] min-w-[358px] max-w-[358px]">
       <div class="carousel">
         {
           project.mobile.mobileImg.map((src: string, index: number) => {
