@@ -1,6 +1,4 @@
 ---
-import PlatformTag from '@components/projects/PlatformTag.astro';
-
 const { project = {} } = Astro.props;
 ---
 
@@ -12,15 +10,24 @@ const { project = {} } = Astro.props;
   <div class="mt-5 whitespace-pre-line">{project?.description}</div>
   <div class="flex flex-col gap-5 mt-10">
     <div class="flex items-center">
-      <span class="font-bold text-gray-600 min-w-[70px] text-start mr-5">项目类型:</span>
-      <div class="flex flex-wrap items-center gap-3">
-        {project?.platform.map((tag: string) => <PlatformTag {tag} />)}
+      <span class="font-bold text-gray-600 min-w-[70px] text-start mr-5">预览地址:</span>
+      <div class="flex flex-wrap items-center gap-3 line-clamp-1">
+        <a class="font-bold text-sm" href={project.address ? project.address : '#'}>
+          {project.address ? project.address : '暂无地址'}
+        </a>
       </div>
     </div>
+
     <div class="flex items-center">
-      <span class="font-bold text-gray-600 min-w-[70px] text-start mr-5">项目地址:</span>
+      <span class="font-bold text-gray-600 min-w-[70px] text-start mr-5">相关链接:</span>
       <div class="flex flex-wrap items-center gap-3 line-clamp-1">
-        <a href={project.address}>{project.address}</a>
+        {
+          project.links?.map((link: { type: string; url: string }) => (
+            <a href={link.url} target="_blank" class=" hover:underline flex items-center gap-1">
+              <span class={`icon-${link.type}-mini`} />
+            </a>
+          ))
+        }
       </div>
     </div>
   </div>

@@ -5,14 +5,24 @@
     "description": "为满足日常使用场景而设计制作的一款客制化键盘, 代码以及图纸我已经开源, 并且有商店在量产售卖(当然我是没有任何版权收益的).\r\n项目包含软件分为三个部分:\r\n1:固件源码\r\n2:设计图纸\r\n3:基于mac的相关脚本.",
     "keywords": ["客制化", "Shapr3D", "3D打印"],
     "platform": ["3D_MODEL"],
-    "address":"https://github.com/tcyeee/omega40_cases",
+    "address":"",
     "images": [
       "/interest/1_5.jpg",
       "/interest/1_1.png",
       "/interest/1_2.png",
       "/interest/1_3.png",
       "/interest/1_4.png"
-    ]
+    ],
+    "links": [{
+      "type": "github",
+      "url": "https://github.com/tcyeee/omega40_cases"
+    },{
+      "type": "redNote",
+      "url": "https://www.xiaohongshu.com/discovery/item/67d27665000000001d025750?source=webshare&xhsshare=pc_web&xsec_token=ABSr9p3z-MUnED4oQv6qUlCTrTamDNNRftoM4w1iEL1nE=&xsec_source=pc_share"
+    },{
+      "type": "bilibili",
+      "url": "https://www.bilibili.com/video/BV1DGeEejEoT"
+    }]
   },{
     "id": "85760883d80f",
     "title": "Podcast Shortcut Helper",
@@ -23,7 +33,14 @@
     "images": [
       "/interest/2_1.png",
       "/interest/2_2.png"
-    ]
+    ],
+    "links": [{
+      "type": "github",
+      "url": "https://github.com/tcyeee/podcast-shortcuts"
+    },{
+      "type": "redNote",
+      "url": "https://www.xiaohongshu.com/discovery/item/66d9c1500000000012013ce8?source=webshare&xhsshare=pc_web&xsec_token=AB54iSffalswb0doYiteSIzQolb8otgYYq57m-KSc-Fsc=&xsec_source=pc_share"
+    }]
   },{
     "id": "4ed3df1d69e1",
     "title": "Minecraft AFK MOD",
@@ -33,7 +50,11 @@
     "address":"https://github.com/tcyeee/BB-AFK",
     "images": [
       "/interest/3_1.png"
-    ]
+    ],
+    "links": [{
+      "type": "github",
+      "url": "https://github.com/tcyeee/BB-AFK"
+    }]
   },{
     "id": "2d1b15ffbf3c",
     "title": "Bookmarkify",
@@ -45,28 +66,59 @@
       "/interest/4_1.png",
       "/interest/4_2.png",
       "/interest/4_3.png"
-    ]
+    ],
+    "links": [{
+      "type": "github",
+      "url": "https://github.com/tcyeee/bookmarkify"
+    }]
   },{
     "id": "7e90d089cf85",
     "title": "NFT交易小站",
     "description": "Nft交易小站是一个基于Sepolia测试网络的NFT交易平台, 目前托管于Vercel, 交易货币可以在任意Faucet获取.\r\nps:项目大概永远不会并入ETH主网",
     "keywords": ["NFT交易", "以太坊", "智能合约"],
     "platform": ["ETH"],
-    "address":"https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app/",
+    "address":"https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app",
     "images": [
       "/interest/5_1.png",
       "/interest/5_2.png"
-    ]
+    ],
+    "links": [{
+      "type": "blockchain",
+      "url": "https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app"
+    }]
   },{
     "id": "79ab17424ec5",
     "title": "ETH质押合约",
     "description": "依然是位于Sepolia测试网的项目, 用户可以质押ETH, 并且可以随时解锁, 质押的ETH会被转入合约地址, 质押的用户可以获得奖励, 目前奖励是随机的.\r\nps:这个项目大概也一样永远不会并入ETH主网",
     "keywords": ["区块链", "智能合约","去中心化APP"],
     "platform": ["BLOCK_CHAIN"],
-    "address":"https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app/",
+    "address":"https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app",
     "images": [
       "/interest/5_1.png",
       "/interest/5_2.png"
-    ]
+    ],
+    "links": [{
+      "type": "blockchain",
+      "url": "https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app"
+    }]
+  },{
+    "id": "79ab17424ec9",
+    "title": "Obsidian UI 插件",
+    "description": "Obsidian UI 插件是一个用于 Obsidian 笔记软件的插件, 旨在提供更好的用户界面和交互体验.",
+    "keywords": ["Obsidian", "插件"],
+    "platform": ["OBSIDIAN"],
+    "address":"",
+    "images": [
+      "/interest/6_1.png",
+      "/interest/6_2.png",
+      "/interest/6_3.png"
+    ],
+    "links": [{
+      "type": "github",
+      "url": "https://github.com/tcyeee/obsidian-personalize-ui"
+    },{
+      "type": "redNote",
+      "url": "https://www.xiaohongshu.com/discovery/item/684583b8000000000c03b114?source=webshare&xhsshare=pc_web&xsec_token=AByyzNc4m6Sd6fDRtuYSlu6K1SVyz4ELQuIlzIfwFmInw=&xsec_source=pc_share"
+    }]
   }
 ]
