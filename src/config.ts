@@ -1,4 +1,4 @@
-export const SITE_TITLE = '你好👋,这是我的在线简历';
+export const SITE_TITLE = '你好👋,我是Lucas';
 export const SITE_DESCRIPTION = 'Welcome to my website!';
 export const BASE_INFO = {
     author: "tcyeee",
