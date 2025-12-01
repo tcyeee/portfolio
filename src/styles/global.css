@@ -21,23 +21,23 @@
   }
 }
 
-/* APP词云容器响应式高度 */
-.app-cloud-container {
-  height: var(--mobile-height);
-  min-height: var(--mobile-height);
+/* APP列表网格布局 */
+.app-grid {
+  grid-template-columns: repeat(var(--cols-mobile), minmax(0, 1fr));
+  gap: var(--gap-mobile);
 }
 
 @media (min-width: 768px) {
-  .app-cloud-container {
-    height: var(--tablet-height);
-    min-height: var(--tablet-height);
+  .app-grid {
+    grid-template-columns: repeat(var(--cols-tablet), minmax(0, 1fr));
+    gap: var(--gap-tablet);
   }
 }
 
 @media (min-width: 1024px) {
-  .app-cloud-container {
-    height: var(--desktop-height);
-    min-height: var(--desktop-height);
+  .app-grid {
+    grid-template-columns: repeat(var(--cols-desktop), minmax(0, 1fr));
+    gap: var(--gap-desktop);
   }
 }
 

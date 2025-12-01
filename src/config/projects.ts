@@ -24,6 +24,30 @@ export const personalInfo = {
     'Tailwind CSS',
   ],
 }
+
+// APP列表区域配置
+export const appCloudConfig = {
+  // APP图标大小（单位：px）
+  iconSize: {
+    mobile: 60,   // 移动端图标大小
+    tablet: 70,   // 平板图标大小
+    desktop: 80,  // 桌面端图标大小
+  },
+  // 每行APP数量
+  itemsPerRow: {
+    mobile: 4,    // 移动端每行4个
+    tablet: 5,    // 平板每行5个
+    desktop: 6,   // 桌面端每行6个
+  },
+  // APP间距（单位：px）
+  gap: {
+    mobile: 16,   // 移动端间距
+    tablet: 20,   // 平板间距
+    desktop: 24,  // 桌面端间距
+  },
+};
+
+
 /* 作品集 */
 export const projects: Project[] = [
   {
@@ -117,32 +141,32 @@ export const lifePosts: LifePost[] = [
 export const apps: App[] = [
   // 应用类型
   {
-    id: 'app-1',
-    name: '我的应用1',
-    icon: '/images/app-icons/app-1.png',
+    id: '019ad92e-4c80-7063-abd6-77ae4334327a',
+    name: 'PicTidy',
+    icon: '/images/icons/pictidy.png',
     type: 'app',
-    url: 'https://your-app-1.com',
-    description: '应用1描述',
+    url: 'https://pictidy.com',
+    description: 'PicTidy',
   },
   {
-    id: 'app-2',
-    name: '我的应用2',
-    icon: '/images/app-icons/app-2.png',
+    id: '019ad932-b758-761c-a29e-f78b60c016d1',
+    name: 'PixWallet',
+    icon: '/images/icons/pixwallet.png',
     type: 'app',
-    url: 'https://your-app-2.com',
-    description: '应用2描述',
+    url: 'https://pictidy.com',
+    description: 'PixWallet',
   },
   {
-    id: 'app-3',
-    name: '我的应用3',
-    icon: '/images/app-icons/app-3.png',
+    id: '019ad932-ca5c-71a9-b2f1-2f2762d036a0',
+    name: 'PixWallet',
+    icon: '/images/icons/pixwallet.png',
     type: 'app',
-    url: 'https://your-app-3.com',
-    description: '应用3描述',
+    url: 'https://pictidy.com',
+    description: 'PixWallet',
   },
   // 小程序类型
   {
-    id: 'miniprogram-1',
+    id: '019ad932-e06b-77ed-808c-e886a8ceecd1',
     name: '我的小程序1',
     icon: '/images/app-icons/miniprogram-1.png',
     type: 'miniprogram',
@@ -150,7 +174,7 @@ export const apps: App[] = [
     description: '小程序1描述',
   },
   {
-    id: 'miniprogram-2',
+    id: '019ad932-f13b-767f-8f0c-9d34f2ce2622',
     name: '我的小程序2',
     icon: '/images/app-icons/miniprogram-2.png',
     type: 'miniprogram',
@@ -158,7 +182,7 @@ export const apps: App[] = [
     description: '小程序2描述',
   },
   {
-    id: 'miniprogram-3',
+    id: '019ad933-05eb-72ad-b7f2-9aed905d9721',
     name: '我的小程序3',
     icon: '/images/app-icons/miniprogram-3.png',
     type: 'miniprogram',
@@ -167,7 +191,7 @@ export const apps: App[] = [
   },
   // 插件类型
   {
-    id: 'plugin-1',
+    id: '019ad933-11ad-7614-8025-f3f5716312e3',
     name: '我的插件1',
     icon: '/images/app-icons/plugin-1.png',
     type: 'plugin',
@@ -175,7 +199,7 @@ export const apps: App[] = [
     description: '插件1描述',
   },
   {
-    id: 'plugin-2',
+    id: '019ad933-388f-7542-8b3d-5e9593c82fee',
     name: '我的插件2',
     icon: '/images/app-icons/plugin-2.png',
     type: 'plugin',
@@ -183,7 +207,7 @@ export const apps: App[] = [
     description: '插件2描述',
   },
   {
-    id: 'plugin-3',
+    id: '019ad933-457d-7786-99d5-b3d4486b3a32',
     name: '我的插件3',
     icon: '/images/app-icons/plugin-3.png',
     type: 'plugin',
@@ -192,14 +216,4 @@ export const apps: App[] = [
   },
 ];
 
-// APP词云区域配置
-export const appCloudConfig = {
-  // 词云区域高度（单位：px）
-  // 移动端、平板、桌面端的高度
-  height: {
-    mobile: 400,   // 移动端高度
-    tablet: 500,   // 平板高度
-    desktop: 600,  // 桌面端高度
-  },
-};
 

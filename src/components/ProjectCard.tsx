@@ -1,4 +1,4 @@
-import type { Project } from '../config/projects';
+import type { Project } from '../domain';
 
 interface Props {
   project: Project;
