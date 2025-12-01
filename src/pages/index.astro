@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { projects, personalInfo, apps } from '../config/projects';
+import ProjectCard from '../components/ProjectCard';
+import AppList from '../components/AppList';
+const featuredProjects = projects.filter(p => p.featured).slice(0, 3);
+---
+
+<Layout title="首页">
+  <div class="container mx-auto px-4 py-16">
+    <!-- Hero Section -->
+    <section class="text-center mb-20">
+      <div class="mb-6">
+        {personalInfo.avatar && (
+          <img
+            src={personalInfo.avatar}
+            alt={personalInfo.name}
+            class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-primary-200 dark:border-primary-800"
+          />
+        )}
+        <h1 class="text-5xl font-bold mb-4 text-gray-900 dark:text-white">
+          {personalInfo.name}
+        </h1>
+        <p class="text-2xl text-gray-600 dark:text-gray-300 mb-4">
+          {personalInfo.title}
+        </p>
+        <p class="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+          {personalInfo.bio}
+        </p>
+      </div>
+      <div class="flex gap-4 justify-center mt-8">
+        {personalInfo.github && (
+          <a
+            href={personalInfo.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-6 py-3 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
+          >
+            GitHub
+          </a>
+        )}
+        {personalInfo.email && (
+          <a
+            href={`mailto:${personalInfo.email}`}
+            class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+          >
+            联系我
+          </a>
+        )}
+      </div>
+    </section>
+
+    <!-- APP列表 -->
+    <AppList client:load apps={apps} />
+
+    <!-- Featured Projects -->
+    <section class="mb-20">
+      <h2 class="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
+        精选作品
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredProjects.map((project) => (
+          <ProjectCard client:load project={project} />
+        ))}
+      </div>
+      <div class="text-center mt-8">
+        <a
+          href="/projects"
+          class="inline-block px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+        >
+          查看所有作品 →
+        </a>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section>
+      <h2 class="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
+        技能栈
+      </h2>
+      <div class="flex flex-wrap gap-3 justify-center">
+        {personalInfo.skills.map((skill) => (
+          <span class="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+            {skill}
+          </span>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
+

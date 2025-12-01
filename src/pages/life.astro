@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { lifePosts } from '../config/projects';
+---
+
+<Layout title="生活">
+  <div class="container mx-auto px-4 py-16 max-w-4xl">
+    <h1 class="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">
+      生活点滴
+    </h1>
+
+    <div class="space-y-8">
+      {lifePosts.map((post) => (
+        <article class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 md:p-8 hover:shadow-xl transition-shadow">
+          <div class="mb-4">
+            <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+              {post.title}
+            </h2>
+            <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <time>{new Date(post.date).toLocaleDateString('zh-CN')}</time>
+              {post.tags && post.tags.length > 0 && (
+                <div class="flex gap-2">
+                  {post.tags.map((tag) => (
+                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          <div class="prose dark:prose-invert max-w-none">
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+              {post.content}
+            </p>
+          </div>
+          {post.images && post.images.length > 0 && (
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+              {post.images.map((image) => (
+                <img
+                  src={image}
+                  alt={post.title}
+                  class="rounded-lg w-full h-auto object-cover"
+                />
+              ))}
+            </div>
+          )}
+        </article>
+      ))}
+    </div>
+
+    {lifePosts.length === 0 && (
+      <div class="text-center py-12">
+        <p class="text-gray-500 dark:text-gray-400 text-lg">
+          暂无内容，敬请期待
+        </p>
+      </div>
+    )}
+  </div>
+</Layout>
+

@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { personalInfo } from '../config/projects';
+---
+
+<Layout title="关于我">
+  <div class="container mx-auto px-4 py-16 max-w-4xl">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
+      <div class="text-center mb-8">
+        {personalInfo.avatar && (
+          <img
+            src={personalInfo.avatar}
+            alt={personalInfo.name}
+            class="w-40 h-40 rounded-full mx-auto mb-6 border-4 border-primary-200 dark:border-primary-800"
+          />
+        )}
+        <h1 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+          {personalInfo.name}
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 mb-2">
+          {personalInfo.title}
+        </p>
+        <p class="text-gray-500 dark:text-gray-400">
+          📍 {personalInfo.location}
+        </p>
+      </div>
+
+      <div class="prose dark:prose-invert max-w-none">
+        <section class="mb-8">
+          <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+            关于我
+          </h2>
+          <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+            {personalInfo.bio}
+          </p>
+        </section>
+
+        <section class="mb-8">
+          <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+            技能
+          </h2>
+          <div class="flex flex-wrap gap-3">
+            {personalInfo.skills.map((skill) => (
+              <span class="px-4 py-2 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded-lg font-medium">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+            联系方式
+          </h2>
+          <div class="space-y-3">
+            <p class="text-gray-700 dark:text-gray-300">
+              <strong>邮箱：</strong>
+              <a href={`mailto:${personalInfo.email}`} class="text-primary-600 dark:text-primary-400 hover:underline">
+                {personalInfo.email}
+              </a>
+            </p>
+            {personalInfo.github && (
+              <p class="text-gray-700 dark:text-gray-300">
+                <strong>GitHub：</strong>
+                <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 hover:underline">
+                  {personalInfo.github}
+                </a>
+              </p>
+            )}
+            {personalInfo.twitter && (
+              <p class="text-gray-700 dark:text-gray-300">
+                <strong>Twitter：</strong>
+                <a href={personalInfo.twitter} target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 hover:underline">
+                  {personalInfo.twitter}
+                </a>
+              </p>
+            )}
+            {personalInfo.linkedin && (
+              <p class="text-gray-700 dark:text-gray-300">
+                <strong>LinkedIn：</strong>
+                <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 hover:underline">
+                  {personalInfo.linkedin}
+                </a>
+              </p>
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</Layout>
+
