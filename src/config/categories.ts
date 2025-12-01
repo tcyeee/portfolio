@@ -2,7 +2,7 @@
 export type ProjectCategory = 'plugin' | 'app' | 'blockchain' | 'other';
 
 // 所有分类（包含 'all' 用于筛选）
-export const categories = ['all', 'plugin', 'app', 'blockchain'] as const;
+export const categories = ['all', 'plugin', 'app', 'blockchain', 'other'] as const;
 
 // 分类标签映射
 export const categoryLabels: Record<ProjectCategory | 'all', string> = {
