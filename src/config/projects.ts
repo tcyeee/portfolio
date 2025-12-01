@@ -12,10 +12,14 @@ export const personalInfo = {
   github: 'https://github.com/tcyeee',
   twitter: 'https://x.com/home',
   linkedin: 'https://www.linkedin.com/in/yue-chen-8bb7a223b',
+  redNote: 'https://www.xiaohongshu.com/user/profile/5b9cf40e9a9c9300014062b4',
+  bilibili: 'https://space.bilibili.com/10879225',
   skills: [
-    'JavaScript',
+    'Java',
+    'Spring Boot',
+    'SQL',
+    'RabbitMQ',
     'TypeScript',
-    'React',
     'Vue',
     'Node.js',
     'Solidity',
@@ -36,8 +40,8 @@ export const appCloudConfig = {
   // 每行APP数量
   itemsPerRow: {
     mobile: 4,    // 移动端每行4个
-    tablet: 5,    // 平板每行5个
-    desktop: 6,   // 桌面端每行6个
+    tablet: 7,    // 平板每行5个
+    desktop: 8,   // 桌面端每行6个
   },
   // APP间距（单位：px）
   gap: {
@@ -153,7 +157,7 @@ export const apps: App[] = [
     icon: '/images/icons/bookmarkify.png',
     type: 'app',
     url: 'https://github.com/tcyeee/bookmarkify',
-    description: 'Bookmarkify',
+    description: 'PicTidy',
   },
   {
     id: '019ad932-b758-761c-a29e-f78b60c016d1',
