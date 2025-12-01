@@ -1,27 +1,11 @@
 import type { Project } from '../domain';
+import { categoryLabels, categoryColors } from '../config/categories';
 
 interface Props {
   project: Project;
 }
 
 export default function ProjectCard({ project }: Props) {
-  const categoryLabels: Record<Project['category'], string> = {
-    'web-extension': '网页插件',
-    'obsidian-plugin': 'Obsidian插件',
-    'web-app': 'Web应用',
-    'blockchain': '区块链应用',
-    'other': '其他',
-    '3D-Printer': '3D打印',
-  };
-
-  const categoryColors: Record<Project['category'], string> = {
-    'web-extension': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-    'obsidian-plugin': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
-    'web-app': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-    'blockchain': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-    'other': 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
-    '3D-Printer': 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
-  };
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden">

@@ -2,21 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import { projects } from '../config/projects';
 import ProjectCard from '../components/ProjectCard';
-
-const categories = ['all', 'web-extension', 'obsidian-plugin', 'web-app', 'blockchain', 'other'] as const;
-const categoryLabels: Record<string, string> = {
-  all: '全部',
-  'web-extension': '网页插件',
-  'obsidian-plugin': 'Obsidian插件',
-  'web-app': 'Web应用',
-  'blockchain': '区块链应用',
-  'other': '其他',
-};
+import { categories, categoryLabels } from '../config/categories';
 
 const selectedCategory = Astro.url.searchParams.get('category') || 'all';
-const filteredProjects = selectedCategory === 'all' 
-  ? projects 
-  : projects.filter(p => p.category === selectedCategory);
 ---
 
 <Layout title="作品集">
@@ -26,35 +14,125 @@ const filteredProjects = selectedCategory === 'all'
     </h1>
     
     <!-- Category Filter -->
-    <div class="flex flex-wrap gap-3 justify-center mb-12">
+    <div class="flex flex-wrap gap-3 justify-center mb-12" id="category-filter">
       {categories.map((category) => (
-        <a
-          href={`/projects?category=${category}`}
-          class={`px-4 py-2 rounded-lg transition-colors ${
+        <button
+          data-category={category}
+          class={`px-4 py-2 rounded-lg transition-colors filter-btn ${
             selectedCategory === category
               ? 'bg-primary-600 text-white'
               : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
           }`}
         >
           {categoryLabels[category]}
-        </a>
+        </button>
       ))}
     </div>
 
     <!-- Projects Grid -->
-    {filteredProjects.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProjects.map((project) => (
-          <ProjectCard client:load project={project} />
+    <div id="projects-container">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
+        {projects.map((project) => (
+          <div data-category={project.category} class="project-item">
+            <ProjectCard client:load project={project} />
+          </div>
         ))}
       </div>
-    ) : (
-      <div class="text-center py-12">
+      <div id="empty-message" class="text-center py-12 hidden">
         <p class="text-gray-500 dark:text-gray-400 text-lg">
           该分类下暂无作品
         </p>
       </div>
-    )}
+    </div>
   </div>
 </Layout>
+
+<script define:vars={{ selectedCategory }}>
+  // 获取当前选中的分类（从 URL 参数或默认 'all'）
+  function getCurrentCategory() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('category') || 'all';
+  }
+  
+  // 更新 URL 参数
+  function updateURL(category) {
+    const url = new URL(window.location.href);
+    if (category === 'all') {
+      url.searchParams.delete('category');
+    } else {
+      url.searchParams.set('category', category);
+    }
+    window.history.pushState({}, '', url.toString());
+  }
+  
+  // 筛选项目
+  function filterProjects(category) {
+    const projectItems = document.querySelectorAll('.project-item');
+    const emptyMessage = document.getElementById('empty-message');
+    const projectsGrid = document.getElementById('projects-grid');
+    
+    let visibleCount = 0;
+    
+    projectItems.forEach((item) => {
+      const itemCategory = item.getAttribute('data-category');
+      const shouldShow = category === 'all' || itemCategory === category;
+      
+      if (shouldShow) {
+        item.style.display = '';
+        visibleCount++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+    
+    // 更新按钮状态
+    document.querySelectorAll('.filter-btn').forEach((btn) => {
+      const btnCategory = btn.getAttribute('data-category');
+      if (btnCategory === category) {
+        btn.classList.add('bg-primary-600', 'text-white');
+        btn.classList.remove('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+      } else {
+        btn.classList.remove('bg-primary-600', 'text-white');
+        btn.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+      }
+    });
+    
+    // 显示/隐藏空消息和网格
+    if (visibleCount === 0) {
+      if (projectsGrid) projectsGrid.classList.add('hidden');
+      if (emptyMessage) emptyMessage.classList.remove('hidden');
+    } else {
+      if (projectsGrid) projectsGrid.classList.remove('hidden');
+      if (emptyMessage) emptyMessage.classList.add('hidden');
+    }
+  }
+  
+  // 绑定筛选按钮事件
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const category = btn.getAttribute('data-category');
+        if (category) {
+          updateURL(category);
+          filterProjects(category);
+        }
+      });
+    });
+    
+    // 初始化时根据 URL 参数筛选
+    const currentCategory = getCurrentCategory();
+    if (currentCategory !== 'all') {
+      filterProjects(currentCategory);
+    }
+  });
+  
+  // 监听浏览器前进/后退
+  window.addEventListener('popstate', () => {
+    const currentCategory = getCurrentCategory();
+    filterProjects(currentCategory);
+  });
+</script>
 

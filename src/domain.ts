@@ -1,8 +1,10 @@
+import type { ProjectCategory } from './config/categories';
+
 export interface Project {
     id: string;
     title: string;
     description: string;
-    category: 'web-extension' | 'obsidian-plugin' | 'web-app' | 'blockchain' | 'other' | '3D-Printer';
+    category: ProjectCategory;
     tags: string[];
     image?: string;
     githubUrl?: string;
