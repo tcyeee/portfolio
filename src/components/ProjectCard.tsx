@@ -11,6 +11,7 @@ export default function ProjectCard({ project }: Props) {
     'web-app': 'Web应用',
     'blockchain': '区块链应用',
     'other': '其他',
+    '3D-Printer': '3D打印',
   };
 
   const categoryColors: Record<Project['category'], string> = {
@@ -19,6 +20,7 @@ export default function ProjectCard({ project }: Props) {
     'web-app': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
     'blockchain': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
     'other': 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
+    '3D-Printer': 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
   };
 
   return (

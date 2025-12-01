@@ -2,7 +2,7 @@ export interface Project {
     id: string;
     title: string;
     description: string;
-    category: 'web-extension' | 'obsidian-plugin' | 'web-app' | 'blockchain' | 'other';
+    category: 'web-extension' | 'obsidian-plugin' | 'web-app' | 'blockchain' | 'other' | '3D-Printer';
     tags: string[];
     image?: string;
     githubUrl?: string;
