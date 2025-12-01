@@ -58,7 +58,7 @@ export const projects: Project[] = [
     id: 'omega40_cases',
     title: 'Omega40 Cases',
     description: '为满足日常使用场景而设计制作的一款客制化键盘, 代码以及图纸我已经开源, 并且有商店在量产售卖(当然我是没有任何版权收益的).\r\n项目包含软件分为三个部分:\r\n1:固件源码\r\n2:设计图纸\r\n3:基于mac的相关脚本.',
-    category: '3D-Printer',
+    category: 'other',
     tags: ["客制化", "Shapr3D", "3D打印"],
     image: '/images/interest/1_2.jpg',
     githubUrl: 'https://github.com/tcyeee/omega40_cases',
