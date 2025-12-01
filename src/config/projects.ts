@@ -139,7 +139,6 @@ export const lifePosts: LifePost[] = [
 
 // APP列表配置 - 在这里添加你的APP
 export const apps: App[] = [
-  // 应用类型
   {
     id: '019ad92e-4c80-7063-abd6-77ae4334327a',
     name: 'PicTidy',
@@ -147,6 +146,14 @@ export const apps: App[] = [
     type: 'app',
     url: 'https://github.com/tcyeee/pictidy',
     description: 'PicTidy',
+  },
+  {
+    id: '019ad9e9-7350-72cf-a985-16467f033c66',
+    name: 'Bookmarkify',
+    icon: '/images/icons/bookmarkify.png',
+    type: 'app',
+    url: 'https://github.com/tcyeee/bookmarkify',
+    description: 'Bookmarkify',
   },
   {
     id: '019ad932-b758-761c-a29e-f78b60c016d1',
@@ -185,11 +192,19 @@ export const apps: App[] = [
   },
   {
     id: '019ad933-457d-7786-99d5-b3d4486b3a32',
-    name: '我的插件3',
-    icon: '/images/app-icons/plugin-3.png',
+    name: 'Podcast Shortcuts',
+    icon: '/images/icons/podcast-shortcuts.png',
     type: 'plugin',
-    url: 'https://your-plugin-3.com',
-    description: '插件3描述',
+    url: 'https://github.com/tcyeee/podcast-shortcuts',
+    description: 'Podcast Shortcuts',
+  },
+  {
+    id: '019ad9d4-ec83-70f3-8fc2-193c6a4f6dfd',
+    name: 'BB AFK',
+    icon: '/images/icons/bb-afk.png',
+    type: 'plugin',
+    url: 'https://github.com/tcyeee/bb-afk',
+    description: 'BB AFK',
   },
 ];
 
