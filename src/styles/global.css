@@ -21,3 +21,24 @@
   }
 }
 
+/* APP词云容器响应式高度 */
+.app-cloud-container {
+  height: var(--mobile-height);
+  min-height: var(--mobile-height);
+}
+
+@media (min-width: 768px) {
+  .app-cloud-container {
+    height: var(--tablet-height);
+    min-height: var(--tablet-height);
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-cloud-container {
+    height: var(--desktop-height);
+    min-height: var(--desktop-height);
+  }
+}
+
+

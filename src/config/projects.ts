@@ -115,29 +115,91 @@ export const lifePosts: LifePost[] = [
 
 // APP列表配置 - 在这里添加你的APP
 export const apps: App[] = [
+  // 应用类型
   {
     id: 'app-1',
-    name: '我的应用',
+    name: '我的应用1',
     icon: '/images/app-icons/app-1.png',
     type: 'app',
-    url: 'https://your-app.com',
-    description: '应用描述',
+    url: 'https://your-app-1.com',
+    description: '应用1描述',
   },
+  {
+    id: 'app-2',
+    name: '我的应用2',
+    icon: '/images/app-icons/app-2.png',
+    type: 'app',
+    url: 'https://your-app-2.com',
+    description: '应用2描述',
+  },
+  {
+    id: 'app-3',
+    name: '我的应用3',
+    icon: '/images/app-icons/app-3.png',
+    type: 'app',
+    url: 'https://your-app-3.com',
+    description: '应用3描述',
+  },
+  // 小程序类型
   {
     id: 'miniprogram-1',
-    name: '我的小程序',
+    name: '我的小程序1',
     icon: '/images/app-icons/miniprogram-1.png',
     type: 'miniprogram',
-    url: 'https://your-miniprogram.com',
-    description: '小程序描述',
+    url: 'https://your-miniprogram-1.com',
+    description: '小程序1描述',
   },
   {
+    id: 'miniprogram-2',
+    name: '我的小程序2',
+    icon: '/images/app-icons/miniprogram-2.png',
+    type: 'miniprogram',
+    url: 'https://your-miniprogram-2.com',
+    description: '小程序2描述',
+  },
+  {
+    id: 'miniprogram-3',
+    name: '我的小程序3',
+    icon: '/images/app-icons/miniprogram-3.png',
+    type: 'miniprogram',
+    url: 'https://your-miniprogram-3.com',
+    description: '小程序3描述',
+  },
+  // 插件类型
+  {
     id: 'plugin-1',
-    name: '我的插件',
+    name: '我的插件1',
     icon: '/images/app-icons/plugin-1.png',
     type: 'plugin',
-    url: 'https://your-plugin.com',
-    description: '插件描述',
+    url: 'https://your-plugin-1.com',
+    description: '插件1描述',
+  },
+  {
+    id: 'plugin-2',
+    name: '我的插件2',
+    icon: '/images/app-icons/plugin-2.png',
+    type: 'plugin',
+    url: 'https://your-plugin-2.com',
+    description: '插件2描述',
+  },
+  {
+    id: 'plugin-3',
+    name: '我的插件3',
+    icon: '/images/app-icons/plugin-3.png',
+    type: 'plugin',
+    url: 'https://your-plugin-3.com',
+    description: '插件3描述',
   },
 ];
+
+// APP词云区域配置
+export const appCloudConfig = {
+  // 词云区域高度（单位：px）
+  // 移动端、平板、桌面端的高度
+  height: {
+    mobile: 400,   // 移动端高度
+    tablet: 500,   // 平板高度
+    desktop: 600,  // 桌面端高度
+  },
+};
 
