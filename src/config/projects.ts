@@ -40,8 +40,8 @@ export const appCloudConfig = {
   // 每行APP数量
   itemsPerRow: {
     mobile: 4,    // 移动端每行4个
-    tablet: 7,    // 平板每行5个
-    desktop: 8,   // 桌面端每行6个
+    tablet: 5,    // 平板每行5个
+    desktop: 6,   // 桌面端每行6个
   },
   // APP间距（单位：px）
   gap: {
@@ -60,7 +60,7 @@ export const projects: Project[] = [
     description: '为满足日常使用场景而设计制作的一款客制化键盘, 代码以及图纸我已经开源, 并且有商店在量产售卖(当然我是没有任何版权收益的).\r\n项目包含软件分为三个部分:\r\n1:固件源码\r\n2:设计图纸\r\n3:基于mac的相关脚本.',
     category: 'other',
     tags: ["客制化", "Shapr3D", "3D打印"],
-    image: '/images/interest/1_2.jpg',
+    image: '/images/project/1_2.jpg',
     githubUrl: 'https://github.com/tcyeee/omega40_cases',
     demoUrl: '',
     featured: true,
@@ -72,7 +72,7 @@ export const projects: Project[] = [
     description: 'PixWallet is a pixel-art-inspired Solana wallet built with Tauri, designed to provide a lightweight and secure experience. It supports both macOS and Windows, allowing users to manage their SOL assets seamlessly across desktop platforms.',
     category: 'blockchain',
     tags: ["Solana", "Tauri", "Web3", "Rust"],
-    image: '/images/interest/2.png',
+    image: '/images/project/2.png',
     githubUrl: 'https://github.com/tcyeee/PixWallet',
     demoUrl: '',
     featured: true,
@@ -84,7 +84,7 @@ export const projects: Project[] = [
     description: 'PicTidy is a simple and efficient desktop tool designed to help you clean and organize your photos.',
     category: 'plugin',
     tags: ['Flutter', 'Dart', "Desktop-App"],
-    image: '/images/interest/3.png',
+    image: '/images/project/3.png',
     githubUrl: 'https://github.com/tcyeee/pictidy',
     demoUrl: 'https://obsidian.md/plugins/example',
     featured: true,
@@ -96,7 +96,7 @@ export const projects: Project[] = [
     description: 'PicTidy is a simple and efficient desktop tool designed to help you clean and organize your photos.',
     category: 'plugin',
     tags: ['Obsidian', 'TypeScript', 'Plugin'],
-    image: '/images/interest/4.png',
+    image: '/images/project/4.png',
     githubUrl: 'https://github.com/tcyeee/obsidian-bases-lock',
     demoUrl: '',
     featured: true,
@@ -108,7 +108,7 @@ export const projects: Project[] = [
     description: 'Nft交易小站是一个基于Sepolia测试网络的NFT交易平台, 目前托管于Vercel, 交易货币可以在任意Faucet获取.\r\nps:项目大概永远不会并入ETH主网',
     category: 'blockchain',
     tags: ['Solidity', 'Web3', 'Ethereum'],
-    image: '/images/interest/5.png',
+    image: '/images/project/5.png',
     githubUrl: '',
     demoUrl: 'https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app',
     featured: false,
@@ -120,7 +120,7 @@ export const projects: Project[] = [
     description: 'Bookmarkify is a clean and intuitive web application that helps you collect and manage your online bookmarks. You can save any webpage with one click, organize your links into easy-to-browse collections, and share your favorite bookmark lists with others.',
     category: 'app',
     tags: ["bookmark", "WEB"],
-    image: '/images/interest/4_2.png',
+    image: '/images/project/4_2.png',
     githubUrl: 'https://github.com/tcyeee/bookmarkify',
     demoUrl: 'https://bookmarkify.cc',
     featured: false,
@@ -131,22 +131,22 @@ export const projects: Project[] = [
 // 个人生活内容配置
 export const lifePosts: LifePost[] = [
   {
-    id: 'life-1',
+    id: '019adcad-6266-74b0-9953-9b16406af512',
     title: '我的编程之旅',
     content: '分享一些关于编程学习的经验和心得，以及在这个过程中的成长和收获。',
     date: '2024-01-15',
     tags: ['编程', '学习', '成长'],
-    images: ['/images/life-placeholder.jpg'],
+    images: ['/images/project/1_1.png'],
   },
   {
-    id: 'life-2',
+    id: '019adcad-76d3-7687-bb4b-5ae77324f812',
     title: '开源贡献经历',
     content: '参与开源项目的经历和收获，以及如何为开源社区做出贡献。',
     date: '2024-02-20',
     tags: ['开源', '社区', '贡献'],
   },
   {
-    id: 'life-3',
+    id: '019adcad-9186-70cf-90b7-cdff0c7a6d64',
     title: '技术栈探索',
     content: '探索和学习新技术栈的过程，包括遇到的问题和解决方案。',
     date: '2024-03-10',
