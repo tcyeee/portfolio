@@ -13,8 +13,7 @@ export interface Project {
     year: number;
 }
 
-export interface LifePost {
-    id: string;
+export interface Article {
     title: string;
     content: string;
     date: string;

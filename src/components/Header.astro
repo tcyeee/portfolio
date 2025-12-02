@@ -1,5 +1,25 @@
 ---
 import { personalInfo } from '../config';
+
+const navigation = [
+  {
+    name: '首页',
+    href: '/',
+  },
+  {
+    name: '项目',
+    href: '/projects',
+  },
+  {
+    name: '文章',
+    href: '/article',
+  },
+  {
+    name: '关于',
+    href: '/about',
+  }
+];
+
 ---
 
 <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
@@ -9,26 +29,13 @@ import { personalInfo } from '../config';
         {personalInfo.name}
       </a>
       <ul class="flex gap-3 md:gap-6 items-center text-sm md:text-base">
-        <li>
-          <a href="/" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-            首页
-          </a>
-        </li>
-        <li>
-          <a href="/projects" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-            项目
-          </a>
-        </li>
-        <li>
-          <a href="/about" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-            关于
-          </a>
-        </li>
-        <li>
-          <a href="/life" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-            生活
-          </a>
-        </li>
+        {navigation.map((item) => (
+          <li>
+            <a href={item.href} class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+              {item.name}
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
   </nav>

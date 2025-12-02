@@ -1,16 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { lifePosts } from '../config';
+import { articles } from '../config';
 ---
 
-<Layout title="生活">
+<Layout title="文章">
   <div class="container mx-auto px-4 py-16 max-w-4xl">
     <h1 class="text-4xl font-bold mb-12 text-center text-gray-900 dark:text-white">
-      生活点滴
+      文章列表
     </h1>
 
     <div class="space-y-8">
-      {lifePosts.map((post) => (
+      {articles.map((post) => (
         <article class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 md:p-8 hover:shadow-xl transition-shadow">
           <div class="mb-4">
             <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
@@ -49,7 +49,7 @@ import { lifePosts } from '../config';
       ))}
     </div>
 
-    {lifePosts.length === 0 && (
+    {articles.length === 0 && (
       <div class="text-center py-12">
         <p class="text-gray-500 dark:text-gray-400 text-lg">
           暂无内容，敬请期待

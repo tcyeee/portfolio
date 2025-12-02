@@ -1,4 +1,4 @@
-import type { IndexApp, LifePost, Project } from "../domain";
+import type { IndexApp, Article as Article, Project } from "../domain";
 import index_app_json from './index_app.json';
 import projects_json from './projects.json';
 import article_json from './article.json';
@@ -20,7 +20,7 @@ export const personalInfo = {
 
 /* 作品集 ｜ 文章 ｜ 首页APP列表 */
 export const projects: Project[] = JSON.parse(JSON.stringify(projects_json));
-export const lifePosts: LifePost[] = JSON.parse(JSON.stringify(article_json));
+export const articles: Article[] = JSON.parse(JSON.stringify(article_json));
 export const apps: IndexApp[] = JSON.parse(JSON.stringify(index_app_json));
 
 // ==============[ 首页APP展示配置 ]=================
