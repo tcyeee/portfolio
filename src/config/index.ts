@@ -20,7 +20,7 @@ export const personalInfo = {
   linkedin: '',
   redNote: 'https://www.xiaohongshu.com/user/profile/5b9cf40e9a9c9300014062b4',
   bilibili: 'https://space.bilibili.com/10879225',
-  skills: ['Java', 'Spring Boot', 'SQL', 'RabbitMQ', 'TypeScript', 'Vue', 'Node.js', 'Solidity', 'Web3', 'Astro', 'Tailwind CSS'],
+  skills: ['Java', 'Spring Boot', 'SQL', 'RabbitMQ', 'TypeScript', 'Vue', 'Solidity', 'Web3', "Rust"],
 }
 
 /* 作品集 ｜ 文章 ｜ 首页APP列表 */
