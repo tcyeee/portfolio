@@ -1,0 +1,187 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import matter from "gray-matter";
+import { marked } from "marked";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 文章目录路径
+const rootDir = path.resolve(__dirname, "../../../");
+const articleDir = path.join(rootDir, "articles");
+
+// 生成静态路径
+export async function getStaticPaths() {
+  // 在函数内部计算路径
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const rootDir = path.resolve(__dirname, "../../../");
+  const articleDir = path.join(rootDir, "articles");
+
+  // 获取所有文章文件
+  const files = fs
+    .readdirSync(articleDir)
+    .filter((file) => file.endsWith(".md") && !file.startsWith("."));
+
+  return files.map((file) => {
+    const fileSlug = file.replace(/\.md$/, "");
+    // Astro 会自动处理 URL 编码，params 中应该使用原始值（未编码）
+    // 这样无论浏览器访问时是编码还是未编码，Astro 都能正确匹配
+    return {
+      params: { slug: fileSlug },
+      props: {
+        fileSlug: fileSlug,
+        fileName: file,
+      },
+    };
+  });
+}
+
+interface Props {
+  fileSlug: string;
+  fileName: string;
+}
+
+// 从 props 获取文件名（getStaticPaths 已经确保匹配）
+const { fileSlug, fileName } = Astro.props;
+
+// 从 params 获取 slug（Astro 会自动解码）
+const slugFromParams = Astro.params.slug;
+
+const filePath = path.join(articleDir, fileName);
+
+// 检查文件是否存在
+if (!fs.existsSync(filePath)) {
+  console.error(`Article file not found: ${filePath}`);
+  console.error(`Slug from params: ${slugFromParams}`);
+  console.error(`File slug from props: ${fileSlug}`);
+  return Astro.redirect("/article");
+}
+const fileContent = fs.readFileSync(filePath, "utf-8");
+
+// 解析 frontmatter 和内容
+const { data: frontmatter, content } = matter(fileContent);
+
+// 渲染 markdown 为 HTML
+const htmlContent = await marked(content);
+
+// 处理图片路径：将相对路径转换为绝对路径
+// 文章中的图片路径需要映射到 public 目录或 articles 目录
+const processedHtml = htmlContent.replace(
+  /<img\s+src="([^"]+)"/g,
+  (match: string, src: string) => {
+    // 如果已经是绝对路径（以 / 开头），保持不变
+    if (src.startsWith("/")) {
+      return match;
+    }
+
+    // 处理相对路径
+    let imagePath = src;
+
+    // 如果是相对路径（以 ./ 或 ../ 开头），解析为绝对路径
+    if (src.startsWith("./") || src.startsWith("../")) {
+      imagePath = path.resolve(path.dirname(filePath), src);
+    } else {
+      // 否则，假设是相对于文章目录的路径
+      imagePath = path.join(path.dirname(filePath), src);
+    }
+
+    // 检查图片是否存在
+    if (fs.existsSync(imagePath)) {
+      // 将路径转换为相对于项目根目录的路径
+      const relativePath = path.relative(rootDir, imagePath);
+      // 转换为 URL 路径（使用正斜杠）
+      const urlPath = `/${relativePath.replace(/\\/g, "/")}`;
+      return `<img src="${urlPath}"`;
+    }
+
+    // 如果图片不存在，尝试在 public 目录查找
+    // 或者保持原路径不变（可能图片在 public 目录下）
+    return match;
+  }
+);
+
+const title = frontmatter.title || fileSlug;
+const created = frontmatter.created || "";
+const tags = frontmatter.tags || [];
+const banner = frontmatter.banner || "";
+---
+
+<Layout title={title}>
+  <div class="container mx-auto px-4 py-16 max-w-4xl">
+    <!-- 返回按钮 -->
+    <a
+      href="/article"
+      class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors"
+    >
+      <svg
+        class="w-5 h-5 mr-2"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"></path>
+      </svg>
+      返回文章列表
+    </a>
+
+    <!-- 文章标题 -->
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+        {title}
+      </h1>
+      <div
+        class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400"
+      >
+        {
+          created && (
+            <time>
+              {new Date(created).toLocaleDateString("zh-CN", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+          )
+        }
+        {
+          tags && tags.length > 0 && (
+            <div class="flex gap-2">
+              {tags.map((tag: string) => (
+                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </header>
+
+    <!-- 横幅图片 -->
+    {
+      banner && (
+        <div class="mb-8">
+          <img
+            src={banner}
+            alt={title}
+            class="rounded-lg w-full h-auto object-cover"
+          />
+        </div>
+      )
+    }
+
+    <!-- 文章内容 -->
+    <article
+      class="prose prose-lg dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-code:text-gray-800 dark:prose-code:text-gray-200 prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800"
+      set:html={processedHtml}
+    />
+  </div>
+</Layout>

@@ -76,6 +76,15 @@ function getTitleFromFilename(filename) {
 }
 
 /**
+ * 从文件名生成 slug（用于 URL）
+ * @param {string} filename - 文件名
+ * @returns {string} - slug
+ */
+function getSlugFromFilename(filename) {
+  return filename.replace(/\.md$/, '');
+}
+
+/**
  * 生成文章索引
  */
 function generateArticleIndex() {
@@ -101,6 +110,7 @@ function generateArticleIndex() {
 
       // 提取所需字段
       const article = {
+        slug: getSlugFromFilename(file),
         title: frontmatter.title || getTitleFromFilename(file),
         content: extractFirstParagraph(content, articleConfig.contentMaxLength),
         created: frontmatter.created || '',
