@@ -21,9 +21,9 @@ const { title, description = '个人作品展示网站' } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+  <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
     <Header />
-    <main>
+    <main class="flex-1">
       <slot />
     </main>
     <Footer />
