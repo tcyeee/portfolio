@@ -97,7 +97,9 @@ export function processMathBlocks(content: string): string {
  * 渲染 Markdown 内容为 HTML
  */
 export async function renderMarkdown(content: string): Promise<string> {
-  const processedContent = processMathBlocks(content);
+  // 规范化换行符：将 \r\n 和 \r 统一转换为 \n
+  const normalizedContent = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const processedContent = processMathBlocks(normalizedContent);
   return await marked(processedContent);
 }
 

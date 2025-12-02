@@ -10,4 +10,7 @@ const { content } = Astro.props;
 const htmlContent = await renderMarkdown(content);
 ---
 
-<article set:html={htmlContent} />
+<article
+  class="prose prose-gray dark:prose-invert max-w-none"
+  set:html={htmlContent}
+/>

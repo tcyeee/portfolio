@@ -41,4 +41,12 @@
   }
 }
 
+/* Markdown 内容样式 - 使用 Tailwind Typography 插件，这里只做自定义覆盖 */
+.prose a {
+  @apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300;
+}
+
+/* 如果需要自定义其他样式，可以在这里添加 */
+/* typography 插件已经提供了完整的 markdown 样式，包括标题、段落、列表、代码块等 */
+
 
