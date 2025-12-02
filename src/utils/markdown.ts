@@ -4,6 +4,18 @@ import { markedHighlight } from "marked-highlight";
 import hljs from "highlight.js";
 import katex from "katex";
 
+/**
+ * 解码 HTML 实体，确保 KaTeX 能正确解析数学公式
+ */
+function decodeHtmlEntities(text: string): string {
+  return text
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
 // 配置 marked
 marked.use(gfmHeadingId());
 marked.use(
@@ -31,7 +43,9 @@ marked.use({
         try {
           const displayMode =
             lang.includes("display") || lang.includes("block");
-          return katex.renderToString(text, {
+          // 解码 HTML 实体（如 &amp; -> &）以确保 KaTeX 能正确解析
+          const decodedText = decodeHtmlEntities(text);
+          return katex.renderToString(decodedText, {
             throwOnError: false,
             displayMode: displayMode,
           });
@@ -60,7 +74,9 @@ marked.use({
       const mathRegex = /\$([^$\n]+)\$/g;
       protectedHtml = protectedHtml.replace(mathRegex, (match, formula) => {
         try {
-          return katex.renderToString(formula, {
+          // 解码 HTML 实体（如 &amp; -> &）以确保 KaTeX 能正确解析
+          const decodedFormula = decodeHtmlEntities(formula);
+          return katex.renderToString(decodedFormula, {
             throwOnError: false,
             displayMode: false,
           });
