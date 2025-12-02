@@ -45,12 +45,12 @@ portfolio/
 ├── scripts/         # 构建脚本
 │   ├── generate-article-index.js   # 文章索引生成脚本
 │   └── generate-article-config.js  # 文章索引配置
+└── articles/ # 文章目录
+    ├── cache/       # 文章索引缓存
+    └── *.md         # Markdown 文章文件
 ├── src/
 │   ├── components/  # React/Astro 组件
 │   ├── config/      # 配置文件（项目数据、分类等）
-│   │   └── article/ # 文章目录
-│   │       ├── cache/          # 文章索引缓存
-│   │       └── *.md           # Markdown 文章文件
 │   ├── layouts/     # 布局组件
 │   ├── pages/       # 页面路由
 │   └── styles/      # 全局样式
