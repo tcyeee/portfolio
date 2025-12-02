@@ -3,7 +3,6 @@ import index_app_json from './index_app.json';
 import projects_json from './projects.json';
 import article_json from './article.json';
 
-// 个人信息配置
 export const personalInfo = {
   name: 'Lucas',
   title: '全栈开发工程师',
@@ -16,22 +15,23 @@ export const personalInfo = {
   linkedin: '',
   redNote: 'https://www.xiaohongshu.com/user/profile/5b9cf40e9a9c9300014062b4',
   bilibili: 'https://space.bilibili.com/10879225',
-  skills: [
-    'Java',
-    'Spring Boot',
-    'SQL',
-    'RabbitMQ',
-    'TypeScript',
-    'Vue',
-    'Node.js',
-    'Solidity',
-    'Web3',
-    'Astro',
-    'Tailwind CSS',
-  ],
+  skills: ['Java', 'Spring Boot', 'SQL', 'RabbitMQ', 'TypeScript', 'Vue', 'Node.js', 'Solidity', 'Web3', 'Astro', 'Tailwind CSS'],
 }
 
-// APP列表区域配置
+/* 作品集 ｜ 文章 ｜ 首页APP列表 */
+export const projects: Project[] = JSON.parse(JSON.stringify(projects_json));
+export const lifePosts: LifePost[] = JSON.parse(JSON.stringify(article_json));
+export const apps: IndexApp[] = JSON.parse(JSON.stringify(index_app_json));
+
+// ==============[ 首页APP展示配置 ]=================
+
+/* 首页APP分类： 首页APP列表中，每个APP仅属于一个分类 */
+export enum IndexAppType {
+  APP = 'app',
+  MINI_PROGRAM = 'miniprogram',
+  PLUGIN = 'plugin',
+}
+
 export const appCloudConfig = {
   // APP图标大小（单位：px）
   iconSize: {
@@ -53,15 +53,7 @@ export const appCloudConfig = {
   },
 };
 
-/* 作品集 */
-export const projects: Project[] = JSON.parse(JSON.stringify(projects_json));
-
-/* 文章 */
-export const lifePosts: LifePost[] = JSON.parse(JSON.stringify(article_json));
-
-/* 首页APP列表 */
-export const apps: IndexApp[] = JSON.parse(JSON.stringify(index_app_json));
-
+// ==============[ 项目分类标签配置 Start ]=================
 
 /* 项目分类： 项目卡片中，项目名称右侧的标签，每个项目仅属于一个分类 */
 export enum ProjectCategory {
@@ -71,14 +63,7 @@ export enum ProjectCategory {
   OTHER = 'other',
 }
 
-/* 首页APP分类： 首页APP列表中，每个APP仅属于一个分类 */
-export enum IndexAppType {
-  APP = 'app',
-  MINI_PROGRAM = 'miniprogram',
-  PLUGIN = 'plugin',
-}
-
-// 分类标签映射
+// 分类标签中文映射
 export const categoryLabels: Record<ProjectCategory | 'all', string> = {
   'all': '全部',
   [ProjectCategory.PLUGIN]: '插件',
@@ -94,3 +79,5 @@ export const categoryColors: Record<ProjectCategory, string> = {
   'blockchain': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
   'other': 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
 };
+
+// ==============[ 项目分类标签配置 End ]=================
