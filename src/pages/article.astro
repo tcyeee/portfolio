@@ -1,6 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { articles } from "../config";
+
+// 收集所有唯一的tags
+const allTags = Array.from(
+  new Set(articles.flatMap((article) => article.tags || []))
+).sort();
 ---
 
 <Layout title="文章">
@@ -11,10 +16,39 @@ import { articles } from "../config";
       文章列表
     </h1>
 
-    <div class="space-y-8">
+    <!-- Tags筛选 -->
+    {
+      allTags.length > 0 && (
+        <div class="mb-8">
+          <div class="flex flex-wrap gap-3 justify-center" id="tags-filter">
+            {allTags.map((tag) => (
+              <button
+                data-tag={tag}
+                class="tag-filter-btn px-4 py-2 rounded-lg transition-colors bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+          <div class="text-center mt-4">
+            <button
+              id="clear-filter-btn"
+              class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 underline hidden"
+            >
+              清除筛选
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    <div class="space-y-8" id="articles-container">
       {
         articles.map((post) => (
-          <article class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 md:p-8 hover:shadow-xl transition-shadow">
+          <article
+            data-tags={JSON.stringify(post.tags || [])}
+            class="article-item bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 md:p-8 hover:shadow-xl transition-shadow"
+          >
             <div class="mb-4">
               <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
                 {post.title}
@@ -62,5 +96,156 @@ import { articles } from "../config";
         </div>
       )
     }
+
+    <div id="empty-filter-message" class="text-center py-12 hidden">
+      <p class="text-gray-500 dark:text-gray-400 text-lg">没有找到匹配的文章</p>
+    </div>
   </div>
 </Layout>
+
+<script>
+  // 获取选中的tags
+  function getSelectedTags(): string[] {
+    const selectedTags: string[] = [];
+    document.querySelectorAll(".tag-filter-btn.active").forEach((btn) => {
+      const tag = btn.getAttribute("data-tag");
+      if (tag) selectedTags.push(tag);
+    });
+    return selectedTags;
+  }
+
+  // 筛选文章
+  function filterArticles() {
+    const selectedTags = getSelectedTags();
+    const articleItems = document.querySelectorAll(
+      ".article-item"
+    ) as NodeListOf<HTMLElement>;
+    const emptyMessage = document.getElementById("empty-filter-message");
+    const clearBtn = document.getElementById("clear-filter-btn");
+    const articlesContainer = document.getElementById("articles-container");
+
+    // 如果没有选中任何tag，显示所有文章
+    if (selectedTags.length === 0) {
+      articleItems.forEach((item) => {
+        item.style.display = "";
+      });
+      if (emptyMessage) emptyMessage.classList.add("hidden");
+      if (clearBtn) clearBtn.classList.add("hidden");
+      return;
+    }
+
+    // 显示清除筛选按钮
+    if (clearBtn) clearBtn.classList.remove("hidden");
+
+    let visibleCount = 0;
+
+    articleItems.forEach((item) => {
+      const tagsStr = item.getAttribute("data-tags");
+      if (!tagsStr) {
+        item.style.display = "none";
+        return;
+      }
+
+      try {
+        const articleTags = JSON.parse(tagsStr) as string[];
+        // 如果文章包含任意一个选中的tag，就显示
+        const shouldShow = selectedTags.some((tag) =>
+          articleTags.includes(tag)
+        );
+
+        if (shouldShow) {
+          item.style.display = "";
+          visibleCount++;
+        } else {
+          item.style.display = "none";
+        }
+      } catch (e) {
+        item.style.display = "none";
+      }
+    });
+
+    // 显示/隐藏空消息
+    if (visibleCount === 0) {
+      if (emptyMessage) emptyMessage.classList.remove("hidden");
+      if (articlesContainer) articlesContainer.classList.add("hidden");
+    } else {
+      if (emptyMessage) emptyMessage.classList.add("hidden");
+      if (articlesContainer) articlesContainer.classList.remove("hidden");
+    }
+  }
+
+  // 切换tag选中状态
+  function toggleTag(btn: HTMLElement) {
+    btn.classList.toggle("active");
+    if (btn.classList.contains("active")) {
+      btn.classList.add("bg-primary-600", "text-white", "border-primary-600");
+      btn.classList.remove(
+        "bg-white",
+        "dark:bg-gray-800",
+        "text-gray-700",
+        "dark:text-gray-300",
+        "border-gray-300",
+        "dark:border-gray-600"
+      );
+    } else {
+      btn.classList.remove(
+        "bg-primary-600",
+        "text-white",
+        "border-primary-600"
+      );
+      btn.classList.add(
+        "bg-white",
+        "dark:bg-gray-800",
+        "text-gray-700",
+        "dark:text-gray-300",
+        "border-gray-300",
+        "dark:border-gray-600"
+      );
+    }
+    filterArticles();
+  }
+
+  // 清除所有筛选
+  function clearFilter() {
+    document.querySelectorAll(".tag-filter-btn").forEach((btn) => {
+      const element = btn as HTMLElement;
+      element.classList.remove("active");
+      element.classList.remove(
+        "bg-primary-600",
+        "text-white",
+        "border-primary-600"
+      );
+      element.classList.add(
+        "bg-white",
+        "dark:bg-gray-800",
+        "text-gray-700",
+        "dark:text-gray-300",
+        "border-gray-300",
+        "dark:border-gray-600"
+      );
+    });
+    filterArticles();
+  }
+
+  // 绑定事件
+  document.addEventListener("DOMContentLoaded", () => {
+    const filterButtons = document.querySelectorAll(
+      ".tag-filter-btn"
+    ) as NodeListOf<HTMLElement>;
+    const clearBtn = document.getElementById("clear-filter-btn");
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        toggleTag(btn);
+      });
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        clearFilter();
+      });
+    }
+  });
+</script>
