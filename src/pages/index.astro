@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { projects, personalInfo, apps } from '../config/projects';
+import { projects, personalInfo, apps } from '../config';
 import ProjectCard from '../components/ProjectCard';
 import AppList from '../components/AppList';
 const featuredProjects = projects.filter(p => p.featured).slice(0, 3);

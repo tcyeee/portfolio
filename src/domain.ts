@@ -1,4 +1,4 @@
-import type { IndexAppType, ProjectCategory } from "./config/projects";
+import type { IndexAppType, ProjectCategory } from "./config";
 
 export interface Project {
     id: string;

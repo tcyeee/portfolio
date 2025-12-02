@@ -1,5 +1,5 @@
 import type { IndexApp } from '../domain';
-import { appCloudConfig } from '../config/projects';
+import { appCloudConfig } from '../config';
 import AppIcon from './AppIcon';
 
 interface Props {

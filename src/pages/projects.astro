@@ -1,8 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { projects } from '../config/projects';
+import { projects } from '../config';
 import ProjectCard from '../components/ProjectCard';
-import { ProjectCategory, categoryLabels } from '../config/projects';
+import { ProjectCategory, categoryLabels } from '../config';
 
 const selectedCategory = Astro.url.searchParams.get('category') || 'all';
 
