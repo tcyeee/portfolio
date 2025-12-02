@@ -1,7 +1,12 @@
 import type { IndexApp, Article as Article, Project } from "../domain";
 import index_app_json from './index_app.json';
 import projects_json from './projects.json';
-import article_json from '../../articles/cache/index.json';
+import { articleConfig } from './article-config.js';
+
+// ⚠️ 重要提示：由于 Astro 的静态导入限制，这里的导入路径必须是字面量字符串
+// 如果修改了 article-config.js 中的 indexFile，这里的导入路径也需要相应修改
+// 当前配置的索引文件路径：public/${articleConfig.indexFile}
+import article_json from '../../public/articles/cache/index.json';
 
 export const personalInfo = {
   name: 'Lucas',

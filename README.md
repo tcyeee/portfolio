@@ -43,8 +43,7 @@ pnpm preview
 portfolio/
 ├── public/          # 静态资源（图片、图标等）
 ├── scripts/         # 构建脚本
-│   ├── generate-article-index.js   # 文章索引生成脚本
-│   └── generate-article-config.js  # 文章索引配置
+│   └── generate-article-index.js   # 文章索引生成脚本
 └── articles/ # 文章目录
     ├── cache/       # 文章索引缓存
     └── *.md         # Markdown 文章文件
@@ -101,10 +100,12 @@ pnpm run generate-article-index
 
 **配置文章索引：**
 
-编辑 `scripts/generate-article-config.js` 可以修改：
-- `articleDir` - 文章所在目录
-- `indexFile` - 索引文件路径
+编辑 `src/config/article-config.js` 可以修改：
+- `articleDir` - 文章所在目录（相对于 public 目录）
+- `indexFile` - 索引文件路径（相对于 public 目录）
 - `contentMaxLength` - 内容摘要字数限制（默认 100 字符）
+
+⚠️ 注意：如果修改了 `indexFile`，还需要同步修改 `src/config/index.ts` 中的导入路径（第7行），因为 Astro 的静态导入限制。
 
 注意：每次运行 `pnpm build` 时会自动重新生成索引，确保索引数据始终是最新的。
 

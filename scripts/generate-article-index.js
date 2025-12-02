@@ -2,15 +2,16 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import matter from 'gray-matter';
-import { articleConfig } from './generate-article-config.js';
+import { articleConfig } from '../src/config/article-config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // 项目根目录
 const rootDir = path.resolve(__dirname, '..');
-const articleDir = path.join(rootDir, articleConfig.articleDir);
-const outputFile = path.join(rootDir, articleConfig.indexFile);
+// 统一配置中的路径是相对于 public 目录的，需要转换为相对于项目根目录的路径
+const articleDir = path.join(rootDir, 'public', articleConfig.articleDir);
+const outputFile = path.join(rootDir, 'public', articleConfig.indexFile);
 
 /**
  * 提取文章的第一段内容（最多指定字符数）
