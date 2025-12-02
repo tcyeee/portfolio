@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { articles } from "../config";
+import TagFilter from "../components/TagFilter";
 
 // 收集所有唯一的tags
 const allTags = Array.from(
@@ -17,30 +18,7 @@ const allTags = Array.from(
     </h1>
 
     <!-- Tags筛选 -->
-    {
-      allTags.length > 0 && (
-        <div class="mb-8">
-          <div class="flex flex-wrap gap-3 justify-center" id="tags-filter">
-            {allTags.map((tag) => (
-              <button
-                data-tag={tag}
-                class="tag-filter-btn px-4 py-2 rounded-lg transition-colors bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-          <div class="text-center mt-4">
-            <button
-              id="clear-filter-btn"
-              class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 underline hidden"
-            >
-              清除筛选
-            </button>
-          </div>
-        </div>
-      )
-    }
+    <TagFilter client:load tags={allTags} />
 
     <div class="space-y-8" id="articles-container">
       {
@@ -104,24 +82,12 @@ const allTags = Array.from(
 </Layout>
 
 <script>
-  // 获取选中的tags
-  function getSelectedTags(): string[] {
-    const selectedTags: string[] = [];
-    document.querySelectorAll(".tag-filter-btn.active").forEach((btn) => {
-      const tag = btn.getAttribute("data-tag");
-      if (tag) selectedTags.push(tag);
-    });
-    return selectedTags;
-  }
-
-  // 筛选文章
-  function filterArticles() {
-    const selectedTags = getSelectedTags();
+  // 筛选文章的函数
+  function filterArticles(selectedTags: string[]) {
     const articleItems = document.querySelectorAll(
       ".article-item"
     ) as NodeListOf<HTMLElement>;
     const emptyMessage = document.getElementById("empty-filter-message");
-    const clearBtn = document.getElementById("clear-filter-btn");
     const articlesContainer = document.getElementById("articles-container");
 
     // 如果没有选中任何tag，显示所有文章
@@ -130,12 +96,9 @@ const allTags = Array.from(
         item.style.display = "";
       });
       if (emptyMessage) emptyMessage.classList.add("hidden");
-      if (clearBtn) clearBtn.classList.add("hidden");
+      if (articlesContainer) articlesContainer.classList.remove("hidden");
       return;
     }
-
-    // 显示清除筛选按钮
-    if (clearBtn) clearBtn.classList.remove("hidden");
 
     let visibleCount = 0;
 
@@ -174,78 +137,13 @@ const allTags = Array.from(
     }
   }
 
-  // 切换tag选中状态
-  function toggleTag(btn: HTMLElement) {
-    btn.classList.toggle("active");
-    if (btn.classList.contains("active")) {
-      btn.classList.add("bg-primary-600", "text-white", "border-primary-600");
-      btn.classList.remove(
-        "bg-white",
-        "dark:bg-gray-800",
-        "text-gray-700",
-        "dark:text-gray-300",
-        "border-gray-300",
-        "dark:border-gray-600"
-      );
-    } else {
-      btn.classList.remove(
-        "bg-primary-600",
-        "text-white",
-        "border-primary-600"
-      );
-      btn.classList.add(
-        "bg-white",
-        "dark:bg-gray-800",
-        "text-gray-700",
-        "dark:text-gray-300",
-        "border-gray-300",
-        "dark:border-gray-600"
-      );
-    }
-    filterArticles();
-  }
-
-  // 清除所有筛选
-  function clearFilter() {
-    document.querySelectorAll(".tag-filter-btn").forEach((btn) => {
-      const element = btn as HTMLElement;
-      element.classList.remove("active");
-      element.classList.remove(
-        "bg-primary-600",
-        "text-white",
-        "border-primary-600"
-      );
-      element.classList.add(
-        "bg-white",
-        "dark:bg-gray-800",
-        "text-gray-700",
-        "dark:text-gray-300",
-        "border-gray-300",
-        "dark:border-gray-600"
-      );
+  // 将筛选函数暴露到全局，供TagFilter组件调用
+  // 确保在DOM加载完成后设置
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      (window as any).filterArticles = filterArticles;
     });
-    filterArticles();
+  } else {
+    (window as any).filterArticles = filterArticles;
   }
-
-  // 绑定事件
-  document.addEventListener("DOMContentLoaded", () => {
-    const filterButtons = document.querySelectorAll(
-      ".tag-filter-btn"
-    ) as NodeListOf<HTMLElement>;
-    const clearBtn = document.getElementById("clear-filter-btn");
-
-    filterButtons.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        toggleTag(btn);
-      });
-    });
-
-    if (clearBtn) {
-      clearBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        clearFilter();
-      });
-    }
-  });
 </script>
