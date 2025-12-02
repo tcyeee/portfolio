@@ -61,7 +61,7 @@ portfolio/
 
 - `/` - 首页（展示精选项目和 APP 列表）
 - `/projects` - 所有项目
-- `/article` - 文章列表
+- `/articles` - 文章列表
 - `/about` - 关于我
 
 ## 配置
@@ -70,7 +70,7 @@ portfolio/
 
 ### 文章管理
 
-文章以 Markdown 格式存储在 `src/config/article/` 目录下。每篇文章需要包含 YAML frontmatter：
+文章以 Markdown 格式存储在 `articles/` 目录下。每篇文章需要包含 YAML frontmatter：
 
 ```markdown
 ---
@@ -87,7 +87,7 @@ banner: 横幅图片路径（可选）
 
 #### 文章索引生成
 
-项目构建时会自动生成文章索引文件 `src/config/article/cache/index.json`，索引包含以下信息：
+项目构建时会自动生成文章索引文件 `articles/cache/index.json`，索引包含以下信息：
 - `title` - 文章标题
 - `content` - 文章第一段内容摘要（默认最多 100 字符）
 - `created` - 创建时间

@@ -1,0 +1,13 @@
+---
+import { renderMarkdown } from "../utils/markdown";
+import "katex/dist/katex.min.css";
+
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+const htmlContent = await renderMarkdown(content);
+---
+
+<article set:html={htmlContent} />
