@@ -1,43 +1,51 @@
 ---
-import { personalInfo } from '../config';
+import { personalInfo } from "../config";
 
 const navigation = [
   {
-    name: '首页',
-    href: '/',
+    name: "首页",
+    href: "/",
   },
   {
-    name: '项目',
-    href: '/projects',
+    name: "项目",
+    href: "/projects",
   },
   {
-    name: '文章',
-    href: '/article',
+    name: "文章",
+    href: "/articles",
   },
   {
-    name: '关于',
-    href: '/about',
-  }
+    name: "关于",
+    href: "/about",
+  },
 ];
-
 ---
 
-<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+<header
+  class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800"
+>
   <nav class="container mx-auto px-4 py-4">
     <div class="flex items-center justify-between">
-      <a href="/" class="text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+      <a
+        href="/"
+        class="text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+      >
         {personalInfo.name}
       </a>
       <ul class="flex gap-3 md:gap-6 items-center text-sm md:text-base">
-        {navigation.map((item) => (
-          <li>
-            <a href={item.href} class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-              {item.name}
-            </a>
-          </li>
-        ))}
+        {
+          navigation.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              >
+                {item.name}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </div>
   </nav>
 </header>
-
