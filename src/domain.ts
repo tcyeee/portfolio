@@ -16,8 +16,8 @@ export interface Project {
 export interface Article {
     title: string;
     content: string;
-    date: string;
-    images?: string[];
+    created: string;
+    banner?: string;
     tags?: string[];
 }
 

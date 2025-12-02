@@ -1,21 +1,22 @@
 [
   {
-    "title": "我的编程之旅",
-    "content": "分享一些关于编程学习的经验和心得，以及在这个过程中的成长和收获。",
-    "date": "2024-01-15",
-    "tags": ["编程", "学习", "成长"],
-    "images": ["/images/project/1_1.png"]
+    "title": "如何优雅的在键盘上使用mac手势",
+    "content": "MacOS相比Windows去除了很多花哨的功能,让我在工作的时候更加专注,其自带的各种全局快...",
+    "created": "2025-06-26 18:47",
+    "tags": [
+      "keyboard",
+      "article"
+    ],
+    "banner": ""
   },
   {
-    "title": "开源贡献经历",
-    "content": "参与开源项目的经历和收获，以及如何为开源社区做出贡献。",
-    "date": "2024-02-20",
-    "tags": ["开源", "社区", "贡献"]
-  },
-  {
-    "title": "技术栈探索",
-    "content": "探索和学习新技术栈的过程，包括遇到的问题和解决方案。",
-    "date": "2024-03-10",
-    "tags": ["技术", "学习", "探索"]
+    "title": "How to choose the most suitable background color",
+    "content": "Using a suitable background color can attract m...",
+    "created": "2025-06-17 13:25",
+    "tags": [
+      "article",
+      "English"
+    ],
+    "banner": ""
   }
 ]
