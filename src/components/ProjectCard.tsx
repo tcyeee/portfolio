@@ -1,5 +1,5 @@
+import { categoryColors, categoryLabels } from '../config/projects';
 import type { Project } from '../domain';
-import { categoryLabels, categoryColors } from '../config/categories';
 
 interface Props {
   project: Project;

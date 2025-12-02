@@ -1,7 +1,7 @@
-import type { App } from '../domain';
+import type { IndexApp } from '../domain';
 
 interface Props {
-  app: App;
+  app: IndexApp;
 }
 
 export default function AppIcon({ app }: Props) {

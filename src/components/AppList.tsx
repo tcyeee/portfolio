@@ -1,9 +1,9 @@
-import type { App } from '../domain';
+import type { IndexApp } from '../domain';
 import { appCloudConfig } from '../config/projects';
 import AppIcon from './AppIcon';
 
 interface Props {
-  apps: App[];
+  apps: IndexApp[];
 }
 
 export default function AppList({ apps }: Props) {

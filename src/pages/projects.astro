@@ -2,9 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import { projects } from '../config/projects';
 import ProjectCard from '../components/ProjectCard';
-import { categories, categoryLabels } from '../config/categories';
+import { ProjectCategory, categoryLabels } from '../config/projects';
 
 const selectedCategory = Astro.url.searchParams.get('category') || 'all';
+
+// 所有分类（包含 'all' 用于筛选）
+export const categories = ['all', ...Object.values(ProjectCategory)] as const;
 ---
 
 <Layout title="作品集">

@@ -1,4 +1,4 @@
-import type { ProjectCategory } from './config/categories';
+import type { IndexAppType, ProjectCategory } from "./config/projects";
 
 export interface Project {
     id: string;
@@ -22,11 +22,11 @@ export interface LifePost {
     tags?: string[];
 }
 
-export interface App {
+export interface IndexApp {
     id: string;
     name: string;
     icon: string;
-    type: 'app' | 'miniprogram' | 'plugin';
+    type: IndexAppType;
     url?: string;
     description?: string;
 }

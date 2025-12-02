@@ -1,5 +1,7 @@
-import type { App, LifePost, Project } from "../domain";
-
+import type { IndexApp, LifePost, Project } from "../domain";
+import index_app_json from './index_app.json';
+import projects_json from './projects.json';
+import article_json from './article.json';
 
 // 个人信息配置
 export const personalInfo = {
@@ -51,178 +53,44 @@ export const appCloudConfig = {
   },
 };
 
-
 /* 作品集 */
-export const projects: Project[] = [
-  {
-    id: 'omega40_cases',
-    title: 'Omega40 Cases',
-    description: '为满足日常使用场景而设计制作的一款客制化键盘, 代码以及图纸我已经开源, 并且有商店在量产售卖(当然我是没有任何版权收益的).\r\n项目包含软件分为三个部分:\r\n1:固件源码\r\n2:设计图纸\r\n3:基于mac的相关脚本.',
-    category: 'other',
-    tags: ["客制化", "Shapr3D", "3D打印"],
-    image: '/images/project/1_2.jpg',
-    githubUrl: 'https://github.com/tcyeee/omega40_cases',
-    demoUrl: '',
-    featured: true,
-    year: 2024,
-  },
-  {
-    id: 'PixWallet',
-    title: 'PixWallet',
-    description: 'PixWallet is a pixel-art-inspired Solana wallet built with Tauri, designed to provide a lightweight and secure experience. It supports both macOS and Windows, allowing users to manage their SOL assets seamlessly across desktop platforms.',
-    category: 'blockchain',
-    tags: ["Solana", "Tauri", "Web3", "Rust"],
-    image: '/images/project/2.png',
-    githubUrl: 'https://github.com/tcyeee/PixWallet',
-    demoUrl: '',
-    featured: true,
-    year: 2025,
-  },
-  {
-    id: 'pictidy',
-    title: 'PicTidy',
-    description: 'PicTidy is a simple and efficient desktop tool designed to help you clean and organize your photos.',
-    category: 'plugin',
-    tags: ['Flutter', 'Dart', "Desktop-App"],
-    image: '/images/project/3.png',
-    githubUrl: 'https://github.com/tcyeee/pictidy',
-    demoUrl: 'https://obsidian.md/plugins/example',
-    featured: true,
-    year: 2024,
-  },
-  {
-    id: 'bases-lock',
-    title: 'Bases Lock',
-    description: 'PicTidy is a simple and efficient desktop tool designed to help you clean and organize your photos.',
-    category: 'plugin',
-    tags: ['Obsidian', 'TypeScript', 'Plugin'],
-    image: '/images/project/4.png',
-    githubUrl: 'https://github.com/tcyeee/obsidian-bases-lock',
-    demoUrl: '',
-    featured: true,
-    year: 2025,
-  },
-  {
-    id: 'nft-dapp',
-    title: 'NFT DApp',
-    description: 'Nft交易小站是一个基于Sepolia测试网络的NFT交易平台, 目前托管于Vercel, 交易货币可以在任意Faucet获取.\r\nps:项目大概永远不会并入ETH主网',
-    category: 'blockchain',
-    tags: ['Solidity', 'Web3', 'Ethereum'],
-    image: '/images/project/5.png',
-    githubUrl: '',
-    demoUrl: 'https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app',
-    featured: false,
-    year: 2023,
-  },
-  {
-    id: 'bookmarkify',
-    title: 'Bookmarkify',
-    description: 'Bookmarkify is a clean and intuitive web application that helps you collect and manage your online bookmarks. You can save any webpage with one click, organize your links into easy-to-browse collections, and share your favorite bookmark lists with others.',
-    category: 'app',
-    tags: ["bookmark", "WEB"],
-    image: '/images/project/4_2.png',
-    githubUrl: 'https://github.com/tcyeee/bookmarkify',
-    demoUrl: 'https://bookmarkify.cc',
-    featured: false,
-    year: 2022,
-  }
-];
+export const projects: Project[] = JSON.parse(JSON.stringify(projects_json));
 
-// 个人生活内容配置
-export const lifePosts: LifePost[] = [
-  {
-    id: '019adcad-6266-74b0-9953-9b16406af512',
-    title: '我的编程之旅',
-    content: '分享一些关于编程学习的经验和心得，以及在这个过程中的成长和收获。',
-    date: '2024-01-15',
-    tags: ['编程', '学习', '成长'],
-    images: ['/images/project/1_1.png'],
-  },
-  {
-    id: '019adcad-76d3-7687-bb4b-5ae77324f812',
-    title: '开源贡献经历',
-    content: '参与开源项目的经历和收获，以及如何为开源社区做出贡献。',
-    date: '2024-02-20',
-    tags: ['开源', '社区', '贡献'],
-  },
-  {
-    id: '019adcad-9186-70cf-90b7-cdff0c7a6d64',
-    title: '技术栈探索',
-    content: '探索和学习新技术栈的过程，包括遇到的问题和解决方案。',
-    date: '2024-03-10',
-    tags: ['技术', '学习', '探索'],
-  },
-];
+/* 文章 */
+export const lifePosts: LifePost[] = JSON.parse(JSON.stringify(article_json));
 
-// APP列表配置 - 在这里添加你的APP
-export const apps: App[] = [
-  {
-    id: '019ad92e-4c80-7063-abd6-77ae4334327a',
-    name: 'PicTidy',
-    icon: '/images/icons/pictidy.png',
-    type: 'app',
-    url: 'https://github.com/tcyeee/pictidy',
-    description: 'PicTidy',
-  },
-  {
-    id: '019ad9e9-7350-72cf-a985-16467f033c66',
-    name: 'Bookmarkify',
-    icon: '/images/icons/bookmarkify.png',
-    type: 'app',
-    url: 'https://github.com/tcyeee/bookmarkify',
-    description: 'PicTidy',
-  },
-  {
-    id: '019ad932-b758-761c-a29e-f78b60c016d1',
-    name: 'PixWallet',
-    icon: '/images/icons/pixwallet.png',
-    type: 'app',
-    url: 'https://github.com/tcyeee/PixWallet',
-    description: 'PixWallet',
-  },
-  // 小程序类型
-  {
-    id: '019ad932-e06b-77ed-808c-e886a8ceecd1',
-    name: '瑞文测试',
-    icon: '/images/icons/raven-test.png',
-    type: 'miniprogram',
-    url: 'https://github.com/tcyeee/raven-test',
-    description: 'raven-test',
-  },
-
-  // 插件类型
-  {
-    id: '019ad933-11ad-7614-8025-f3f5716312e3',
-    name: 'Image Cluster',
-    icon: '/images/icons/image-cluster.png',
-    type: 'plugin',
-    url: 'https://github.com/tcyeee/obsidian-image-cluster',
-    description: 'obsidian-image-cluster',
-  },
-  {
-    id: '019ad933-388f-7542-8b3d-5e9593c82fee',
-    name: 'Bases Lock',
-    icon: '/images/icons/bases-lock.png',
-    type: 'plugin',
-    url: 'https://github.com/tcyeee/obsidian-bases-lock',
-    description: 'obsidian-bases-lock',
-  },
-  {
-    id: '019ad933-457d-7786-99d5-b3d4486b3a32',
-    name: 'Podcast Shortcuts',
-    icon: '/images/icons/podcast-shortcuts.png',
-    type: 'plugin',
-    url: 'https://github.com/tcyeee/podcast-shortcuts',
-    description: 'Podcast Shortcuts',
-  },
-  {
-    id: '019ad9d4-ec83-70f3-8fc2-193c6a4f6dfd',
-    name: 'BB AFK',
-    icon: '/images/icons/bb-afk.png',
-    type: 'plugin',
-    url: 'https://github.com/tcyeee/bb-afk',
-    description: 'BB AFK',
-  },
-];
+/* 首页APP列表 */
+export const apps: IndexApp[] = JSON.parse(JSON.stringify(index_app_json));
 
 
+/* 项目分类： 项目卡片中，项目名称右侧的标签，每个项目仅属于一个分类 */
+export enum ProjectCategory {
+  PLUGIN = 'plugin',
+  APP = 'app',
+  BLOCKCHAIN = 'blockchain',
+  OTHER = 'other',
+}
+
+/* 首页APP分类： 首页APP列表中，每个APP仅属于一个分类 */
+export enum IndexAppType {
+  APP = 'app',
+  MINI_PROGRAM = 'miniprogram',
+  PLUGIN = 'plugin',
+}
+
+// 分类标签映射
+export const categoryLabels: Record<ProjectCategory | 'all', string> = {
+  'all': '全部',
+  [ProjectCategory.PLUGIN]: '插件',
+  [ProjectCategory.APP]: '应用',
+  [ProjectCategory.BLOCKCHAIN]: 'Web3',
+  [ProjectCategory.OTHER]: '其他',
+};
+
+// 分类颜色映射（用于 ProjectCard 组件）
+export const categoryColors: Record<ProjectCategory, string> = {
+  'plugin': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+  'app': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+  'blockchain': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+  'other': 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
+};
