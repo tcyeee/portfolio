@@ -1,7 +1,7 @@
 import type { IndexApp, Article as Article, Project } from "../domain";
 import index_app_json from './index_app.json';
 import projects_json from './projects.json';
-import article_json from './article/index.json';
+import article_json from './article/cache/index.json';
 
 export const personalInfo = {
   name: 'Lucas',
