@@ -2,110 +2,123 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import matter from 'gray-matter';
+import { articleConfig } from './generate-article-config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 文章目录路径
-const articleDir = path.join(__dirname, '../src/config/article');
-const cacheDir = path.join(articleDir, 'cache');
-const outputFile = path.join(cacheDir, 'index.json');
+// 项目根目录
+const rootDir = path.resolve(__dirname, '..');
+const articleDir = path.join(rootDir, articleConfig.articleDir);
+const outputFile = path.join(rootDir, articleConfig.indexFile);
 
 /**
- * 提取文章第一段内容（最多50字符）
+ * 提取文章的第一段内容（最多指定字符数）
+ * @param {string} content - Markdown 内容（已去除 frontmatter）
+ * @param {number} maxLength - 最大字符数
+ * @returns {string} - 提取的内容摘要
  */
-function extractFirstParagraph(content) {
-  if (!content) return '';
-  
-  // 移除 frontmatter 后的内容
+function extractFirstParagraph(content, maxLength = articleConfig.contentMaxLength) {
+  // 按行分割内容
   const lines = content.split('\n');
   
-  // 找到第一个非空行作为开始
-  let startIndex = 0;
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
-    // 跳过空行和标题行（以 # 开头）
-    if (line && !line.startsWith('#')) {
-      startIndex = i;
-      break;
-    }
+  // 找到第一个非空、非标题的实际内容行
+  let firstContentLine = '';
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    
+    // 跳过空行
+    if (!trimmedLine) continue;
+    
+    // 跳过标题行（以 # 开头）
+    if (trimmedLine.startsWith('#')) continue;
+    
+    // 跳过分隔线
+    if (/^-{3,}$/.test(trimmedLine)) continue;
+    
+    // 找到第一段实际内容
+    firstContentLine = trimmedLine;
+    break;
   }
   
-  // 提取第一段
-  let paragraph = '';
-  for (let i = startIndex; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) {
-      // 遇到空行，第一段结束
-      break;
-    }
-    // 跳过标题行
-    if (line.startsWith('#')) {
-      continue;
-    }
-    paragraph += line + ' ';
+  if (!firstContentLine) {
+    // 如果没有找到，则处理整个内容
+    firstContentLine = content;
   }
   
-  // 清理并截取（最多50字符，包括"..."）
-  paragraph = paragraph.trim();
-  if (paragraph.length > 50) {
-    // 如果超过50字符，截取47个字符后加上"..."，总共50字符
-    paragraph = paragraph.substring(0, 47) + '...';
+  // 移除所有 Markdown 格式标记（**、*、`、[]、()等）
+  let text = firstContentLine
+    .replace(/\*\*([^*]+)\*\*/g, '$1') // 粗体
+    .replace(/\*([^*]+)\*/g, '$1') // 斜体
+    .replace(/`([^`]+)`/g, '$1') // 代码
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // 链接
+    .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '') // 图片
+    .replace(/\|/g, ' ') // 表格分隔符
+    .replace(/-{3,}/g, '') // 分隔线
+    .replace(/\s+/g, ' ') // 移除多余空格
+    .trim();
+  
+  // 提取前 maxLength 个字符
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + '...';
   }
   
-  return paragraph || '';
+  return text || '';
 }
 
 /**
- * 从文件名提取标题（如果没有在 frontmatter 中定义）
+ * 从文件名提取标题（去除扩展名）
+ * @param {string} filename - 文件名
+ * @returns {string} - 标题
  */
-function extractTitleFromFilename(filename) {
-  // 移除 .md 扩展名
+function getTitleFromFilename(filename) {
   return filename.replace(/\.md$/, '');
 }
 
 /**
- * 读取并处理所有 markdown 文件
+ * 生成文章索引
  */
 function generateArticleIndex() {
   try {
-    // 确保缓存目录存在
+    // 确保输出目录存在
+    const cacheDir = path.dirname(outputFile);
     if (!fs.existsSync(cacheDir)) {
       fs.mkdirSync(cacheDir, { recursive: true });
     }
-    
-    // 读取文章目录下的所有文件
-    const files = fs.readdirSync(articleDir);
-    const mdFiles = files.filter(file => file.endsWith('.md'));
-    
+
+    // 读取所有 Markdown 文件
+    const files = fs.readdirSync(articleDir)
+      .filter(file => file.endsWith('.md') && !file.startsWith('.'));
+
     const articles = [];
-    
-    for (const file of mdFiles) {
+
+    for (const file of files) {
       const filePath = path.join(articleDir, file);
       const fileContent = fs.readFileSync(filePath, 'utf-8');
       
-      // 解析 frontmatter
+      // 使用 gray-matter 解析 frontmatter
       const { data: frontmatter, content } = matter(fileContent);
-      
+
       // 提取所需字段
       const article = {
-        title: frontmatter.title || extractTitleFromFilename(file),
-        content: extractFirstParagraph(content),
+        title: frontmatter.title || getTitleFromFilename(file),
+        content: extractFirstParagraph(content, articleConfig.contentMaxLength),
         created: frontmatter.created || '',
         tags: frontmatter.tags || [],
         banner: frontmatter.banner || '',
       };
-      
+
       articles.push(article);
     }
-    
-    // 按创建时间排序（最新的在前）
+
+    // 按创建时间倒序排序（最新的在前）
     articles.sort((a, b) => {
-      const dateA = new Date(a.created);
-      const dateB = new Date(b.created);
-      return dateB - dateA;
+      if (!a.created && !b.created) return 0;
+      if (!a.created) return 1;
+      if (!b.created) return -1;
+      return new Date(b.created) - new Date(a.created);
     });
-    
+
     // 写入 JSON 文件
     fs.writeFileSync(outputFile, JSON.stringify(articles, null, 2), 'utf-8');
     
@@ -117,12 +130,6 @@ function generateArticleIndex() {
   }
 }
 
-// 导出函数供其他模块使用
-export { generateArticleIndex };
-
-// 如果直接运行脚本，执行生成
-if (import.meta.url.endsWith(process.argv[1]?.replace(/\\/g, '/')) || 
-    process.argv[1]?.includes('generate-article-index.js')) {
-  generateArticleIndex();
-}
+// 执行生成
+generateArticleIndex();
 

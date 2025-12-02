@@ -3,13 +3,13 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "predev": "node scripts/generate-article-index.js",
     "dev": "astro dev",
     "start": "astro dev",
     "prebuild": "node scripts/generate-article-index.js",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "generate-article-index": "node scripts/generate-article-index.js"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
