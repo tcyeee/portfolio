@@ -2,16 +2,12 @@ import type { IndexApp, Article as Article, Project } from "../domain";
 import index_app_json from './index_app.json';
 import projects_json from './projects.json';
 import { articleConfig } from './article-config.js';
-
-// ⚠️ 重要提示：由于 Astro 的静态导入限制，这里的导入路径必须是字面量字符串
-// 如果修改了 article-config.js 中的 indexFile，这里的导入路径也需要相应修改
-// 当前配置的索引文件路径：public/${articleConfig.indexFile}
 import article_json from '../../public/articles/cache/index.json';
 
 export const personalInfo = {
   name: 'Lucas',
   title: '全栈开发工程师',
-  bio: '8年全栈经验，热爱编程，专注于 Web 开发和区块链技术。喜欢构建有用的工具和应用，享受创造的过程。绝大多数作品都会开源，或许有你需要的。',
+  bio: '8年全栈经验，热爱编程，擅长Java，Rust相关技术栈和区块链技术。喜欢构建有用的工具和应用，享受创造的过程，当然绝大多数作品都会开源，或许有你需要的😊。',
   avatar: '/images/avatar.jpg',
   location: '中国',
   email: 'tcyeee@outlook.com',
@@ -20,7 +16,7 @@ export const personalInfo = {
   linkedin: '',
   redNote: 'https://www.xiaohongshu.com/user/profile/5b9cf40e9a9c9300014062b4',
   bilibili: 'https://space.bilibili.com/10879225',
-  skills: ['Java', 'Spring Boot', 'SQL', 'RabbitMQ', 'TypeScript', 'Vue', 'Solidity', 'Web3', "Rust"],
+  skills: ['Java', 'Rust', 'SpringBoot', 'SQL', 'RabbitMQ', 'Vue', 'Flutter', 'Solidity', 'Web3'],
 }
 
 /* 作品集 ｜ 文章 ｜ 首页APP列表 */
