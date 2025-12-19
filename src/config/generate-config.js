@@ -17,3 +17,11 @@ export const articleConfig = {
   contentMaxLength: 100,
 };
 
+export const projectConfig = {
+  // 项目所在目录（相对于 public 目录）
+  projectDir: 'public/projects',
+  // 索引文件路径（相对于 public 目录）
+  indexFile: '/src/config/cache/projects.json',
+  // 首页显示作品数量
+  homeDisplayCount: 3,
+};

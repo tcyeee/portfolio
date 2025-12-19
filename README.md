@@ -45,11 +45,11 @@ portfolio/
 ├── scripts/         # 构建脚本
 │   └── generate-article-index.js   # 文章索引生成脚本
 └── articles/ # 文章目录
-    ├── cache/       # 文章索引缓存
     └── *.md         # Markdown 文章文件
 ├── src/
 │   ├── components/  # React/Astro 组件
 │   ├── config/      # 配置文件（项目数据、分类等）
+│   │     └─ cache/  # 文章&项目 索引缓存
 │   ├── layouts/     # 布局组件
 │   ├── pages/       # 页面路由
 │   └── styles/      # 全局样式
@@ -100,7 +100,7 @@ pnpm run generate-article-index
 
 **配置文章索引：**
 
-编辑 `src/config/article-config.js` 可以修改：
+编辑 `src/config/generate-config.js` 可以修改：
 - `articleDir` - 文章所在目录（相对于 public 目录）
 - `indexFile` - 索引文件路径（相对于 public 目录）
 - `contentMaxLength` - 内容摘要字数限制（默认 100 字符）
