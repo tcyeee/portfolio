@@ -11,14 +11,11 @@ export default function ProjectCard({ project }: Props) {
   };
 
   return (
-    <a
-      href={`/project/${project.id}`}
-      className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden cursor-pointer"
-    >
-      {project.image && (
+    <div className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden">
+      {project.banner && (
         <div className="aspect-video bg-gray-200 dark:bg-gray-700 overflow-hidden">
           <img
-            src={project.image}
+            src={project.banner}
             alt={project.title}
             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
           />
@@ -70,11 +67,13 @@ export default function ProjectCard({ project }: Props) {
             </a>
           )}
         </div>
-        <div className="mt-3 text-xs text-gray-500 dark:text-gray-400">
-          {project.year}
-        </div>
+        {project.created && (
+          <div className="mt-3 text-xs text-gray-500 dark:text-gray-400">
+            {project.created}
+          </div>
+        )}
       </div>
-    </a>
+    </div>
   );
 }
 

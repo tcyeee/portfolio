@@ -1,6 +1,6 @@
 import type { IndexApp, Article as Article, Project } from "../domain";
 import index_app_json from './index_app.json';
-import projects_json from './projects.json';
+import projects_json from './cache/projects.json';
 import article_json from './cache/articles.json';
 
 export const personalInfo = {
@@ -31,6 +31,8 @@ export enum IndexAppType {
   MINI_PROGRAM = 'miniprogram',
   PLUGIN = 'plugin',
 }
+// 首页显示作品数量
+export const homeDisplayCount = 3;
 
 export const appCloudConfig = {
   // APP图标大小（单位：px）

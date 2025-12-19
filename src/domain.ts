@@ -1,16 +1,14 @@
 import type { IndexAppType, ProjectCategory } from "./config";
 
 export interface Project {
-    id: string;
     title: string;
-    description: string;
+    created: string;
     category: ProjectCategory;
     tags: string[];
-    image?: string;
-    githubUrl?: string;
+    banner?: string;
     demoUrl?: string;
-    featured?: boolean;
-    year: number;
+    githubUrl?: string;
+    description: string;
 }
 
 export interface Article {
