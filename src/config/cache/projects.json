@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Bases Lock",
+    "created": "2025-06-17 13:25",
+    "category": "plugin",
+    "tags": [
+      "Obsidian",
+      "TypeScript",
+      "Plugin"
+    ],
+    "banner": "/images/project/3.png",
+    "demoUrl": "https://obsidian.md/plugins/example",
+    "githubUrl": "https://github.com/tcyeee/pictidy",
+    "description": "PicTidy is a simple and efficient desktop tool designed to help you clean and organize your photos."
+  },
+  {
+    "title": "Omega40 Cases",
+    "created": "2025-06-17 13:25",
+    "category": "other",
+    "tags": [
+      "客制化",
+      "Shapr3D",
+      "3D打印"
+    ],
+    "banner": "/images/project/1_2.jpg",
+    "demoUrl": "",
+    "githubUrl": "https://github.com/tcyeee/omega40_cases",
+    "description": "为满足日常使用场景而设计制作的一款客制化键盘, 代码以及图纸我已经开源, 并且已有商家在量产售卖, 销量1000+"
+  },
+  {
+    "title": "PicTidy",
+    "created": "2025-06-17 13:25",
+    "category": "plugin",
+    "tags": [
+      "Flutter",
+      "Dart",
+      "Desktop-App"
+    ],
+    "banner": "/images/project/3.png",
+    "demoUrl": "https://obsidian.md/plugins/example",
+    "githubUrl": "https://github.com/tcyeee/pictidy",
+    "description": "PicTidy is a simple and efficient desktop tool designed to help you clean and organize your photos."
+  },
+  {
+    "title": "PixWallet",
+    "created": "2025-06-17 13:25",
+    "category": "other",
+    "tags": [
+      "客制化",
+      "Shapr3D",
+      "3D打印"
+    ],
+    "banner": "/images/project/1_2.jpg",
+    "demoUrl": "https://obsidian.md/plugins/example",
+    "githubUrl": "https://github.com/tcyeee/PixWallet",
+    "description": "PixWallet is a pixel-art-inspired Solana wallet built with Tauri, designed to provide a lightweight and secure experience. It supports both macOS and Windows, allowing users to manage their SOL assets seamlessly across desktop platforms."
+  }
+]

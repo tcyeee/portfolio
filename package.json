@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "prebuild": "node scripts/generate-article-index.js",
+    "prebuild": "node scripts/generate-article-index.js && node scripts/generate-project-index.js",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate-article-index": "node scripts/generate-article-index.js"
+    "generate-article-index": "node scripts/generate-article-index.js",
+    "generate-project-index": "node scripts/generate-project-index.js"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
