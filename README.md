@@ -86,7 +86,7 @@ banner: 横幅图片路径（可选）
 
 #### 文章索引生成
 
-项目构建时会自动生成文章索引文件 `articles/cache/index.json`，索引包含以下信息：
+项目构建时会自动生成文章索引文件 `/src/config/cache/articles.json`，索引包含以下信息：
 - `title` - 文章标题
 - `content` - 文章第一段内容摘要（默认最多 100 字符）
 - `created` - 创建时间

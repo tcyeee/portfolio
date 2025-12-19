@@ -1,34 +1,32 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import MarkdownContent from "../../components/MarkdownContent.astro";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import matter from "gray-matter";
-import { articleConfig } from "../../config/article-config.js";
+import Layout from '../../layouts/Layout.astro'
+import MarkdownContent from '../../components/MarkdownContent.astro'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import matter from 'gray-matter'
+import { articleConfig } from '../../config/article-config.js'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // 文章目录路径（使用统一配置）
-const rootDir = path.resolve(__dirname, "../../../public/");
-const articleDir = path.join(rootDir, articleConfig.articleDir);
+const rootDir = path.resolve(__dirname, '../../../')
+const articleDir = path.join(rootDir, articleConfig.articleDir)
 
 // 生成静态路径
 export async function getStaticPaths() {
   // 在函数内部计算路径（使用统一配置）
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  const rootDir = path.resolve(__dirname, "../../../public/");
-  const articleDir = path.join(rootDir, articleConfig.articleDir);
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = path.dirname(__filename)
+  const rootDir = path.resolve(__dirname, '../../../')
+  const articleDir = path.join(rootDir, articleConfig.articleDir)
 
   // 获取所有文章文件
-  const files = fs
-    .readdirSync(articleDir)
-    .filter((file) => file.endsWith(".md") && !file.startsWith("."));
+  const files = fs.readdirSync(articleDir).filter((file) => file.endsWith('.md') && !file.startsWith('.'))
 
   return files.map((file) => {
-    const fileSlug = file.replace(/\.md$/, "");
+    const fileSlug = file.replace(/\.md$/, '')
     // Astro 会自动处理 URL 编码，params 中应该使用原始值（未编码）
     // 这样无论浏览器访问时是编码还是未编码，Astro 都能正确匹配
     return {
@@ -37,38 +35,38 @@ export async function getStaticPaths() {
         fileSlug: fileSlug,
         fileName: file,
       },
-    };
-  });
+    }
+  })
 }
 
 interface Props {
-  fileSlug: string;
-  fileName: string;
+  fileSlug: string
+  fileName: string
 }
 
 // 从 props 获取文件名（getStaticPaths 已经确保匹配）
-const { fileSlug, fileName } = Astro.props;
+const { fileSlug, fileName } = Astro.props
 
 // 从 params 获取 slug（Astro 会自动解码）
-const slugFromParams = Astro.params.slug;
+const slugFromParams = Astro.params.slug
 
-const filePath = path.join(articleDir, fileName);
+const filePath = path.join(articleDir, fileName)
 
 // 检查文件是否存在
 if (!fs.existsSync(filePath)) {
-  console.error(`Article file not found: ${filePath}`);
-  console.error(`Slug from params: ${slugFromParams}`);
-  console.error(`File slug from props: ${fileSlug}`);
-  return Astro.redirect("/article");
+  console.error(`Article file not found: ${filePath}`)
+  console.error(`Slug from params: ${slugFromParams}`)
+  console.error(`File slug from props: ${fileSlug}`)
+  return Astro.redirect('/article')
 }
-const fileContent = fs.readFileSync(filePath, "utf-8");
+const fileContent = fs.readFileSync(filePath, 'utf-8')
 
 // 解析 frontmatter 和内容
-const { data: frontmatter, content } = matter(fileContent);
-const title = frontmatter.title || fileSlug;
-const created = frontmatter.created || "";
-const tags = frontmatter.tags || [];
-const banner = frontmatter.banner || "";
+const { data: frontmatter, content } = matter(fileContent)
+const title = frontmatter.title || fileSlug
+const created = frontmatter.created || ''
+const tags = frontmatter.tags || []
+const banner = frontmatter.banner || ''
 ---
 
 <Layout title={title}>
@@ -76,19 +74,9 @@ const banner = frontmatter.banner || "";
     <!-- 返回按钮 -->
     <a
       href="/articles"
-      class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors"
-    >
-      <svg
-        class="w-5 h-5 mr-2"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M15 19l-7-7 7-7"></path>
+      class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
       </svg>
       返回文章列表
     </a>
@@ -98,16 +86,14 @@ const banner = frontmatter.banner || "";
       <h1 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
         {title}
       </h1>
-      <div
-        class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400"
-      >
+      <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
         {
           created && (
             <time>
-              {new Date(created).toLocaleDateString("zh-CN", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
+              {new Date(created).toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
               })}
             </time>
           )
@@ -116,9 +102,7 @@ const banner = frontmatter.banner || "";
           tags && tags.length > 0 && (
             <div class="flex gap-2">
               {tags.map((tag: string) => (
-                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">
-                  {tag}
-                </span>
+                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">{tag}</span>
               ))}
             </div>
           )
@@ -130,11 +114,7 @@ const banner = frontmatter.banner || "";
     {
       banner && (
         <div class="mb-8">
-          <img
-            src={banner}
-            alt={title}
-            class="rounded-lg w-full h-auto object-cover"
-          />
+          <img src={banner} alt={title} class="rounded-lg w-full h-auto object-cover" />
         </div>
       )
     }

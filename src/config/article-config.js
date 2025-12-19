@@ -10,9 +10,9 @@
  */
 export const articleConfig = {
   // 文章所在目录（相对于 public 目录）
-  articleDir: 'articles',
+  articleDir: 'public/articles',
   // 索引文件路径（相对于 public 目录）
-  indexFile: 'articles/cache/index.json',
+  indexFile: '/src/config/cache/articles.json',
   // 提取文章第一段内容的字数限制
   contentMaxLength: 100,
 };
