@@ -1,6 +1,6 @@
 [
   {
-    "id": "019ad92e-4c80-7063-abd6-77ae4334327a",
+    "id": "1",
     "name": "PicTidy",
     "icon": "/images/icons/pictidy.png",
     "type": "app",
@@ -8,7 +8,7 @@
     "description": "PicTidy"
   },
   {
-    "id": "019ad9e9-7350-72cf-a985-16467f033c66",
+    "id": "2",
     "name": "Bookmarkify",
     "icon": "/images/icons/bookmarkify.png",
     "type": "app",
@@ -16,7 +16,7 @@
     "description": "PicTidy"
   },
   {
-    "id": "019ad932-b758-761c-a29e-f78b60c016d1",
+    "id": "3",
     "name": "PixWallet",
     "icon": "/images/icons/pixwallet.png",
     "type": "app",
@@ -24,7 +24,7 @@
     "description": "PixWallet"
   },
   {
-    "id": "019ad932-e06b-77ed-808c-e886a8ceecd1",
+    "id": "4",
     "name": "瑞文测试",
     "icon": "/images/icons/raven-test.png",
     "type": "miniprogram",
@@ -33,7 +33,7 @@
   },
 
   {
-    "id": "019ad933-11ad-7614-8025-f3f5716312e3",
+    "id": "5",
     "name": "Image Cluster",
     "icon": "/images/icons/image-cluster.png",
     "type": "plugin",
@@ -41,7 +41,7 @@
     "description": "obsidian-image-cluster"
   },
   {
-    "id": "019ad933-388f-7542-8b3d-5e9593c82fee",
+    "id": "6",
     "name": "Bases Lock",
     "icon": "/images/icons/bases-lock.png",
     "type": "plugin",
@@ -49,7 +49,7 @@
     "description": "obsidian-bases-lock"
   },
   {
-    "id": "019ad933-457d-7786-99d5-b3d4486b3a32",
+    "id": "7",
     "name": "Podcast Shortcuts",
     "icon": "/images/icons/podcast-shortcuts.png",
     "type": "plugin",
@@ -57,11 +57,19 @@
     "description": "Podcast Shortcuts"
   },
   {
-    "id": "019ad9d4-ec83-70f3-8fc2-193c6a4f6dfd",
+    "id": "8",
     "name": "BB AFK",
     "icon": "/images/icons/bb-afk.png",
     "type": "plugin",
     "url": "https://github.com/tcyeee/bb-afk",
     "description": "BB AFK"
+  },
+  {
+    "id": "9",
+    "name": "画个圣诞帽",
+    "icon": "/images/icons/christmas-hat.png",
+    "type": "miniprogram",
+    "url": "https://github.com/tcyeee/santa-hat",
+    "description": "santa-hat"
   }
 ]

@@ -6,9 +6,15 @@ interface Props {
 }
 
 export default function ProjectCard({ project }: Props) {
+  const handleLinkClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden">
+    <a
+      href={`/project/${project.id}`}
+      className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden cursor-pointer"
+    >
       {project.image && (
         <div className="aspect-video bg-gray-200 dark:bg-gray-700 overflow-hidden">
           <img
@@ -46,6 +52,7 @@ export default function ProjectCard({ project }: Props) {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleLinkClick}
               className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium text-sm transition-colors"
             >
               查看代码 →
@@ -56,6 +63,7 @@ export default function ProjectCard({ project }: Props) {
               href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleLinkClick}
               className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium text-sm transition-colors"
             >
               在线演示 →
@@ -66,7 +74,7 @@ export default function ProjectCard({ project }: Props) {
           {project.year}
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 
