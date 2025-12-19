@@ -1,4 +1,5 @@
 import type { IndexApp } from '../domain';
+import { IndexAppType } from '../config';
 
 interface Props {
   app: IndexApp;
@@ -9,6 +10,7 @@ export default function AppIcon({ app }: Props) {
   const containerStyle = app.type === 'plugin' 
     ? 'p-1 border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-2xl'
     : '';
+  const isMiniProgram = app.type === IndexAppType.MINI_PROGRAM;
 
   const imageContent = (
     <>
@@ -23,6 +25,13 @@ export default function AppIcon({ app }: Props) {
         }}
       />
       <div className={``} />
+      {isMiniProgram && (
+        <img
+          src="/images/mini-program.png"
+          alt="微信小程序"
+          className="absolute -bottom-2 -right-2 w-12 h-12"
+        />
+      )}
     </>
   );
 
