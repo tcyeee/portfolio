@@ -25,6 +25,25 @@ function getTitleFromFilename(filename) {
 }
 
 /**
+ * 生成 slug：优先用 frontmatter.slug，其次标题，最后文件名
+ * @param {object} frontmatter
+ * @param {string} filename
+ */
+function resolveSlug(frontmatter, filename) {
+  const source =
+    frontmatter.slug ||
+    frontmatter.title ||
+    getTitleFromFilename(filename);
+
+  return String(source)
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-_]/g, '')
+    || getTitleFromFilename(filename).toLowerCase().replace(/\s+/g, '-');
+}
+
+/**
  * 生成项目索引
  */
 function generateProjectIndex() {
@@ -47,6 +66,7 @@ function generateProjectIndex() {
       const { data: frontmatter } = matter(fileContent);
 
       const project = {
+        slug: resolveSlug(frontmatter, file),
         title: frontmatter.title || getTitleFromFilename(file),
         created: frontmatter.created || '',
         category: frontmatter.category || 'other',

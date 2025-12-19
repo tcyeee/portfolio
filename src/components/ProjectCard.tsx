@@ -10,8 +10,10 @@ export default function ProjectCard({ project }: Props) {
     e.stopPropagation();
   };
 
-  return (
-    <div className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden">
+  const slug = project.slug || '';
+
+  const cardContent = (
+    <>
       {project.banner && (
         <div className="aspect-video bg-gray-200 dark:bg-gray-700 overflow-hidden">
           <img
@@ -61,7 +63,7 @@ export default function ProjectCard({ project }: Props) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleLinkClick}
-              className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium text-sm transition-colors"
+              className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover文本-primary-300 font-medium text-sm transition-colors"
             >
               在线演示 →
             </a>
@@ -73,6 +75,23 @@ export default function ProjectCard({ project }: Props) {
           </div>
         )}
       </div>
+    </>
+  );
+
+  if (slug) {
+    return (
+      <a
+        href={`/project/${slug}`}
+        className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden cursor-pointer"
+      >
+        {cardContent}
+      </a>
+    );
+  }
+
+  return (
+    <div className="block bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden">
+      {cardContent}
     </div>
   );
 }

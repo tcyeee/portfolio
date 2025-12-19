@@ -1,6 +1,7 @@
 import type { IndexAppType, ProjectCategory } from "./config";
 
 export interface Project {
+    slug: string;
     title: string;
     created: string;
     category: ProjectCategory;
