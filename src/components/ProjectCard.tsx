@@ -14,10 +14,10 @@ export default function ProjectCard({ project }: Props) {
 
   const cardContent = (
     <>
-      {project.banner && (
+      {(project.preview || project.banner) && (
         <div className="aspect-video bg-gray-200 dark:bg-gray-700 overflow-hidden">
           <img
-            src={project.banner}
+            src={project.preview || project.banner}
             alt={project.title}
             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
           />

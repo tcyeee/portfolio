@@ -5,6 +5,7 @@ tags:
   - 小程序
   - AI
 banner: /images/banner/11.png
+preview: /images/preview/1.png
 githubUrl: https://github.com/tcyeee/santa-hat
 demoUrl: 
 downloadUrl:

@@ -7,6 +7,7 @@ export interface Project {
     category: ProjectCategory;
     tags: string[];
     banner?: string;
+    preview?: string;
     demoUrl?: string;
     downloadUrl?: string;
     githubUrl?: string;
