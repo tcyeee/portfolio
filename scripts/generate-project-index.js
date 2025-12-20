@@ -44,6 +44,28 @@ function resolveSlug(frontmatter, filename) {
 }
 
 /**
+ * 规范化日期：只保留 YYYY-MM-DD
+ * @param {unknown} value
+ * @returns {string}
+ */
+function normalizeDate(value) {
+  if (!value) return '';
+
+  if (typeof value === 'string') {
+    const match = value.match(/(\d{4}-\d{2}-\d{2})/);
+    if (match) return match[1];
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+/**
  * 生成项目索引
  */
 function generateProjectIndex() {
@@ -68,7 +90,7 @@ function generateProjectIndex() {
       const project = {
         slug: resolveSlug(frontmatter, file),
         title: frontmatter.title || getTitleFromFilename(file),
-        created: frontmatter.created || '',
+        created: normalizeDate(frontmatter.created),
         category: frontmatter.category || 'other',
         tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
         banner: frontmatter.banner || '',
