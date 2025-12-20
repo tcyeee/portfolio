@@ -1,36 +1,75 @@
 ---
-created: 2025-06-17 13:25
-category: plugin
+created: 2023-06-17 13:25
+category: app
 tags:
   - Flutter
   - Dart
   - Desktop-App
-banner: /images/project/3.png
+banner: /images/project/1_2.jpg
+demoUrl: 
 githubUrl: https://github.com/tcyeee/pictidy
-demoUrl: https://obsidian.md/plugins/example
-description: PicTidy is a simple and efficient desktop tool designed to help you clean and organize your photos.
+description: 为满足日常使用场景而设计制作的一款客制化键盘, 代码以及图纸我已经开源, 并且已有商家在量产售卖, 销量1000+
 ---
 
-PixWallet is a pixel-art-inspired Solana wallet built with Tauri, designed to provide a lightweight and secure experience. It supports both macOS and Windows, allowing users to manage their SOL assets seamlessly across desktop platforms.
+# PicTidy
 
-# Getting Started
+PicTidy is a simple and efficient desktop album cleanup tool that helps you organize and manage your photos and videos.
 
-You can quickly start a project via `pnpm`，If you are interested in making a tauri app, please visit the documentation website.
+## Features
 
-```shell
-pnpm i
-pnpm run tauri dev
+- 📸 **Media Browsing**: Display photos and videos from folders one by one
+- 🗑️ **Delete Functionality**: Quickly delete unwanted media files
+- ⭐ **Favorite Management**: Mark your favorite photos and videos
+- 📁 **Album Management**: Organize media files into different albums
+- ⌨️ **Keyboard Shortcuts**: All operations support keyboard shortcuts for improved efficiency
+- 💡 **Operation Hints**: Clear keyboard shortcut hints and operation feedback
+
+## Keyboard Shortcuts
+
+- `←` or `A`: Previous
+- `→` or `D`: Next
+- `Delete` or `Backspace`: Delete current media
+- `F`: Toggle favorite status
+- `S`: Add to album
+
+## Usage
+
+1. After launching the application, click the "Select Folder" button or use the menu to select a folder containing photos/videos
+2. The app will automatically scan and load all media files
+3. Use keyboard shortcuts or buttons to perform the following operations:
+   - Browse photos/videos (left/right arrows or A/D keys)
+   - Delete unwanted files (Delete key)
+   - Favorite liked media (F key)
+   - Add to album (S key)
+
+## System Requirements
+
+- Flutter SDK >= 3.0.0
+- Supports macOS, Windows, and Linux desktop platforms
+
+## Installation and Running
+
+```bash
+# Install dependencies
+flutter pub get
+
+# Run application (macOS)
+flutter run -d macos
+
+# Run application (Windows)
+flutter run -d windows
+
+# Run application (Linux)
+flutter run -d linux
 ```
 
-## Platforms
+## Tech Stack
 
-Tauri currently supports development and distribution on the following platforms:
+- Flutter - Cross-platform UI framework
+- file_picker - Folder selection
+- video_player - Video playback
+- shared_preferences - Data persistence
 
-| Platform   | Versions                                                                                                        |
-| ---------- | --------------------------------------------------------------------------------------------------------------- |
-| Windows    | 7 and above                                                                                                     |
-| macOS      | 10.15 and above                                                                                                 |
-| Linux      | webkit2gtk 4.0 for Tauri v1 (for example Ubuntu 18.04). webkit2gtk 4.1 for Tauri v2 (for example Ubuntu 22.04). |
-| iOS/iPadOS | 9 and above                                                                                                     |
-| Android    | 7 and above (currently 8 and above)                                                                             |
+## License
 
+See LICENSE file for details
