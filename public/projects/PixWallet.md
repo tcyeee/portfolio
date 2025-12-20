@@ -7,12 +7,20 @@ tags:
   - Web3
   - 钱包
   - Rust
-banner: /images/project/2.png
+banner: /images/banner/05.png
 githubUrl: https://github.com/tcyeee/PixWallet
 demoUrl: 
 downloadUrl:
 description: PixWallet is a pixel-art-inspired Solana wallet built with Tauri, designed to provide a lightweight and secure experience. It supports both macOS and Windows, allowing users to manage their SOL assets seamlessly across desktop platforms.
 ---
+
+<div style="display:flex;justify-content: center;gap:0.5rem;width:auto">
+	<img src="https://img.shields.io/badge/📩-tcyeee@outlook.com-red">
+	<img src="https://img.shields.io/github/last-commit/tcyeee/PixWallet">
+	<img src="https://img.shields.io/github/v/release/tcyeee/PixWallet">
+	<img src="https://img.shields.io/github/license/tcyeee/PixWallet">
+	<img src="https://img.shields.io/github/stars/tcyeee/PixWallet">
+</div>
 
 PixWallet is a pixel-art-inspired Solana wallet built with Tauri, designed to provide a lightweight and secure experience. It supports both macOS and Windows, allowing users to manage their SOL assets seamlessly across desktop platforms.
 
