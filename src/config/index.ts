@@ -32,7 +32,7 @@ export enum IndexAppType {
   PLUGIN = 'plugin',
 }
 // 首页显示作品数量
-export const homeDisplayCount = 3;
+export const homeDisplayCount = 6;
 
 export const appCloudConfig = {
   // APP图标大小（单位：px）

@@ -50,6 +50,21 @@
     "description": "PixWallet is a pixel-art-inspired Solana wallet built with Tauri, designed to provide a lightweight and secure experience. It supports both macOS and Windows, allowing users to manage their SOL assets seamlessly across desktop platforms."
   },
   {
+    "slug": "podcast-shortcuts",
+    "title": "Podcast Shortcuts",
+    "created": "2024-08-07 13:25",
+    "category": "plugin",
+    "tags": [
+      "Chrome",
+      "Plugin"
+    ],
+    "banner": "/images/banner/02.png",
+    "demoUrl": "",
+    "downloadUrl": "https://chromewebstore.google.com/detail/podcastshortcuts/kfpjgalpaajacpngajeebifbkgpjolgm",
+    "githubUrl": "https://github.com/tcyeee/podcast-shortcuts",
+    "description": "A small Obsidian plugin to hide the Obsidian Bases toolbar and lock header interaction on demand."
+  },
+  {
     "slug": "bookmarkify",
     "title": "Bookmarkify",
     "created": "2023-06-17 13:25",
