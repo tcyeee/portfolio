@@ -1,5 +1,20 @@
 [
   {
+    "slug": "draw-a-santa-hat",
+    "title": "Draw a Santa Hat",
+    "created": "2025-12-20 13:25",
+    "category": "blockchain",
+    "tags": [
+      "小程序",
+      "AI"
+    ],
+    "banner": "/images/banner/11.png",
+    "demoUrl": "",
+    "downloadUrl": "",
+    "githubUrl": "https://github.com/tcyeee/santa-hat",
+    "description": "PixWallet is a pixel-art-inspired Solana wallet built with Tauri, designed to provide a lightweight and secure experience. It supports both macOS and Windows, allowing users to manage their SOL assets seamlessly across desktop platforms."
+  },
+  {
     "slug": "obsidian-bases-lock",
     "title": "Obsidian Bases Lock",
     "created": "2025-06-17 13:25",
@@ -131,7 +146,7 @@
     "slug": "bb-afk",
     "title": "BB AFK",
     "created": "2020-02-17 13:25",
-    "category": "game",
+    "category": "mod",
     "tags": [
       "Minecraft",
       "Game",
@@ -155,7 +170,7 @@
     "banner": "/images/banner/01.png",
     "demoUrl": "",
     "downloadUrl": "",
-    "githubUrl": "",
+    "githubUrl": "https://github.com/tcyeee/raven-test",
     "description": "A fast and minimal app implementing a short-form Raven’s Progressive Matrices test. Provides quick cognitive evaluation within three minutes, optimized for mobile usability and scoring accuracy."
   }
 ]
