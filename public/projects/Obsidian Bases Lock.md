@@ -15,13 +15,9 @@ description: A small Obsidian plugin to hide the Obsidian Bases toolbar and lock
 
 <div style="display:flex;justify-content: center;gap:0.5rem;width:auto">
 	<img src="https://img.shields.io/badge/📩-tcyeee@outlook.com-red">
-	<!-- last commit -->
 	<img src="https://img.shields.io/github/last-commit/tcyeee/obsidian-bases-lock">
-	<!-- release -->
 	<img src="https://img.shields.io/github/v/release/tcyeee/obsidian-bases-lock">
-	<!-- license -->
 	<img src="https://img.shields.io/github/license/tcyeee/obsidian-bases-lock">
-	<!-- stars -->
 	<img src="https://img.shields.io/github/stars/tcyeee/obsidian-bases-lock">
 </div>
 

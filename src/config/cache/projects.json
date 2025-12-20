@@ -16,6 +16,22 @@
     "description": "A small Obsidian plugin to hide the Obsidian Bases toolbar and lock header interaction on demand."
   },
   {
+    "slug": "obsidian-image-cluster",
+    "title": "Obsidian Image Cluster",
+    "created": "2025-06-17 13:25",
+    "category": "plugin",
+    "tags": [
+      "Obsidian",
+      "TypeScript",
+      "Plugin"
+    ],
+    "banner": "/images/banner/10.png",
+    "demoUrl": "",
+    "downloadUrl": "https://github.com/tcyeee/obsidian-image-cluster/releases",
+    "githubUrl": "https://github.com/tcyeee/obsidian-image-cluster",
+    "description": "Obsidian Image Cluster helps you easily combine multiple images together in your notes, making your note interface more beautiful and organized."
+  },
+  {
     "slug": "pixwallet",
     "title": "PixWallet",
     "created": "2025-06-17 13:25",
