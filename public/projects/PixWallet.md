@@ -8,6 +8,7 @@ tags:
   - 钱包
   - Rust
 banner: /images/banner/05.png
+preview: /images/preview/2.png
 githubUrl: https://github.com/tcyeee/PixWallet
 demoUrl: 
 downloadUrl:
