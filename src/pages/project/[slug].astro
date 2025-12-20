@@ -1,7 +1,13 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { projects, categoryLabels, categoryColors, ProjectCategory } from "../../config";
-import type { Project } from "../../domain";
+import Layout from '../../layouts/Layout.astro'
+import MarkdownContent from '../../components/MarkdownContent.astro'
+import { projects, categoryLabels, categoryColors, ProjectCategory } from '../../config'
+import type { Project } from '../../domain'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import matter from 'gray-matter'
+import { projectConfig } from '../../config/generate-config.js'
 
 // 生成静态路径
 export async function getStaticPaths() {
@@ -11,34 +17,90 @@ export async function getStaticPaths() {
       props: {
         project: project,
       },
-    };
-  });
+    }
+  })
 }
 
 interface Props {
-  project: Project;
+  project: Project
 }
 
 // 从 props 获取项目数据（getStaticPaths 已经确保匹配）
-const { project } = Astro.props;
+const { project } = Astro.props
 
 // 从 params 获取 slug（Astro 会自动解码）
-const slugFromParams = Astro.params.slug;
+const slugFromParams = Astro.params.slug
+
+// 解析 slug 的方式与索引生成脚本保持一致
+const resolveSlug = (frontmatter: Record<string, any>, filename: string) => {
+  const source = frontmatter.slug || frontmatter.title || filename.replace(/\.md$/, '')
+  return (
+    String(source)
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-_]/g, '') || filename.toLowerCase().replace(/\s+/g, '-').replace(/\.md$/, '')
+  )
+}
+
+// 项目目录路径
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const rootDir = path.resolve(__dirname, '../../../')
+const projectDir = path.join(rootDir, projectConfig.projectDir)
+
+// 读取对应的 Markdown 内容
+let markdownContent = ''
+let markdownFrontmatter: Record<string, any> = {}
+
+try {
+  const files = fs.readdirSync(projectDir).filter((file) => file.endsWith('.md') && !file.startsWith('.'))
+
+  for (const file of files) {
+    const filePath = path.join(projectDir, file)
+    const parsed = matter(fs.readFileSync(filePath, 'utf-8'))
+    const resolvedSlug = resolveSlug(parsed.data || {}, file)
+
+    if (resolvedSlug === slugFromParams) {
+      markdownContent = parsed.content
+      markdownFrontmatter = parsed.data || {}
+      break
+    }
+  }
+
+  // 兜底：直接按 slug 匹配同名文件
+  if (!markdownContent) {
+    const directPath = path.join(projectDir, `${slugFromParams}.md`)
+    if (fs.existsSync(directPath)) {
+      const parsed = matter(fs.readFileSync(directPath, 'utf-8'))
+      markdownContent = parsed.content
+      markdownFrontmatter = parsed.data || {}
+    }
+  }
+} catch (error) {
+  console.error('读取项目 Markdown 失败：', error)
+}
 
 // 检查项目是否存在
 if (!project) {
-  console.error(`Project not found: ${slugFromParams}`);
-  return Astro.redirect("/projects");
+  console.error(`Project not found: ${slugFromParams}`)
+  return Astro.redirect('/projects')
 }
 
-const title = project.title;
-const description = project.description;
-const category = project.category;
-const tags = project.tags || [];
-const image = project.banner || "";
-const githubUrl = project.githubUrl || "";
-const demoUrl = project.demoUrl || "";
-const created = project.created;
+// 合并配置与 Markdown Frontmatter
+const title = project.title || markdownFrontmatter.title || slugFromParams
+const category = (project.category || markdownFrontmatter.category || 'other') as ProjectCategory
+const tags = (project.tags && project.tags.length > 0 ? project.tags : markdownFrontmatter.tags) || []
+const image = project.banner || markdownFrontmatter.banner || ''
+const githubUrl = project.githubUrl || markdownFrontmatter.githubUrl || ''
+const demoUrl = project.demoUrl || markdownFrontmatter.demoUrl || ''
+const created = project.created || markdownFrontmatter.created || ''
+
+// 未找到内容时跳转
+if (!markdownContent) {
+  console.error(`Project markdown not found: ${slugFromParams}`)
+  return Astro.redirect('/projects')
+}
 ---
 
 <Layout title={title}>
@@ -46,19 +108,9 @@ const created = project.created;
     <!-- 返回按钮 -->
     <a
       href="/projects"
-      class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors"
-    >
-      <svg
-        class="w-5 h-5 mr-2"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M15 19l-7-7 7-7"></path>
+      class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
       </svg>
       返回作品列表
     </a>
@@ -73,93 +125,73 @@ const created = project.created;
           {categoryLabels[category as ProjectCategory | 'all']}
         </span>
       </div>
-      <div
-        class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400"
-      >
-        {created && (
-          <time>
-            {created}
-          </time>
-        )}
-        {tags && tags.length > 0 && (
-          <div class="flex gap-2">
-            {tags.map((tag: string) => (
-              <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+      <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+        {created && <time>{created}</time>}
+        {
+          tags && tags.length > 0 && (
+            <div class="flex gap-2">
+              {tags.map((tag: string) => (
+                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">{tag}</span>
+              ))}
+            </div>
+          )
+        }
       </div>
     </header>
 
     <!-- 项目图片 -->
-    {image && (
-      <div class="mb-8">
-        <img
-          src={image}
-          alt={title}
-          class="rounded-lg w-full h-auto object-cover"
-        />
-      </div>
-    )}
+    {
+      image && (
+        <div class="mb-8">
+          <img src={image} alt={title} class="rounded-lg w-full h-auto object-cover" />
+        </div>
+      )
+    }
 
-    <!-- 项目描述 -->
+    <!-- 项目内容 -->
     <div class="mb-8">
-      <div class="prose prose-lg dark:prose-invert max-w-none">
-        <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">
-          {description}
-        </p>
-      </div>
+      <MarkdownContent content={markdownContent} />
     </div>
 
     <!-- 项目链接 -->
     <div class="flex gap-4 mb-8">
-      {githubUrl && (
-        <a
-          href={githubUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center px-6 py-3 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
-        >
-          <svg
-            class="w-5 h-5 mr-2"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          查看代码
-        </a>
-      )}
-      {demoUrl && (
-        <a
-          href={demoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
-        >
-          <svg
-            class="w-5 h-5 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-            />
-          </svg>
-          在线演示
-        </a>
-      )}
+      {
+        githubUrl && (
+          <a
+            href={githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-6 py-3 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                fill-rule="evenodd"
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            查看代码
+          </a>
+        )
+      }
+      {
+        demoUrl && (
+          <a
+            href={demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
+            </svg>
+            在线演示
+          </a>
+        )
+      }
     </div>
   </div>
 </Layout>
-
