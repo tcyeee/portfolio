@@ -128,6 +128,23 @@
     "description": "Nft交易小站是一个基于Sepolia测试网络的NFT交易平台, 目前托管于Vercel, 交易货币可以在任意Faucet获取.\\r\\nps:项目大概永远不会并入ETH主网."
   },
   {
+    "slug": "bb-afk",
+    "title": "BB AFK",
+    "created": "2020-02-17 13:25",
+    "category": "game",
+    "tags": [
+      "Minecraft",
+      "Game",
+      "Mod",
+      "Java"
+    ],
+    "banner": "/images/banner/03.png",
+    "demoUrl": "",
+    "downloadUrl": "",
+    "githubUrl": "https://github.com/tcyeee/bb-afk",
+    "description": "A Minecraft plugin that detects idle players and rewards them for staying idle in specific locations."
+  },
+  {
     "slug": "raven-test",
     "title": "Raven Test",
     "created": "2019-06-17 13:25",
