@@ -16,6 +16,27 @@ function decodeHtmlEntities(text: string): string {
     .replace(/&#39;/g, "'");
 }
 
+/**
+ * 仅在代码块和行内代码中解码一层 HTML 实体，避免出现 &amp;lt; 这种双重转义
+ */
+function decodeDoubleEscapedInCode(html: string): string {
+  // 只把 &amp;lt; / &amp;gt; / &amp;amp; / &amp;quot; / &amp;#39; 解码为一层实体，保持安全的转义输出
+  const decodeOnce = (snippet: string) =>
+    snippet.replace(/&amp;(lt|gt|amp|quot|#39);/g, "&$1;");
+
+  // 处理代码块
+  const htmlWithDecodedBlocks = html.replace(
+    /<pre><code[^>]*>[\s\S]*?<\/code><\/pre>/g,
+    (block) => decodeOnce(block)
+  );
+
+  // 处理行内代码
+  return htmlWithDecodedBlocks.replace(
+    /<code>([\s\S]*?)<\/code>/g,
+    (inline) => decodeOnce(inline)
+  );
+}
+
 // 配置 marked
 marked.use(gfmHeadingId());
 marked.use(
@@ -141,6 +162,8 @@ export async function renderMarkdown(
   const contentWithImages = processImagePaths(normalizedContent, options?.imageBasePath);
   // 处理数学公式块
   const processedContent = processMathBlocks(contentWithImages);
-  return await marked(processedContent);
+  // 渲染 Markdown，再对代码块进行一次实体解码，避免双重转义
+  const html = await marked(processedContent);
+  return decodeDoubleEscapedInCode(html);
 }
 

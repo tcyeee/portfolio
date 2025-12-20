@@ -9,9 +9,9 @@
       "TypeScript",
       "Plugin"
     ],
-    "banner": "/images/project/3.png",
+    "banner": "/images/banner/06.png",
     "demoUrl": "",
-    "downloadUrl": "",
+    "downloadUrl": "https://github.com/tcyeee/obsidian-bases-lock/releases",
     "githubUrl": "https://github.com/tcyeee/obsidian-bases-lock",
     "description": "A small Obsidian plugin to hide the Obsidian Bases toolbar and lock header interaction on demand."
   },
