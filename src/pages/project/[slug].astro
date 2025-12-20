@@ -115,6 +115,15 @@ if (!markdownContent) {
       返回作品列表
     </a>
 
+    <!-- 项目图片 -->
+    {
+      image && (
+        <div class="mb-8">
+          <img src={image} alt={title} class="rounded-lg w-full h-[200px] object-cover" />
+        </div>
+      )
+    }
+
     <!-- 项目标题 -->
     <header class="mb-8">
       <div class="flex items-start justify-between mb-4">
@@ -138,15 +147,6 @@ if (!markdownContent) {
         }
       </div>
     </header>
-
-    <!-- 项目图片 -->
-    {
-      image && (
-        <div class="mb-8">
-          <img src={image} alt={title} class="rounded-lg w-full h-auto object-cover" />
-        </div>
-      )
-    }
 
     <!-- 项目内容 -->
     <div class="mb-8">
