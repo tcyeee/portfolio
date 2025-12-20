@@ -5,13 +5,11 @@ tags:
   - Flutter
   - Dart
   - Desktop-App
-banner: /images/project/1_2.jpg
+banner: /images/banner/08.png
 demoUrl: 
 githubUrl: https://github.com/tcyeee/pictidy
-description: 为满足日常使用场景而设计制作的一款客制化键盘, 代码以及图纸我已经开源, 并且已有商家在量产售卖, 销量1000+
+description: PicTidy is a simple and efficient desktop tool designed to help you clean and organize your photos.
 ---
-
-# PicTidy
 
 PicTidy is a simple and efficient desktop album cleanup tool that helps you organize and manage your photos and videos.
 
