@@ -34,6 +34,21 @@
     "description": "PixWallet is a pixel-art-inspired Solana wallet built with Tauri, designed to provide a lightweight and secure experience. It supports both macOS and Windows, allowing users to manage their SOL assets seamlessly across desktop platforms."
   },
   {
+    "slug": "bookmarkify",
+    "title": "Bookmarkify",
+    "created": "2023-06-17 13:25",
+    "category": "app",
+    "tags": [
+      "bookmark",
+      "WEB"
+    ],
+    "banner": "/images/banner/04.png",
+    "demoUrl": "https://bookmarkify.cc",
+    "downloadUrl": "",
+    "githubUrl": "https://github.com/tcyeee/bookmarkify",
+    "description": "Bookmarkify is a clean and intuitive web application that helps you collect and manage your online bookmarks. You can save any webpage with one click, organize your links into easy-to-browse collections, and share your favorite bookmark lists with others."
+  },
+  {
     "slug": "omega40-cases",
     "title": "Omega40 Cases",
     "created": "2023-06-17 13:25",
@@ -64,5 +79,21 @@
     "downloadUrl": "",
     "githubUrl": "https://github.com/tcyeee/pictidy",
     "description": "PicTidy is a simple and efficient desktop tool designed to help you clean and organize your photos."
+  },
+  {
+    "slug": "nft-dapp",
+    "title": "NFT DApp",
+    "created": "2022-06-17 13:25",
+    "category": "blockchain",
+    "tags": [
+      "Solidity",
+      "Web3",
+      "Ethereum"
+    ],
+    "banner": "/images/banner/09.png",
+    "demoUrl": "https://challenge-0-atl5oq0p1-lucas-projects-360e6e92.vercel.app",
+    "downloadUrl": "",
+    "githubUrl": "",
+    "description": "Nft交易小站是一个基于Sepolia测试网络的NFT交易平台, 目前托管于Vercel, 交易货币可以在任意Faucet获取.\\r\\nps:项目大概永远不会并入ETH主网."
   }
 ]
