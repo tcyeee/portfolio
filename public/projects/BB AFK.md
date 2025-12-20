@@ -1,5 +1,5 @@
 ---
-created: 2020-02-17 13:25
+created: 2020-02-17
 category: mod
 tags:
   - Minecraft

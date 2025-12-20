@@ -1,5 +1,5 @@
 ---
-created: 2025-06-17 13:25
+created: 2025-06-17
 category: plugin
 tags:
   - Obsidian
@@ -36,6 +36,7 @@ You can install the plugin directly from Obsidian's Community Plugins browser:
 2. Click on Browse and search for "Image Cluster"
 3. Click Install and then Enable the plugin
    
+
 You can also install the plugin directly from its Community Plugins entry: [Image Cluster on Obsidian](https://obsidian.md/plugins?id=image-cluster).
 
 ### Manual Installation

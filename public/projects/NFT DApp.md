@@ -1,5 +1,5 @@
 ---
-created: 2022-06-17 13:25
+created: 2022-06-17
 category: blockchain
 tags:
   - Solidity

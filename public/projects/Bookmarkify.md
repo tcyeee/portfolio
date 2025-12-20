@@ -1,5 +1,5 @@
 ---
-created: 2023-06-17 13:25
+created: 2023-06-17
 category: app
 tags:
   - bookmark

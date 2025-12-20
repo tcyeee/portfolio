@@ -1,5 +1,5 @@
 ---
-created: 2024-08-07 13:25
+created: 2024-08-07
 category: plugin
 tags:
   - Chrome

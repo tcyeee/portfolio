@@ -1,5 +1,5 @@
 ---
-created: 2025-06-17 13:25
+created: 2025-11-17
 category: plugin
 tags:
   - Obsidian
