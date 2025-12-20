@@ -110,18 +110,18 @@ export function processMathBlocks(content: string): string {
 }
 
 /**
- * 处理图片路径：将相对路径 assets/... 转换为 /articles/assets/...
+ * 处理图片路径：将相对路径 assets/... 或 ./assets/... 转换为指定基路径下的绝对路径
  */
-export function processImagePaths(content: string): string {
-  // 匹配 Markdown 图片语法：![alt](assets/...) 或 ![](assets/...)
-  const imageRegex = /!\[([^\]]*)\]\((assets\/[^\)]+)\)/g;
-  return content.replace(imageRegex, (match, alt, src) => {
+export function processImagePaths(content: string, imageBasePath = '/articles'): string {
+  // 匹配 Markdown 图片语法：![alt](assets/...) 或 ![](./assets/...)
+  const imageRegex = /!\[([^\]]*)\]\(\s*(\.\/)?(assets\/[^\s\)]+)\s*\)/g;
+  return content.replace(imageRegex, (match, alt, _dotPrefix, src) => {
     // 如果路径已经是绝对路径（以 / 开头），则不处理
     if (src.startsWith('/')) {
       return match;
     }
     // 将相对路径转换为绝对路径
-    const absolutePath = `/articles/${src}`;
+    const absolutePath = `${imageBasePath}/${src}`;
     return `![${alt}](${absolutePath})`;
   });
 }
@@ -129,11 +129,16 @@ export function processImagePaths(content: string): string {
 /**
  * 渲染 Markdown 内容为 HTML
  */
-export async function renderMarkdown(content: string): Promise<string> {
+export async function renderMarkdown(
+  content: string,
+  options?: {
+    imageBasePath?: string;
+  }
+): Promise<string> {
   // 规范化换行符：将 \r\n 和 \r 统一转换为 \n
   const normalizedContent = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   // 处理图片路径
-  const contentWithImages = processImagePaths(normalizedContent);
+  const contentWithImages = processImagePaths(normalizedContent, options?.imageBasePath);
   // 处理数学公式块
   const processedContent = processMathBlocks(contentWithImages);
   return await marked(processedContent);

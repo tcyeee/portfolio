@@ -4,10 +4,11 @@ import "katex/dist/katex.min.css";
 
 interface Props {
   content: string;
+  imageBasePath?: string;
 }
 
-const { content } = Astro.props;
-const htmlContent = await renderMarkdown(content);
+const { content, imageBasePath = '/articles' } = Astro.props;
+const htmlContent = await renderMarkdown(content, { imageBasePath });
 ---
 
 <article
