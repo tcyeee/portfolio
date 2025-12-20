@@ -5,8 +5,9 @@ tags:
   - Obsidian
   - TypeScript
   - Plugin
-banner: /images/project/3.png
+banner: /images/banner/06.png
 githubUrl: https://github.com/tcyeee/obsidian-bases-lock
+downloadUrl: https://github.com/tcyeee/obsidian-bases-lock/releases
 demoUrl: 
 description: A small Obsidian plugin to hide the Obsidian Bases toolbar and lock header interaction on demand.
 ---
@@ -24,8 +25,6 @@ description: A small Obsidian plugin to hide the Obsidian Bases toolbar and lock
 	<img src="https://img.shields.io/github/stars/tcyeee/obsidian-bases-lock">
 </div>
 
-
-<br><br><br>
 
 A small Obsidian plugin to **hide the Obsidian Bases toolbar and lock header interaction on demand**.  
 You can quickly switch the state by clicking the **Lock / Unlock** button.
