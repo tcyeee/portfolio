@@ -8,6 +8,7 @@ export interface Project {
     tags: string[];
     banner?: string;
     demoUrl?: string;
+    downloadUrl?: string;
     githubUrl?: string;
     description: string;
 }

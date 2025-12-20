@@ -1,13 +1,16 @@
 ---
 created: 2025-06-17 13:25
-category: other
+category: blockchain
 tags:
-  - 客制化
-  - Shapr3D
-  - 3D打印
-banner: /images/project/1_2.jpg
+  - Solana
+  - Tauri
+  - Web3
+  - 钱包
+  - Rust
+banner: /images/project/2.png
 githubUrl: https://github.com/tcyeee/PixWallet
-demoUrl: https://obsidian.md/plugins/example
+demoUrl: 
+downloadUrl:
 description: PixWallet is a pixel-art-inspired Solana wallet built with Tauri, designed to provide a lightweight and secure experience. It supports both macOS and Windows, allowing users to manage their SOL assets seamlessly across desktop platforms.
 ---
 

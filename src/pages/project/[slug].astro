@@ -94,6 +94,7 @@ const tags = (project.tags && project.tags.length > 0 ? project.tags : markdownF
 const image = project.banner || markdownFrontmatter.banner || ''
 const githubUrl = project.githubUrl || markdownFrontmatter.githubUrl || ''
 const demoUrl = project.demoUrl || markdownFrontmatter.demoUrl || ''
+const downloadUrl = project.downloadUrl || markdownFrontmatter.downloadUrl || ''
 const created = project.created || markdownFrontmatter.created || ''
 
 // 未找到内容时跳转
@@ -189,6 +190,25 @@ if (!markdownContent) {
               />
             </svg>
             在线演示
+          </a>
+        )
+      }
+      {
+        downloadUrl && (
+          <a
+            href={downloadUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              />
+            </svg>
+            下载地址
           </a>
         )
       }

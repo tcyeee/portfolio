@@ -68,6 +68,17 @@ export default function ProjectCard({ project }: Props) {
               在线演示 →
             </a>
           )}
+          {project.downloadUrl && (
+            <a
+              href={project.downloadUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleLinkClick}
+              className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover文本-primary-300 font-medium text-sm transition-colors"
+            >
+              下载地址 →
+            </a>
+          )}
         </div>
         {project.created && (
           <div className="mt-3 text-xs text-gray-500 dark:text-gray-400">

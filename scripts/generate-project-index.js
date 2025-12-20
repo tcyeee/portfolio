@@ -73,6 +73,7 @@ function generateProjectIndex() {
         tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
         banner: frontmatter.banner || '',
         demoUrl: frontmatter.demoUrl || '',
+        downloadUrl: frontmatter.downloadUrl || '',
         githubUrl: frontmatter.githubUrl || '',
         description: frontmatter.description || '',
       };
