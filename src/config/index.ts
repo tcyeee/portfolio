@@ -62,7 +62,9 @@ export enum ProjectCategory {
   PLUGIN = 'plugin',
   APP = 'app',
   BLOCKCHAIN = 'blockchain',
+  GAME = 'game',
   OTHER = 'other',
+  WX_MINI_PROGRAM = 'wx_mini_program',
 }
 
 // 分类标签中文映射
@@ -71,7 +73,9 @@ export const categoryLabels: Record<ProjectCategory | 'all', string> = {
   [ProjectCategory.PLUGIN]: '插件',
   [ProjectCategory.APP]: '应用',
   [ProjectCategory.BLOCKCHAIN]: 'Web3',
+  [ProjectCategory.GAME]: '游戏',
   [ProjectCategory.OTHER]: '其他',
+  [ProjectCategory.WX_MINI_PROGRAM]: '小程序',
 };
 
 // 分类颜色映射（用于 ProjectCard 组件）
@@ -79,7 +83,9 @@ export const categoryColors: Record<ProjectCategory, string> = {
   'plugin': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
   'app': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
   'blockchain': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+  'game': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
   'other': 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
+  'wx_mini_program': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
 };
 
 // ==============[ 项目分类标签配置 End ]=================

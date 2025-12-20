@@ -28,7 +28,7 @@ export default function AppIcon({ app }: Props) {
       {isMiniProgram && (
         <img
           src="/images/mini-program.png"
-          alt="微信小程序"
+          alt="小程序"
           className="absolute -bottom-2 -right-2 w-12 h-12"
         />
       )}
