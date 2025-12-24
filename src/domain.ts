@@ -2,16 +2,16 @@ import type { IndexAppType, ProjectCategory } from "./config";
 
 export interface Project {
     slug: string;
-    title: string;
-    created: string;
-    category: ProjectCategory;
-    tags: string[];
-    banner?: string;
-    preview?: string;
-    demoUrl?: string;
-    downloadUrl?: string;
-    githubUrl?: string;
-    description: string;
+    title: string;   // 项目标题
+    created: string; // 创建时间
+    category: ProjectCategory;  // 项目分类
+    tags: string[]; // 标签
+    banner?: string; // 横幅图片
+    preview?: string; // 预览图片
+    demoUrl?: string; // 在线演示地址
+    downloadUrl?: string; // 下载地址
+    githubUrl?: string; // GitHub地址
+    description: string; // 项目描述
 }
 
 export interface Article {
