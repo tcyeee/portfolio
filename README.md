@@ -14,6 +14,8 @@
 
 Responsive portfolio built with Astro + React. It showcases projects, articles, and social links with categories, tags, and demo/download links.
 
+![](/public/frame.png)
+
 ## Tech Stack
 - Framework: Astro (with React components)
 - Styling: Tailwind CSS + SCSS

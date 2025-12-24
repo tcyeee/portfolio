@@ -14,6 +14,8 @@
 
 基于 Astro + React 的响应式个人作品集，展示项目、文章与社交信息，附带项目分类、标签和演示链接。
 
+![](/public/frame.png)
+
 ## 技术栈
 - 框架：Astro（集成 React 组件）
 - 样式：Tailwind CSS + SCSS
