@@ -10,7 +10,7 @@
 	<img src="https://img.shields.io/github/stars/tcyeee/portfolio">
 </p>
 
-<div align="center">中文 ｜ <a href="../README.md">English</a></div>
+<div align="center">中文 ｜ <a href="../README.md">English</a></div><br><br>
 
 基于 Astro + React 的响应式个人作品集，展示项目、文章与社交信息，附带项目分类、标签和演示链接。
 
