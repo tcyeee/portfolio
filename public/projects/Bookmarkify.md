@@ -1,10 +1,11 @@
 ---
-created: 2023-06-17
+created: 2025-12-24
 category: app
 tags:
   - bookmark
   - WEB
 banner: /images/banner/04.png
+preview: /images/preview/bookmarkify.png
 demoUrl: https://bookmarkify.cc
 githubUrl: https://github.com/tcyeee/bookmarkify
 description: Bookmarkify is a clean and intuitive web application that helps you collect and manage your online bookmarks. You can save any webpage with one click, organize your links into easy-to-browse collections, and share your favorite bookmark lists with others.
