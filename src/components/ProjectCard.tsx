@@ -54,6 +54,7 @@ export default function ProjectCard({ project }: Props) {
               onClick={handleLinkClick}
               className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium text-sm transition-colors"
             >
+              <span className="icon-github"></span>
               查看代码 →
             </a>
           )}
