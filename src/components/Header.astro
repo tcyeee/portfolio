@@ -1,51 +1,88 @@
 ---
-import { personalInfo } from "../config";
+import { personalInfo } from '../config'
 
 const navigation = [
   {
-    name: "首页",
-    href: "/",
+    name: '首页',
+    href: '/',
   },
   {
-    name: "项目",
-    href: "/projects",
+    name: '项目',
+    href: '/projects',
   },
   {
-    name: "文章",
-    href: "/articles",
+    name: '文章',
+    href: '/articles',
   },
   {
-    name: "关于",
-    href: "/about",
+    name: '关于',
+    href: '/about',
   },
-];
+]
 ---
 
-<header
-  class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800"
->
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
   <nav class="container mx-auto px-4 py-4">
     <div class="flex items-center justify-between">
       <a
         href="/"
-        class="text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
-      >
+        class="text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
         {personalInfo.name}
       </a>
-      <ul class="flex gap-3 md:gap-6 items-center text-sm md:text-base">
-        {
-          navigation.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-              >
-                {item.name}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+      <div class="flex items-center gap-3 md:gap-4">
+        <ul class="flex gap-3 md:gap-6 items-center text-sm md:text-base">
+          {
+            navigation.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                  {item.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <button
+          id="theme-toggle"
+          type="button"
+          class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+          aria-label="切换主题">
+          🌙
+        </button>
+      </div>
     </div>
   </nav>
 </header>
+
+<script is:inline>
+  const storageKey = 'theme'
+  const toggleBtn = document.getElementById('theme-toggle')
+
+  const applyTheme = (isDark) => {
+    document.documentElement.classList.toggle('dark', isDark)
+    localStorage.setItem(storageKey, isDark ? 'dark' : 'light')
+    if (toggleBtn) {
+      toggleBtn.setAttribute('aria-label', isDark ? '切换为浅色模式' : '切换为深色模式')
+      toggleBtn.textContent = isDark ? '🌞' : '🌙'
+    }
+  }
+
+  const initThemeToggle = () => {
+    if (!toggleBtn) return
+    const stored = localStorage.getItem(storageKey)
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const initialDark = stored ? stored === 'dark' : document.documentElement.classList.contains('dark') || prefersDark
+
+    applyTheme(initialDark)
+
+    toggleBtn.addEventListener('click', () => {
+      const next = !document.documentElement.classList.contains('dark')
+      applyTheme(next)
+    })
+  }
+
+  if (typeof window !== 'undefined') {
+    initThemeToggle()
+  }
+</script>
