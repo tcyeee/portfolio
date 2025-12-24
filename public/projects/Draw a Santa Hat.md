@@ -1,6 +1,6 @@
 ---
 created: 2025-12-20
-category: blockchain
+category: wx_mini_program
 tags:
   - 小程序
   - AI
