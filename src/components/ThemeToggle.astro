@@ -1,27 +1,14 @@
 ---
+
 ---
 
 <button
   type="button"
   data-theme-toggle
-  class="relative inline-flex items-center gap-3 rounded-full border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 px-3 py-2 text-gray-700 dark:text-gray-200 shadow-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
+  class="inline-flex items-center rounded-full border border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-800/90 px-3 py-2 text-xl shadow-sm transition-all hover:shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
   aria-label="切换主题"
   aria-pressed="false">
-  <span class="sr-only">切换主题</span>
-  <span class="relative inline-flex items-center w-16 h-8 rounded-full bg-gray-200 dark:bg-gray-700 transition-colors">
-    <span data-sun class="absolute left-1 top-1 flex h-6 w-6 items-center justify-center text-amber-500 opacity-100 transition-opacity">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
-        <circle cx="12" cy="12" r="4" />
-        <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07-7.07-1.42 1.42M8.35 15.65l-1.42 1.42m0-10.14 1.42 1.42m9.3 9.3 1.42 1.42" />
-      </svg>
-    </span>
-    <span data-moon class="absolute right-1 top-1 flex h-6 w-6 items-center justify-center text-indigo-200 opacity-40 transition-opacity">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
-      </svg>
-    </span>
-    <span data-knob class="absolute top-1 left-1 h-6 w-6 rounded-full bg-white dark:bg-gray-900 shadow transition-transform duration-300 ease-out"></span>
-  </span>
+  <span data-emoji class="icon-moon icon-size-20 transition-transform duration-200 ease-out"></span>
 </button>
 
 <script is:inline>
@@ -31,20 +18,18 @@
     const storageKey = 'theme'
     const toggle = document.querySelector('[data-theme-toggle]')
     if (!toggle) return
-    const sun = toggle.querySelector('[data-sun]')
-    const moon = toggle.querySelector('[data-moon]')
-    const knob = toggle.querySelector('[data-knob]')
+    const emoji = toggle.querySelector('[data-emoji]')
 
     const setState = (isDark) => {
       document.documentElement.classList.toggle('dark', isDark)
       localStorage.setItem(storageKey, isDark ? 'dark' : 'light')
       toggle.setAttribute('aria-pressed', String(isDark))
       toggle.setAttribute('aria-label', isDark ? '切换为浅色模式' : '切换为深色模式')
-      sun?.classList.toggle('opacity-40', isDark)
-      moon?.classList.toggle('opacity-100', isDark)
-      moon?.classList.toggle('opacity-40', !isDark)
-      sun?.classList.toggle('opacity-100', !isDark)
-      if (knob) knob.style.transform = isDark ? 'translateX(32px)' : 'translateX(0px)'
+      if (emoji) {
+        emoji.classList.toggle('icon-moon', !isDark)
+        emoji.classList.toggle('icon-sun', isDark)
+        emoji.style.transform = isDark ? 'rotate(-12deg) scale(1.1)' : 'rotate(0deg) scale(1)'
+      }
     }
 
     const init = () => {
@@ -66,4 +51,3 @@
     }
   })()
 </script>
-
