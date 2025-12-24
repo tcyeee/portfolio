@@ -10,8 +10,7 @@
 	<img src="https://img.shields.io/github/stars/tcyeee/portfolio">
 </p>
 
-<div align="center"><a href="i18n/README.zh.md">中文</a> ｜ English</div>
-
+<div align="center"><a href="i18n/README.zh.md">中文</a> ｜ English</div><br><br>
 
 Responsive portfolio built with Astro + React. It showcases projects, articles, and social links with categories, tags, and demo/download links.
 
