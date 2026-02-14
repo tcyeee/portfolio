@@ -66,6 +66,15 @@ import '../styles/icon.scss'
             {personalInfo.email}
           </a>
           <p class="text-sm mt-2">&copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved.</p>
+          {
+            personalInfo.icp && (
+              <p class="text-sm mt-2">
+                <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:text-primary-400 transition-colors">
+                  {personalInfo.icp}
+                </a>
+              </p>
+            )
+          }
         </div>
       </div>
     </div>

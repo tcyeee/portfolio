@@ -16,6 +16,7 @@ export const personalInfo = {
   redNote: 'https://www.xiaohongshu.com/user/profile/5b9cf40e9a9c9300014062b4',
   bilibili: 'https://space.bilibili.com/10879225',
   skills: ['Java', 'Rust', 'SpringBoot', 'SQL', 'RabbitMQ', 'Vue', 'Flutter', 'Solidity', 'Web3'],
+  icp: '浙ICP备18053383号-3',
 }
 
 /* 作品集 ｜ 文章 ｜ 首页APP列表 */
