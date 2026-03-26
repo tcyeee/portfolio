@@ -17,14 +17,12 @@ export default function AppIcon({ app }: Props) {
       <img
         src={app.icon}
         alt={app.name}
-        className={``}
         onError={(e) => {
           // 如果图片加载失败，显示占位符
           const target = e.target as HTMLImageElement;
           target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%23e5e7eb"/%3E%3Ctext x="50" y="50" font-family="Arial" font-size="20" fill="%239ca3af" text-anchor="middle" dominant-baseline="middle"%3EIcon%3C/text%3E%3C/svg%3E';
         }}
       />
-      <div className={``} />
       {isMiniProgram && (
         <img
           src="/images/mini-program.png"

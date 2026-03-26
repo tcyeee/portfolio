@@ -13,7 +13,7 @@ export default function AppList({ apps }: Props) {
 
   return (
     <section className="mb-20 px-4">
-      <div className="w-full mx-auto" style={{ width: '75%' }}>
+      <div className="w-3/4 mx-auto">
         <div 
           className="grid justify-center app-grid"
           style={{
