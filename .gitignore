@@ -22,3 +22,6 @@ pnpm-debug.log*
 .vscode/
 .idea/
 
+
+# generated content indexes (rebuilt by pnpm run generate-article-index / generate-project-index)
+src/config/cache/
