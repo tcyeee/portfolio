@@ -11,7 +11,7 @@ export const personalInfo = {
   location: '中国',
   email: 'tcyeee@outlook.com',
   github: 'https://github.com/tcyeee',
-  twitter: 'https://x.com/home',
+  twitter: 'https://x.com/tcyeee',
   linkedin: '',
   redNote: 'https://www.xiaohongshu.com/user/profile/5b9cf40e9a9c9300014062b4',
   bilibili: 'https://space.bilibili.com/10879225',
@@ -20,9 +20,9 @@ export const personalInfo = {
 }
 
 /* 作品集 ｜ 文章 ｜ 首页APP列表 */
-export const projects: Project[] = JSON.parse(JSON.stringify(projects_json));
-export const articles: Article[] = JSON.parse(JSON.stringify(article_json));
-export const apps: IndexApp[] = JSON.parse(JSON.stringify(index_app_json));
+export const projects: Project[] = projects_json as unknown as Project[]
+export const articles: Article[] = article_json as unknown as Article[]
+export const apps: IndexApp[] = index_app_json as unknown as IndexApp[]
 
 // ==============[ 首页APP展示配置 ]=================
 
