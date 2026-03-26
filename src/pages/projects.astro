@@ -37,7 +37,7 @@ export const categories = ['all', ...Object.values(ProjectCategory)] as const;
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
         {projects.map((project) => (
           <div data-category={project.category} class="project-item">
-            <ProjectCard client:load project={project} />
+            <ProjectCard client:visible project={project} />
           </div>
         ))}
       </div>

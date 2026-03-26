@@ -56,13 +56,13 @@ const featuredProjects = projects.slice(0, homeDisplayCount)
     </section>
 
     <!-- APP列表 -->
-    <AppList client:load apps={apps} />
+    <AppList client:visible apps={apps} />
 
     <!-- Featured Projects -->
     <section class="mb-20">
       <h2 class="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">开源作品</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {featuredProjects.map((project) => <ProjectCard client:load project={project} />)}
+        {featuredProjects.map((project) => <ProjectCard client:visible project={project} />)}
       </div>
       <div class="text-center mt-8">
         <a
