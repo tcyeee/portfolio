@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import matter from 'gray-matter';
 import { projectConfig } from '../src/config/generate-config.js';
+import { resolveSlug } from '../src/utils/slug.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,33 +16,6 @@ const indexPath = projectConfig.indexFile.startsWith('/')
   : projectConfig.indexFile;
 const outputFile = path.resolve(rootDir, indexPath);
 
-/**
- * 从文件名提取标题（去除扩展名）
- * @param {string} filename - 文件名
- * @returns {string} - 标题
- */
-function getTitleFromFilename(filename) {
-  return filename.replace(/\.md$/, '');
-}
-
-/**
- * 生成 slug：优先用 frontmatter.slug，其次标题，最后文件名
- * @param {object} frontmatter
- * @param {string} filename
- */
-function resolveSlug(frontmatter, filename) {
-  const source =
-    frontmatter.slug ||
-    frontmatter.title ||
-    getTitleFromFilename(filename);
-
-  return String(source)
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9-_]/g, '')
-    || getTitleFromFilename(filename).toLowerCase().replace(/\s+/g, '-');
-}
 
 /**
  * 规范化日期：只保留 YYYY-MM-DD
@@ -89,7 +63,7 @@ function generateProjectIndex() {
 
       const project = {
         slug: resolveSlug(frontmatter, file),
-        title: frontmatter.title || getTitleFromFilename(file),
+        title: frontmatter.title || file.replace(/\.md$/, ''),
         created: normalizeDate(frontmatter.created),
         category: frontmatter.category || 'other',
         tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],

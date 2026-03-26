@@ -8,6 +8,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import matter from 'gray-matter'
 import { projectConfig } from '../../config/generate-config.js'
+import { resolveSlug } from '../../utils/slug.js'
 
 // 生成静态路径
 export async function getStaticPaths() {
@@ -34,18 +35,6 @@ const slugFromParams = Astro.params.slug
 // Validate slug to prevent path traversal
 if (slugFromParams && !/^[a-z0-9-_.]+$/i.test(slugFromParams)) {
   return Astro.redirect('/projects')
-}
-
-// 解析 slug 的方式与索引生成脚本保持一致
-const resolveSlug = (frontmatter: Record<string, any>, filename: string) => {
-  const source = frontmatter.slug || frontmatter.title || filename.replace(/\.md$/, '')
-  return (
-    String(source)
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-_]/g, '') || filename.toLowerCase().replace(/\s+/g, '-').replace(/\.md$/, '')
-  )
 }
 
 // 项目目录路径
