@@ -84,68 +84,42 @@ const allTags = Array.from(
 </Layout>
 
 <script>
-  // 筛选文章的函数
   function filterArticles(selectedTags: string[]) {
     const articleItems = document.querySelectorAll(
-      ".article-item"
-    ) as NodeListOf<HTMLElement>;
-    const emptyMessage = document.getElementById("empty-filter-message");
-    const articlesContainer = document.getElementById("articles-container");
+      '.article-item'
+    ) as NodeListOf<HTMLElement>
+    const emptyMessage = document.getElementById('empty-filter-message')
+    const articlesContainer = document.getElementById('articles-container')
 
-    // 如果没有选中任何tag，显示所有文章
     if (selectedTags.length === 0) {
-      articleItems.forEach((item) => {
-        item.style.display = "";
-      });
-      if (emptyMessage) emptyMessage.classList.add("hidden");
-      if (articlesContainer) articlesContainer.classList.remove("hidden");
-      return;
+      articleItems.forEach((item) => { item.style.display = '' })
+      if (emptyMessage) emptyMessage.classList.add('hidden')
+      if (articlesContainer) articlesContainer.classList.remove('hidden')
+      return
     }
 
-    let visibleCount = 0;
-
+    let visibleCount = 0
     articleItems.forEach((item) => {
-      const tagsStr = item.getAttribute("data-tags");
-      if (!tagsStr) {
-        item.style.display = "none";
-        return;
-      }
-
+      const tagsStr = item.getAttribute('data-tags')
+      if (!tagsStr) { item.style.display = 'none'; return }
       try {
-        const articleTags = JSON.parse(tagsStr) as string[];
-        // 如果文章包含任意一个选中的tag，就显示
-        const shouldShow = selectedTags.some((tag) =>
-          articleTags.includes(tag)
-        );
+        const articleTags = JSON.parse(tagsStr) as string[]
+        const shouldShow = selectedTags.some((tag) => articleTags.includes(tag))
+        if (shouldShow) { item.style.display = ''; visibleCount++ }
+        else { item.style.display = 'none' }
+      } catch { item.style.display = 'none' }
+    })
 
-        if (shouldShow) {
-          item.style.display = "";
-          visibleCount++;
-        } else {
-          item.style.display = "none";
-        }
-      } catch (e) {
-        item.style.display = "none";
-      }
-    });
-
-    // 显示/隐藏空消息
     if (visibleCount === 0) {
-      if (emptyMessage) emptyMessage.classList.remove("hidden");
-      if (articlesContainer) articlesContainer.classList.add("hidden");
+      if (emptyMessage) emptyMessage.classList.remove('hidden')
+      if (articlesContainer) articlesContainer.classList.add('hidden')
     } else {
-      if (emptyMessage) emptyMessage.classList.add("hidden");
-      if (articlesContainer) articlesContainer.classList.remove("hidden");
+      if (emptyMessage) emptyMessage.classList.add('hidden')
+      if (articlesContainer) articlesContainer.classList.remove('hidden')
     }
   }
 
-  // 将筛选函数暴露到全局，供TagFilter组件调用
-  // 确保在DOM加载完成后设置
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      (window as any).filterArticles = filterArticles;
-    });
-  } else {
-    (window as any).filterArticles = filterArticles;
-  }
+  window.addEventListener('tag-filter', (e) => {
+    filterArticles((e as CustomEvent<string[]>).detail)
+  })
 </script>

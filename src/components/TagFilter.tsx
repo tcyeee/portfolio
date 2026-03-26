@@ -9,15 +9,9 @@ export default function TagFilter({ tags, onFilterChange }: TagFilterProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   useEffect(() => {
-    // 调用筛选函数
-    const filterFn = (window as any).filterArticles;
-    if (filterFn && typeof filterFn === 'function') {
-      filterFn(selectedTags);
-    }
-    
-    // 如果有回调函数，也调用它
+    window.dispatchEvent(new CustomEvent('tag-filter', { detail: selectedTags }))
     if (onFilterChange) {
-      onFilterChange(selectedTags);
+      onFilterChange(selectedTags)
     }
   }, [selectedTags, onFilterChange]);
 
