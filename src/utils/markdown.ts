@@ -3,6 +3,7 @@ import { gfmHeadingId } from "marked-gfm-heading-id";
 import { markedHighlight } from "marked-highlight";
 import hljs from "highlight.js";
 import katex from "katex";
+import DOMPurify from "isomorphic-dompurify";
 
 /**
  * 解码 HTML 实体，确保 KaTeX 能正确解析数学公式
@@ -141,6 +142,10 @@ export async function renderMarkdown(
   const contentWithImages = processImagePaths(normalizedContent, options?.imageBasePath);
   // 处理数学公式块
   const processedContent = processMathBlocks(contentWithImages);
-  return await marked(processedContent);
+  const html = await marked(processedContent);
+  return DOMPurify.sanitize(html, {
+    ADD_TAGS: ['math', 'semantics', 'mrow', 'mn', 'mo', 'mi', 'msup', 'msub', 'mfrac', 'msubsup', 'munder', 'mover', 'munderover', 'mtable', 'mtr', 'mtd', 'annotation', 'annotation-xml'],
+    ADD_ATTR: ['class', 'style', 'xmlns', 'encoding'],
+  });
 }
 
