@@ -31,6 +31,11 @@ const { project } = Astro.props
 // 从 params 获取 slug（Astro 会自动解码）
 const slugFromParams = Astro.params.slug
 
+// Validate slug to prevent path traversal
+if (slugFromParams && !/^[a-z0-9-_.]+$/i.test(slugFromParams)) {
+  return Astro.redirect('/projects')
+}
+
 // 解析 slug 的方式与索引生成脚本保持一致
 const resolveSlug = (frontmatter: Record<string, any>, filename: string) => {
   const source = frontmatter.slug || frontmatter.title || filename.replace(/\.md$/, '')

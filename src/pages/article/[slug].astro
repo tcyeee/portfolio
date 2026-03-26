@@ -50,6 +50,11 @@ const { fileSlug, fileName } = Astro.props
 // 从 params 获取 slug（Astro 会自动解码）
 const slugFromParams = Astro.params.slug
 
+// Validate slug to prevent path traversal
+if (slugFromParams && !/^[a-z0-9-_.]+$/i.test(slugFromParams)) {
+  return Astro.redirect('/articles')
+}
+
 const filePath = path.join(articleDir, fileName)
 
 // 检查文件是否存在
