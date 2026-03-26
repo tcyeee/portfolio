@@ -33,9 +33,11 @@ const allTags = Array.from(
                   {post.title}
                 </h2>
                 <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                  <time>
-                    {new Date(post.created).toLocaleDateString("zh-CN")}
-                  </time>
+                  {post.created && !isNaN(new Date(post.created).getTime()) && (
+                    <time datetime={post.created}>
+                      {new Date(post.created).toLocaleDateString("zh-CN")}
+                    </time>
+                  )}
                   {post.tags && post.tags.length > 0 && (
                     <div class="flex gap-2">
                       {post.tags.map((tag) => (

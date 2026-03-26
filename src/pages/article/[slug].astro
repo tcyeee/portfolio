@@ -93,8 +93,8 @@ const banner = frontmatter.banner || ''
       </h1>
       <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
         {
-          created && (
-            <time>
+          created && !isNaN(new Date(created).getTime()) && (
+            <time datetime={created}>
               {new Date(created).toLocaleDateString('zh-CN', {
                 year: 'numeric',
                 month: 'long',
