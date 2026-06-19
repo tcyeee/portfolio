@@ -48,17 +48,30 @@ let markdownContent = ''
 let markdownFrontmatter: Record<string, any> = {}
 
 try {
-  const files = fs.readdirSync(projectDir).filter((file) => file.endsWith('.md') && !file.startsWith('.'))
-
-  for (const file of files) {
-    const filePath = path.join(projectDir, file)
-    const parsed = matter(fs.readFileSync(filePath, 'utf-8'))
-    const resolvedSlug = resolveSlug(parsed.data || {}, file)
-
-    if (resolvedSlug === slugFromParams) {
+  // 优先用索引里记录的源文件名直接读取，避免遍历解析全部项目文件
+  if (project?.file) {
+    const filePath = path.join(projectDir, project.file)
+    if (fs.existsSync(filePath)) {
+      const parsed = matter(fs.readFileSync(filePath, 'utf-8'))
       markdownContent = parsed.content
       markdownFrontmatter = parsed.data || {}
-      break
+    }
+  }
+
+  // 兜底（兼容旧索引）：遍历目录按 slug 匹配
+  if (!markdownContent) {
+    const files = fs.readdirSync(projectDir).filter((file) => file.endsWith('.md') && !file.startsWith('.'))
+
+    for (const file of files) {
+      const filePath = path.join(projectDir, file)
+      const parsed = matter(fs.readFileSync(filePath, 'utf-8'))
+      const resolvedSlug = resolveSlug(parsed.data || {}, file)
+
+      if (resolvedSlug === slugFromParams) {
+        markdownContent = parsed.content
+        markdownFrontmatter = parsed.data || {}
+        break
+      }
     }
   }
 
@@ -98,7 +111,7 @@ if (!markdownContent) {
 }
 ---
 
-<Layout title={title}>
+<Layout title={title} ogImage={image || undefined}>
   <div class="container mx-auto px-4 py-16 max-w-4xl">
     <!-- 返回按钮 -->
     <a
@@ -114,7 +127,7 @@ if (!markdownContent) {
     {
       image && (
         <div class="mb-8">
-          <img src={image} alt={title} class="rounded-lg w-full h-[200px] object-cover" />
+          <img src={image} alt={title} loading="lazy" decoding="async" class="rounded-lg w-full h-[200px] object-cover" />
         </div>
       )
     }

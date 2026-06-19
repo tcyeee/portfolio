@@ -5,6 +5,17 @@ import hljs from "highlight.js";
 import katex from "katex";
 import DOMPurify from "isomorphic-dompurify";
 
+// 渲染后处理：外链补全 rel 安全属性，图片启用懒加载
+DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+  if (node.tagName === "A" && node.getAttribute("target") === "_blank") {
+    node.setAttribute("rel", "noopener noreferrer");
+  }
+  if (node.tagName === "IMG") {
+    if (!node.getAttribute("loading")) node.setAttribute("loading", "lazy");
+    if (!node.getAttribute("decoding")) node.setAttribute("decoding", "async");
+  }
+});
+
 /**
  * 解码 HTML 实体，确保 KaTeX 能正确解析数学公式
  */
@@ -72,7 +83,9 @@ marked.use({
       });
 
       // 处理行内数学公式
-      const mathRegex = /\$([^$\n]+)\$/g;
+      // 避免误伤正文中的货币写法（如 "$5 和 $10"）：
+      // 开头 $ 不能紧跟在数字后、不能紧跟空白；结尾 $ 不能紧跟数字、前面不能是空白
+      const mathRegex = /(?<!\d)\$(?!\s)([^$\n]+?)(?<!\s)\$(?!\d)/g;
       protectedHtml = protectedHtml.replace(mathRegex, (match, formula) => {
         try {
           // 解码 HTML 实体（如 &amp; -> &）以确保 KaTeX 能正确解析

@@ -63,6 +63,7 @@ function generateProjectIndex() {
 
       const project = {
         slug: resolveSlug(frontmatter, file),
+        file,
         title: frontmatter.title || file.replace(/\.md$/, ''),
         created: normalizeDate(frontmatter.created),
         category: frontmatter.category || 'other',

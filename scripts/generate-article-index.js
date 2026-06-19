@@ -22,32 +22,33 @@ function extractFirstParagraph(content, maxLength = articleConfig.contentMaxLeng
   // 按行分割内容
   const lines = content.split('\n');
   
-  // 找到第一个非空、非标题的实际内容行
-  let firstContentLine = '';
+  // 找到第一段实际内容：跳过开头的空行/标题/分隔线，然后收集连续的内容行直到遇到空行
+  const paragraphLines = [];
   for (const line of lines) {
     const trimmedLine = line.trim();
-    
-    // 跳过空行
-    if (!trimmedLine) continue;
-    
-    // 跳过标题行（以 # 开头）
-    if (trimmedLine.startsWith('#')) continue;
-    
-    // 跳过分隔线
-    if (/^-{3,}$/.test(trimmedLine)) continue;
-    
-    // 找到第一段实际内容
-    firstContentLine = trimmedLine;
-    break;
+
+    if (paragraphLines.length === 0) {
+      // 段落尚未开始：跳过空行、标题行、分隔线
+      if (!trimmedLine) continue;
+      if (trimmedLine.startsWith('#')) continue;
+      if (/^-{3,}$/.test(trimmedLine)) continue;
+      paragraphLines.push(trimmedLine);
+    } else {
+      // 段落已开始：遇到空行即结束
+      if (!trimmedLine) break;
+      paragraphLines.push(trimmedLine);
+    }
   }
-  
-  if (!firstContentLine) {
+
+  let firstParagraph = paragraphLines.join(' ');
+
+  if (!firstParagraph) {
     // 如果没有找到，则处理整个内容
-    firstContentLine = content;
+    firstParagraph = content;
   }
-  
+
   // 移除所有 Markdown 格式标记（**、*、`、[]、()等）
-  let text = firstContentLine
+  let text = firstParagraph
     .replace(/\*\*([^*]+)\*\*/g, '$1') // 粗体
     .replace(/\*([^*]+)\*/g, '$1') // 斜体
     .replace(/`([^`]+)`/g, '$1') // 代码

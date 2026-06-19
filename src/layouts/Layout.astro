@@ -22,16 +22,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <link rel="canonical" href={canonicalURL} />
+    <link rel="canonical" href={canonicalURL.toString()} />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href={new URL('/rss.xml', Astro.site ?? Astro.url.origin).toString()} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:url" content={canonicalURL.toString()} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(ogImage, canonicalURL)} />
+    <meta property="og:image" content={new URL(ogImage, canonicalURL).toString()} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(ogImage, canonicalURL)} />
+    <meta name="twitter:image" content={new URL(ogImage, canonicalURL).toString()} />
     <script is:inline>
       (() => {
         const storageKey = 'theme';

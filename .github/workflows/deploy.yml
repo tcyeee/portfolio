@@ -29,7 +29,7 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       # `prebuild` regenerates src/config/cache/* indexes, then astro build -> dist/
       - name: Build

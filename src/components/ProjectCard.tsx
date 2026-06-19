@@ -22,6 +22,8 @@ export default function ProjectCard({ project }: Props) {
           <img
             src={project.preview || project.banner}
             alt={project.title}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/15 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

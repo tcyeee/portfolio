@@ -2,6 +2,7 @@ import type { IndexAppType, ProjectCategory } from "./config";
 
 export interface Project {
     slug: string;
+    file?: string;   // 源 Markdown 文件名（由索引生成脚本写入）
     title: string;   // 项目标题
     created: string; // 创建时间
     category: ProjectCategory;  // 项目分类
