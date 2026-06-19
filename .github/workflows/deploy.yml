@@ -49,3 +49,21 @@ jobs:
           rsync -az --delete \
             -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
             ./dist/ "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}"
+
+      # Notify via ServerChan (Server酱) to WeChat after the pipeline finishes (success or failure).
+      - name: Notify WeChat via ServerChan
+        if: always()
+        env:
+          SENDKEY: ${{ secrets.SERVERCHAN_SENDKEY }}
+          STATUS: ${{ job.status }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+          SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ "$STATUS" = "success" ]; then emoji="✅"; else emoji="❌"; fi
+          desp=$(printf '**仓库**: %s\n**分支**: %s\n**提交**: `%s`\n**状态**: %s\n\n[查看运行详情](%s)' \
+            "$REPO" "$REF" "$SHA" "$STATUS" "$RUN_URL")
+          curl -s "https://sctapi.ftqq.com/${SENDKEY}.send" \
+            --data-urlencode "title=${emoji} Portfolio 部署 ${STATUS}" \
+            --data-urlencode "desp=${desp}"
