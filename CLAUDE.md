@@ -18,7 +18,7 @@ No linting or test commands are configured.
 
 ## Architecture Overview
 
-This is a **static portfolio site** built with Astro 5 + React 18, styled with Tailwind CSS 3 + SCSS, deployed as pure static output.
+This is a **static portfolio site** built with Astro 6 + React 18, styled with Tailwind CSS 3 + SCSS, deployed as pure static output (`output: 'static'`, `site: https://tcyeee.top`).
 
 ### Content Pipeline
 
@@ -30,10 +30,16 @@ Content lives in Markdown files under `public/articles/` and `public/projects/`.
 
 | File | Purpose |
 |------|---------|
-| `src/config/index.ts` | All personal info, projects array, articles array, apps, category enums — the single source of truth for site content |
+| `src/config/index.ts` | Personal info, category enums, and the app-cloud display config; re-exports `projects`/`articles` (from `cache/*.json`) and `apps` (from `index_app.json`) — the single source of truth for site content |
+| `src/config/index_app.json` | Home-page app list data (loaded as `apps`) |
+| `src/config/generate-config.js` | Single source for content dir + index-file paths shared by the detail routes and the index-generation scripts (see its header for the manual-sync caveat) |
 | `src/domain.ts` | TypeScript interfaces: `Project`, `Article`, `IndexApp` |
-| `src/layouts/Layout.astro` | Root HTML template; includes dark mode detection script and Umami analytics |
-| `src/pages/[slug].astro` | Dynamic routes for article/project detail pages |
+| `src/layouts/Layout.astro` | Root HTML template; includes dark mode detection script and self-hosted GoatCounter analytics (first-party `/count` proxied to `tcyeee.stats.viii.me`) |
+| `src/pages/article/[slug].astro`, `src/pages/project/[slug].astro` | Dynamic detail routes (`getStaticPaths` from the cached indexes; markdown parsed on demand) |
+
+### Deployment
+
+Pushing to the **`prod`** branch (not `main`) triggers `.github/workflows/deploy.yml`: it builds on the runner (Node 24, pnpm), then `rsync --delete`s `dist/` to an nginx-in-Docker web root on the server over SSH, and notifies WeChat via ServerChan. `main` is the working branch; deploys happen from `prod`.
 
 ### Component Model
 
