@@ -1,0 +1,200 @@
+---
+import Layout from '../../layouts/Layout.astro'
+---
+
+<Layout title="页面切换动画" description="页面切换动画演示">
+  <div class="stage">
+    <div class="frame">
+      <img src="/images/ux/transition/1.png" alt="" />
+    </div>
+  </div>
+
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <clipPath id="borderClip" clipPathUnits="userSpaceOnUse">
+        <path id="borderPath" d=""></path>
+      </clipPath>
+    </defs>
+  </svg>
+</Layout>
+
+<style>
+  .stage {
+    width: 100%;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .frame {
+    position: relative;
+    filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.25));
+  }
+  .frame img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    clip-path: url(#borderClip);
+    -webkit-clip-path: url(#borderClip);
+    display: block;
+  }
+</style>
+
+<script>
+  ;(function () {
+    const frame = document.querySelector('.frame') as HTMLElement
+    const path = document.getElementById('borderPath') as unknown as SVGPathElement
+
+    // Tunable parameters
+    const NATIVE_W = 586,
+      NATIVE_H = 414 // 1.png intrinsic size (keeps rest state uncropped)
+    const DISPLAY_SCALE = 1.2 // on-screen size multiplier for the "normal" image
+    const POINTS_PER_EDGE = 22 // sample resolution per edge
+    const INFLUENCE_RADIUS = 260 // px, mouse influence range
+    const MAX_DISPLACEMENT = 46 // px, max inward recoil -- never exceeds the rest frame
+    const EASE = 0.14 // lerp factor per frame
+
+    // Frame matches the source image's aspect ratio exactly, just scaled up, so
+    // object-fit: cover never crops -- the rest state is the untouched photo.
+    const FRAME_W = NATIVE_W * DISPLAY_SCALE
+    const FRAME_H = NATIVE_H * DISPLAY_SCALE
+
+    frame.style.width = FRAME_W + 'px'
+    frame.style.height = FRAME_H + 'px'
+
+    const W = FRAME_W,
+      H = FRAME_H
+    const center = { x: W / 2, y: H / 2 }
+    let restPoints: { x: number; y: number; nx: number; ny: number; edge: string }[] = [] // rest position + unit vector toward center + owning edge
+    let current: number[] = [] // current displacement per point
+    let target: number[] = [] // target displacement per point
+    let mouse = { x: -9999, y: -9999 }
+
+    function buildRestPoints() {
+      const left = 0
+      const right = W
+      const top = 0
+      const bottom = H
+
+      const pts: typeof restPoints = []
+
+      function pushEdge(x0: number, y0: number, x1: number, y1: number, edge: string, count: number) {
+        for (let i = 0; i < count; i++) {
+          const t = i / count
+          const x = x0 + (x1 - x0) * t
+          const y = y0 + (y1 - y0) * t
+          // Unit vector from this point toward the frame center. Points always
+          // recede along this direction rather than along a fixed per-edge axis --
+          // that keeps every point's motion strictly inward (never past the rest
+          // frame) while letting the two active edges near a shared corner recede
+          // in a mutually consistent direction instead of independently swinging
+          // perpendicular to each other and crossing.
+          const dx = center.x - x,
+            dy = center.y - y
+          const len = Math.hypot(dx, dy) || 1
+          pts.push({ x, y, nx: dx / len, ny: dy / len, edge })
+        }
+      }
+
+      pushEdge(left, top, right, top, 'top', POINTS_PER_EDGE)
+      pushEdge(right, top, right, bottom, 'right', POINTS_PER_EDGE)
+      pushEdge(right, bottom, left, bottom, 'bottom', POINTS_PER_EDGE)
+      pushEdge(left, bottom, left, top, 'left', POINTS_PER_EDGE)
+
+      restPoints = pts
+      current = pts.map(() => 0)
+      target = pts.map(() => 0)
+    }
+
+    function updateTargets() {
+      const rect = frame.getBoundingClientRect()
+      const mx = mouse.x - rect.left
+      const my = mouse.y - rect.top
+
+      // Only the vertical edge (left/right) and horizontal edge (top/bottom) that the
+      // mouse is currently on the side of are eligible to move -- the opposite two
+      // edges are always locked at zero. This guarantees at most 2 edges react at once.
+      const activeVertical = mx < center.x ? 'left' : 'right'
+      const activeHorizontal = my < center.y ? 'top' : 'bottom'
+
+      for (let i = 0; i < restPoints.length; i++) {
+        const p = restPoints[i]
+        if (p.edge !== activeVertical && p.edge !== activeHorizontal) {
+          target[i] = 0
+          continue
+        }
+        const dx = p.x - mx
+        const dy = p.y - my
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        const influence = Math.max(0, 1 - dist / INFLUENCE_RADIUS)
+        // smooth falloff (ease-out), gentler tail than linear
+        const eased = influence * influence * (3 - 2 * influence)
+        target[i] = eased * MAX_DISPLACEMENT
+      }
+    }
+
+    // Chaikin-style quadratic midpoint smoothing: each segment is a quadratic
+    // Bezier that stays inside the triangle of its own 3 points, so unlike
+    // Catmull-Rom it can never overshoot/loop when neighboring points swing
+    // in sharply different directions (e.g. two edges meeting at a corner).
+    function smoothPath(pts: { x: number; y: number }[]) {
+      const n = pts.length
+      if (n < 3) return ''
+
+      function mid(a: { x: number; y: number }, b: { x: number; y: number }) {
+        return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
+      }
+
+      const m0 = mid(pts[n - 1], pts[0])
+      let d = `M ${m0.x.toFixed(2)} ${m0.y.toFixed(2)} `
+      for (let i = 0; i < n; i++) {
+        const cur = pts[i]
+        const next = pts[(i + 1) % n]
+        const m = mid(cur, next)
+        d += `Q ${cur.x.toFixed(2)} ${cur.y.toFixed(2)}, ${m.x.toFixed(2)} ${m.y.toFixed(2)} `
+      }
+      d += 'Z'
+      return d
+    }
+
+    function tick() {
+      updateTargets()
+
+      const displaced = []
+      for (let i = 0; i < restPoints.length; i++) {
+        current[i] += (target[i] - current[i]) * EASE
+        const p = restPoints[i]
+        // Recede toward the frame center -- the border recoils away from the
+        // mouse and can never cross past the original rest edge.
+        displaced.push({
+          x: p.x + p.nx * current[i],
+          y: p.y + p.ny * current[i],
+        })
+      }
+
+      path.setAttribute('d', smoothPath(displaced))
+      requestAnimationFrame(tick)
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX
+      mouse.y = e.clientY
+    })
+
+    // mousemove stops firing once the cursor leaves the viewport, which would
+    // otherwise freeze the deformation at its last position forever. Push the
+    // mouse back out of range so every point's target -- and thus current --
+    // eases back to 0, restoring the original shape.
+    document.addEventListener('mouseleave', () => {
+      mouse.x = -9999
+      mouse.y = -9999
+    })
+
+    window.addEventListener('resize', buildRestPoints)
+
+    buildRestPoints()
+    requestAnimationFrame(tick)
+  })()
+</script>
