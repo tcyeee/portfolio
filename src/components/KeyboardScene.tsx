@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 export default function KeyboardScene() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -13,7 +12,8 @@ export default function KeyboardScene() {
     const scene = new THREE.Scene()
 
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100)
-    camera.position.set(0, 1.4, 2.4)
+    camera.position.set(0, -0.9, 2.4)
+    camera.lookAt(0, 0, 0)
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -30,13 +30,27 @@ export default function KeyboardScene() {
     fillLight.position.set(-4, 2, -3)
     scene.add(fillLight)
 
-    const controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping = true
-    controls.enableZoom = false
-    controls.autoRotate = true
-    controls.autoRotateSpeed = 1.6
-    controls.minPolarAngle = Math.PI / 3
-    controls.maxPolarAngle = Math.PI / 1.8
+    const maxYaw = 0.35
+    const maxPitch = 0.15
+    const targetRotation = new THREE.Vector2(0, 0)
+    const currentRotation = new THREE.Vector2(0, 0)
+
+    function handlePointerMove(event: PointerEvent) {
+      const rect = container.getBoundingClientRect()
+      const x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+      const y = ((event.clientY - rect.top) / rect.height) * 2 - 1
+      targetRotation.set(THREE.MathUtils.clamp(x, -1, 1), THREE.MathUtils.clamp(y, -1, 1))
+    }
+    window.addEventListener('pointermove', handlePointerMove)
+
+    // outerGroup stays world-aligned at rest so the mouse-driven yaw/pitch reads as a natural head-turn
+    const outerGroup = new THREE.Group()
+    scene.add(outerGroup)
+
+    // tiltGroup bakes in the fixed orientation that faces the keyboard's key side toward the camera
+    const tiltGroup = new THREE.Group()
+    tiltGroup.rotation.x = Math.PI / 2
+    outerGroup.add(tiltGroup)
 
     let model: THREE.Object3D | null = null
     const loader = new GLTFLoader()
@@ -46,12 +60,15 @@ export default function KeyboardScene() {
         model = gltf.scene
         const box = new THREE.Box3().setFromObject(model)
         const size = box.getSize(new THREE.Vector3())
-        const center = box.getCenter(new THREE.Vector3())
         const maxDim = Math.max(size.x, size.y, size.z)
-        const scale = 1.6 / maxDim
+        const scale = 0.8 / maxDim
         model.scale.setScalar(scale)
-        model.position.sub(center.multiplyScalar(scale))
-        scene.add(model)
+        tiltGroup.add(model)
+
+        tiltGroup.updateWorldMatrix(true, true)
+        const worldBox = new THREE.Box3().setFromObject(tiltGroup)
+        const worldCenter = worldBox.getCenter(new THREE.Vector3())
+        tiltGroup.position.sub(worldCenter)
       },
       undefined,
       (error) => {
@@ -61,7 +78,9 @@ export default function KeyboardScene() {
 
     let frameId = 0
     function animate() {
-      controls.update()
+      currentRotation.lerp(targetRotation, 0.05)
+      outerGroup.rotation.y = currentRotation.x * maxYaw
+      outerGroup.rotation.x = currentRotation.y * maxPitch
       renderer.render(scene, camera)
       frameId = requestAnimationFrame(animate)
     }
@@ -78,7 +97,7 @@ export default function KeyboardScene() {
     return () => {
       cancelAnimationFrame(frameId)
       window.removeEventListener('resize', handleResize)
-      controls.dispose()
+      window.removeEventListener('pointermove', handlePointerMove)
       renderer.dispose()
       container.removeChild(renderer.domElement)
       scene.traverse((child) => {
