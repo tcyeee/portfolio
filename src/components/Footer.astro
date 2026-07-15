@@ -3,7 +3,8 @@ import { personalInfo } from '../config'
 import '../styles/icon.scss'
 ---
 
-<footer class="bg-gray-900 text-gray-300 py-12 mt-20">
+<div data-footer-spacer aria-hidden="true"></div>
+<footer data-footer-reveal class="fixed inset-x-0 bottom-0 z-40 bg-gray-900 text-gray-300 py-12 will-change-transform" style="transform: translateY(100%)">
   <div class="container mx-auto px-4">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
@@ -80,3 +81,52 @@ import '../styles/icon.scss'
     </div>
   </div>
 </footer>
+
+<script>
+  ;(() => {
+    if (typeof window === 'undefined') return
+
+    const footer = document.querySelector('[data-footer-reveal]') as HTMLElement | null
+    const spacer = document.querySelector('[data-footer-spacer]') as HTMLElement | null
+    if (!footer || !spacer) return
+
+    // Reveal is binary: fully hidden or fully shown. `THRESHOLD` is the scroll
+    // progress (through the spacer's reserved height) past which the footer
+    // commits to showing; below it, the footer settles back to hidden.
+    const THRESHOLD = 0.2
+    const DAMPING = 0.16
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    let current = 0
+    let target = 0
+    let frameId = 0
+
+    const syncSpacerHeight = () => {
+      spacer.style.height = `${footer.offsetHeight}px`
+    }
+
+    const updateTarget = () => {
+      const rect = spacer.getBoundingClientRect()
+      const spacerHeight = rect.height || 1
+      const progress = (window.innerHeight - rect.top) / spacerHeight
+      const clamped = Math.min(Math.max(progress, 0), 1)
+      target = clamped >= THRESHOLD ? 1 : 0
+    }
+
+    const tick = () => {
+      updateTarget()
+      current += (target - current) * (reduceMotion ? 1 : DAMPING)
+      if (Math.abs(target - current) < 0.001) current = target
+      footer.style.transform = `translateY(${(1 - current) * 100}%)`
+      frameId = requestAnimationFrame(tick)
+    }
+
+    syncSpacerHeight()
+    tick()
+
+    window.addEventListener('resize', syncSpacerHeight)
+    new ResizeObserver(syncSpacerHeight).observe(footer)
+
+    window.addEventListener('pagehide', () => cancelAnimationFrame(frameId), { once: true })
+  })()
+</script>

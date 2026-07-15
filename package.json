@@ -17,6 +17,7 @@
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/tailwind": "^6.0.2",
+    "@fontsource/vt323": "^5.2.7",
     "astro": "^6.1.4",
     "highlight.js": "^11.11.1",
     "isomorphic-dompurify": "^3.7.1",
