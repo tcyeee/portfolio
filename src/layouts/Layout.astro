@@ -49,11 +49,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
     <script data-goatcounter="https://tcyeee.top/count" async src="/count.js"></script>
   </head>
   <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
-    <Header />
+    <!-- <Header /> -->
     <main class="flex-1">
       <slot />
     </main>
     <Footer />
+    <script>
+      import Lenis from 'lenis'
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        new Lenis({ autoRaf: true })
+      }
+    </script>
   </body>
 </html>
 
