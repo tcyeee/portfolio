@@ -14,7 +14,7 @@ export default function KeyboardScene() {
     const scene = new THREE.Scene()
 
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100)
-    camera.position.set(0, -0.9, 2.4)
+    camera.position.set(0, 0.7, 2.4)
     camera.lookAt(0, 0, 0)
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
@@ -33,15 +33,13 @@ export default function KeyboardScene() {
     scene.add(fillLight)
 
     const maxYaw = 0.35
-    const maxPitch = 0.15
-    const targetRotation = new THREE.Vector2(0, 0)
-    const currentRotation = new THREE.Vector2(0, 0)
+    let targetRotation = 0
+    let currentRotation = 0
 
     function handlePointerMove(event: PointerEvent) {
       const rect = container.getBoundingClientRect()
       const x = ((event.clientX - rect.left) / rect.width) * 2 - 1
-      const y = ((event.clientY - rect.top) / rect.height) * 2 - 1
-      targetRotation.set(THREE.MathUtils.clamp(x, -1, 1), THREE.MathUtils.clamp(y, -1, 1))
+      targetRotation = THREE.MathUtils.clamp(x, -1, 1)
     }
     window.addEventListener('pointermove', handlePointerMove)
 
@@ -49,15 +47,16 @@ export default function KeyboardScene() {
     const outerGroup = new THREE.Group()
     scene.add(outerGroup)
 
-    // tiltGroup bakes in the fixed orientation that faces the keyboard's key side toward the camera
+    // tiltGroup bakes in the fixed orientation: face the model toward the camera and nod the head down slightly
     const tiltGroup = new THREE.Group()
-    tiltGroup.rotation.x = Math.PI / 2
+    tiltGroup.rotation.y = Math.PI
+    tiltGroup.rotation.x = THREE.MathUtils.degToRad(0)
     outerGroup.add(tiltGroup)
 
     let model: THREE.Object3D | null = null
     const loader = new GLTFLoader()
     loader.load(
-      '/Keyboard.glb',
+      '/model.gltf',
       (gltf) => {
         model = gltf.scene
         const box = new THREE.Box3().setFromObject(model)
@@ -74,15 +73,14 @@ export default function KeyboardScene() {
       },
       undefined,
       (error) => {
-        console.error('Failed to load Keyboard.glb', error)
+        console.error('Failed to load model.gltf', error)
       },
     )
 
     let frameId = 0
     function animate() {
-      currentRotation.lerp(targetRotation, 0.05)
-      outerGroup.rotation.y = currentRotation.x * maxYaw
-      outerGroup.rotation.x = currentRotation.y * maxPitch
+      currentRotation = THREE.MathUtils.lerp(currentRotation, targetRotation, 0.05)
+      outerGroup.rotation.y = currentRotation * maxYaw
       renderer.render(scene, camera)
       frameId = requestAnimationFrame(animate)
     }

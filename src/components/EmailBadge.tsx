@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { personalInfo } from '../config'
 
-const GREETINGS = ['Say Hi', '你好', 'こんにちは', '안녕하세요', 'Bonjour', 'Hola', 'Ciao', 'Hallo', 'Привет', 'مرحبا']
+const GREETINGS = ['Say Hi', '你好', 'こんにちは', '안녕하세요']
 const TYPE_SPEED_MS = 90
 const DELETE_SPEED_MS = 45
 const HOLD_MS = 1200
@@ -41,11 +41,13 @@ export default function EmailBadge() {
 
   return (
     <div className="absolute bottom-4 right-4 flex items-center overflow-hidden rounded-md font-mono text-sm">
-      <span className="bg-yellow-300 px-3 py-1.5 text-black">
+      <span className="bg-primary-500 px-3 py-1.5 text-white">
         {text}
-        <span className="ml-0.5 inline-block h-[1em] w-[2px] animate-pulse bg-black align-middle" />
+        <span className="ml-0.5 inline-block h-[1em] w-[2px] animate-pulse bg-white align-middle" />
       </span>
-      <a href={`mailto:${personalInfo.email}`} className="group flex bg-gray-100 px-3 py-1.5 text-gray-800 hover:bg-gray-200">
+      <a
+        href={`mailto:${personalInfo.email}`}
+        className="group flex bg-primary-100 px-3 py-1.5 text-primary-800 hover:bg-primary-200">
         {EMAIL_CHARS.map((char, i) => (
           <span key={i} className="relative inline-block h-5 overflow-hidden">
             <span
