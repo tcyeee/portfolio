@@ -4,7 +4,8 @@ import EmailBadge from './EmailBadge'
 import FallingIcons from './FallingIcons'
 ---
 
-<section id="hero-screen" class="relative h-screen flex flex-col md:flex-row bg-[#F9F6F0] dark:bg-gray-900">
+<section id="hero-screen" class="relative isolate h-screen flex flex-col md:flex-row bg-[#F9F6F0] dark:bg-gray-900">
+  <div class="hero-grid-bg pointer-events-none absolute inset-0 -z-10"></div>
   <div class="w-full md:w-1/2 h-1/2 md:h-full">
     <KeyboardScene client:only="react" />
   </div>
@@ -14,3 +15,22 @@ import FallingIcons from './FallingIcons'
   <FallingIcons client:only="react" />
   <EmailBadge client:only="react" />
 </section>
+
+<style>
+  .hero-grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(156, 163, 175, 0.2) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(156, 163, 175, 0.2) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: hero-grid-move 3s linear infinite;
+  }
+
+  @keyframes hero-grid-move {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 60px -60px;
+    }
+  }
+</style>
