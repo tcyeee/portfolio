@@ -49,16 +49,38 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
     <script data-goatcounter="https://tcyeee.top/count" async src="/count.js"></script>
   </head>
   <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
-    <!-- <Header /> -->
+    <Header />
     <main class="flex-1">
       <slot />
     </main>
     <Footer />
     <script>
       import Lenis from 'lenis'
+      import Snap from 'lenis/snap'
 
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        new Lenis({ autoRaf: true })
+        const lenis = new Lenis({ autoRaf: true })
+
+        // Homepage only: snap straight from the first screen to the second
+        // screen (and back) so the two are never both partially visible.
+        // Once the user has scrolled past the second screen, snapping is
+        // disabled so the rest of the page scrolls freely.
+        const heroEl = document.getElementById('hero-screen')
+        const secondScreenEl = document.getElementById('second-screen')
+        if (heroEl && secondScreenEl) {
+          const snap = new Snap(lenis, { type: 'mandatory' })
+          snap.addElement(heroEl, { align: 'start' })
+          snap.addElement(secondScreenEl, { align: 'start' })
+
+          lenis.on('scroll', (instance) => {
+            const secondScreenTop = secondScreenEl.getBoundingClientRect().top + instance.scroll
+            if (instance.scroll > secondScreenTop) {
+              snap.stop()
+            } else {
+              snap.start()
+            }
+          })
+        }
       }
     </script>
   </body>

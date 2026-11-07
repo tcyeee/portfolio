@@ -6,9 +6,6 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
-      fontFamily: {
-        terminal: ['"VT323"', 'monospace'],
-      },
       colors: {
         primary: {
           50: '#fef6f2',

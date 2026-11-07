@@ -3,13 +3,13 @@ import Layout from '../layouts/Layout.astro'
 import { projects, personalInfo, apps, homeDisplayCount } from '../config'
 import ProjectCard from '../components/ProjectCard'
 import AppList from '../components/AppList'
-import HelloWorld from '../components/HelloWorld.astro'
+import Hero from '../components/Hero.astro'
 
 const featuredProjects = projects.slice(0, homeDisplayCount)
 ---
 
 <Layout title={`${personalInfo.name} | ${personalInfo.title}`} description={personalInfo.bio}>
-  <HelloWorld>
+  <Hero>
     <div class="text-center md:text-left">
       <h1 class="text-5xl font-bold mb-4 text-gray-900 dark:text-white">
         {personalInfo.name}
@@ -43,10 +43,12 @@ const featuredProjects = projects.slice(0, homeDisplayCount)
         }
       </div>
     </div>
-  </HelloWorld>
-  <div class="container mx-auto px-4 py-16">
+  </Hero>
+  <div id="second-screen" class="container mx-auto px-4 py-16">
     <!-- APP列表 -->
-    <AppList client:visible apps={apps} />
+    <div class="mt-[20vh] mb-[10vh]">
+      <AppList client:visible apps={apps} />
+    </div>
 
     <!-- Featured Projects -->
     <section class="mb-20">

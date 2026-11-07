@@ -22,12 +22,16 @@ const navigation = [
 ]
 ---
 
-<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+<header
+  data-header-reveal
+  class="fixed inset-x-0 top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 will-change-transform"
+  style="transform: translateY(-100%)">
   <nav class="container mx-auto px-4 py-4">
     <div class="flex items-center justify-between">
       <a
         href="/"
-        class="text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+        class="flex items-center gap-2 text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors">
+        <img src="/favicon.ico" alt="" class="h-[29px] w-[29px] md:h-[34px] md:w-[34px]" />
         {personalInfo.name}
       </a>
       <div class="flex items-center gap-3 md:gap-4">
@@ -49,3 +53,38 @@ const navigation = [
     </div>
   </nav>
 </header>
+
+<script>
+  ;(() => {
+    if (typeof window === 'undefined') return
+
+    const header = document.querySelector('[data-header-reveal]') as HTMLElement | null
+    if (!header) return
+
+    // Reveal is binary: fully hidden or fully shown. The nav stays off-screen
+    // for the first screen's worth of content and slides in once the user
+    // scrolls into the second screen; scrolling back up above that hides it again.
+    const DAMPING = 0.16
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    let current = 0
+    let target = 0
+    let frameId = 0
+
+    const updateTarget = () => {
+      target = window.scrollY >= window.innerHeight ? 1 : 0
+    }
+
+    const tick = () => {
+      updateTarget()
+      current += (target - current) * (reduceMotion ? 1 : DAMPING)
+      if (Math.abs(target - current) < 0.001) current = target
+      header.style.transform = `translateY(${(current - 1) * 100}%)`
+      frameId = requestAnimationFrame(tick)
+    }
+
+    tick()
+
+    window.addEventListener('pagehide', () => cancelAnimationFrame(frameId), { once: true })
+  })()
+</script>
