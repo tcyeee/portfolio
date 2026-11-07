@@ -8,4 +8,7 @@ export default defineConfig({
   integrations: [react(), tailwind(), sitemap()],
   output: 'static',
   site: 'https://tcyeee.top',
+  devToolbar: {
+    enabled: false,
+  },
 });
