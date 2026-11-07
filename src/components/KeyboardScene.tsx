@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import EmailBadge from './EmailBadge'
 import MenuBadge from './MenuBadge'
 
 export default function KeyboardScene() {
@@ -62,7 +61,7 @@ export default function KeyboardScene() {
         const box = new THREE.Box3().setFromObject(model)
         const size = box.getSize(new THREE.Vector3())
         const maxDim = Math.max(size.x, size.y, size.z)
-        const scale = 0.8 / maxDim
+        const scale = 1.012 / maxDim
         model.scale.setScalar(scale)
         tiltGroup.add(model)
 
@@ -114,10 +113,9 @@ export default function KeyboardScene() {
   }, [])
 
   return (
-    <div className="relative w-full h-full" style={{ backgroundColor: '#F9F6F0' }}>
+    <div className="relative w-full h-full">
       <div ref={containerRef} className="w-full h-full" />
       <MenuBadge />
-      <EmailBadge />
     </div>
   )
 }

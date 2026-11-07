@@ -1,7 +1,14 @@
 ---
 import KeyboardScene from './KeyboardScene'
+import EmailBadge from './EmailBadge'
 ---
 
-<section class="h-screen flex items-center justify-center bg-gray-200 dark:bg-gray-700">
-  <KeyboardScene client:only="react" />
+<section class="relative h-screen flex flex-col md:flex-row bg-[#F9F6F0]">
+  <div class="w-full md:w-1/2 h-1/2 md:h-full">
+    <KeyboardScene client:only="react" />
+  </div>
+  <div class="w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center px-6 md:px-12">
+    <slot />
+  </div>
+  <EmailBadge client:only="react" />
 </section>
