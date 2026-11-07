@@ -35,8 +35,9 @@ export default function KeyboardScene() {
     let currentRotation = 0
 
     function handlePointerMove(event: PointerEvent) {
-      const rect = container.getBoundingClientRect()
-      const x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+      // Normalize against the full viewport width (not just this half of the hero) so the
+      // model keeps tracking the cursor as it moves across the right-hand content too.
+      const x = (event.clientX / window.innerWidth) * 2 - 1
       targetRotation = THREE.MathUtils.clamp(x, -1, 1)
     }
     window.addEventListener('pointermove', handlePointerMove)

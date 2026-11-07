@@ -61,6 +61,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const lenis = new Lenis({ autoRaf: true })
 
+        // Exposed so other components (e.g. FallingIcons) can react to scroll
+        // velocity without each needing their own Lenis instance.
+        ;(window as typeof window & { __lenis?: Lenis }).__lenis = lenis
+
         // Homepage only: snap straight from the first screen to the second
         // screen (and back) so the two are never both partially visible.
         // Once the user has scrolled past the second screen, snapping is
