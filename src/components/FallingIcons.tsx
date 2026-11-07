@@ -152,6 +152,24 @@ export default function FallingIcons() {
     let floorY = height - FLOOR_GAP
     let obstacle: ObstacleRect | null = null
     let lastScrollVelocity = 0
+    let dismissed = false
+
+    // Triggered by the hero's scroll-down hint (ScrollHint.tsx): freeze the
+    // physics step and fade/float each tile out in a staggered swarm, so the
+    // icons are gone before the page auto-scrolls the hero out of view.
+    function handleDismiss() {
+      if (dismissed) return
+      dismissed = true
+      cancelAnimationFrame(rafId)
+      resizeObserver.disconnect()
+      themeObserver.disconnect()
+      bodies.forEach((body, i) => {
+        body.el.style.transition = `opacity 400ms ease ${i * 20}ms, transform 400ms ease ${i * 20}ms`
+        body.el.style.opacity = '0'
+        body.el.style.transform = `translate(${body.x - body.r}px, ${body.y - body.r - 60}px) scale(0.4)`
+      })
+    }
+    window.addEventListener('hero-dismiss-icons', handleDismiss)
 
     function resize() {
       if (!container) return
@@ -309,6 +327,7 @@ export default function FallingIcons() {
       cancelAnimationFrame(rafId)
       resizeObserver.disconnect()
       themeObserver.disconnect()
+      window.removeEventListener('hero-dismiss-icons', handleDismiss)
       for (const body of bodies) body.el.remove()
     }
   }, [])
