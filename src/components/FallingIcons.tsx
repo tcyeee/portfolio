@@ -27,8 +27,13 @@ const FLOOR_GAP = 10
 // Padding kept clear around the email badge so tiles don't visually touch it.
 const OBSTACLE_MARGIN = 12
 // The hero section's own background (see Hero.astro) — tiles are blended onto
-// it so they read as opaque instead of see-through.
-const PAGE_BG = { r: 249, g: 246, b: 240 }
+// it so they read as opaque instead of see-through. Mirrors the light/dark bg there.
+const LIGHT_PAGE_BG = { r: 249, g: 246, b: 240 }
+const DARK_PAGE_BG = { r: 17, g: 24, b: 39 }
+
+function getPageBg() {
+  return document.documentElement.classList.contains('dark') ? DARK_PAGE_BG : LIGHT_PAGE_BG
+}
 // Scroll-reactivity: a sudden change in Lenis scroll velocity (start/stop/direction
 // change) jolts the settled pile, like cargo shifting on a truck bed. Using the
 // delta (not raw velocity) means steady scrolling doesn't keep pumping in energy.
@@ -43,11 +48,11 @@ function hexToRgb(hex: string) {
   return { r, g, b }
 }
 
-function blendOntoPage(fg: { r: number; g: number; b: number }, alpha: number) {
+function blendOntoPage(fg: { r: number; g: number; b: number }, alpha: number, pageBg: { r: number; g: number; b: number }) {
   return {
-    r: Math.round(fg.r * alpha + PAGE_BG.r * (1 - alpha)),
-    g: Math.round(fg.g * alpha + PAGE_BG.g * (1 - alpha)),
-    b: Math.round(fg.b * alpha + PAGE_BG.b * (1 - alpha)),
+    r: Math.round(fg.r * alpha + pageBg.r * (1 - alpha)),
+    g: Math.round(fg.g * alpha + pageBg.g * (1 - alpha)),
+    b: Math.round(fg.b * alpha + pageBg.b * (1 - alpha)),
   }
 }
 
@@ -57,6 +62,7 @@ interface Body {
   vx: number
   vy: number
   r: number
+  rgb: { r: number; g: number; b: number }
   el: HTMLDivElement
 }
 
@@ -77,12 +83,14 @@ export default function FallingIcons() {
     let width = container.clientWidth
     let height = container.clientHeight
 
+    const pageBg = getPageBg()
+
     const bodies: Body[] = ICONS.map(({ name, color }, i) => {
       const r = TILE_R
       const size = r * 2
       const rgb = hexToRgb(color)
-      const bg = blendOntoPage(rgb, 0.16)
-      const border = blendOntoPage(rgb, 0.4)
+      const bg = blendOntoPage(rgb, 0.16, pageBg)
+      const border = blendOntoPage(rgb, 0.4, pageBg)
 
       const tile = document.createElement('div')
       tile.style.position = 'absolute'
@@ -112,9 +120,24 @@ export default function FallingIcons() {
         vx: (Math.random() - 0.5) * 60,
         vy: 0,
         r,
+        rgb,
         el: tile,
       }
     })
+
+    // Re-blend tile colors when the theme toggles at runtime (ThemeToggle only
+    // flips the `dark` class, no reload), so tiles keep reading as opaque.
+    function applyThemeColors() {
+      const bg = getPageBg()
+      for (const body of bodies) {
+        const fill = blendOntoPage(body.rgb, 0.16, bg)
+        const border = blendOntoPage(body.rgb, 0.4, bg)
+        body.el.style.background = `rgb(${fill.r}, ${fill.g}, ${fill.b})`
+        body.el.style.border = `1px solid rgb(${border.r}, ${border.g}, ${border.b})`
+      }
+    }
+    const themeObserver = new MutationObserver(applyThemeColors)
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
 
     let rafId: number
     let lastTime = performance.now()
@@ -277,6 +300,7 @@ export default function FallingIcons() {
     return () => {
       cancelAnimationFrame(rafId)
       resizeObserver.disconnect()
+      themeObserver.disconnect()
       for (const body of bodies) body.el.remove()
     }
   }, [])

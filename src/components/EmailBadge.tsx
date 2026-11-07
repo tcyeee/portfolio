@@ -47,7 +47,7 @@ export default function EmailBadge() {
       </span>
       <a
         href={`mailto:${personalInfo.email}`}
-        className="group flex bg-primary-100 px-3 py-1.5 text-primary-800 hover:bg-primary-200">
+        className="group flex bg-primary-100 px-3 py-1.5 text-primary-800 hover:bg-primary-200 dark:bg-primary-900 dark:text-primary-200 dark:hover:bg-primary-800">
         {EMAIL_CHARS.map((char, i) => (
           <span key={i} className="relative inline-block h-5 overflow-hidden">
             <span
