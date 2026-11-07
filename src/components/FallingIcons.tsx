@@ -12,10 +12,18 @@ const ICONS = [
   { name: 'solana', color: '#9945FF' },
   { name: 'claude', color: '#D97757' },
   { name: 'deepseek', color: '#5786FE' },
+  { name: 'astro', color: '#BC52EE' },
+  { name: 'react', color: '#61DAFB' },
+  { name: 'tailwind', color: '#06B6D4' },
+  { name: 'dart', color: '#0175C2' },
+  { name: 'tauri', color: '#24C8D8' },
+  { name: 'ethereum', color: '#3C3C3D' },
 ]
 
-const TILE_R = 32
+const TILE_R = 38.4
 const GAP = 8
+// Keep the falling area from touching the left/right edges of the hero screen.
+const WALL_GAP = 20
 const GRAVITY = 1800
 const FLOOR_RESTITUTION = 0.32
 const WALL_RESTITUTION = 0.5
@@ -115,7 +123,7 @@ export default function FallingIcons() {
       container.appendChild(tile)
 
       return {
-        x: Math.random() * Math.max(width - size, size) + r,
+        x: Math.random() * Math.max(width - size - WALL_GAP * 2, size) + r + WALL_GAP,
         y: -size - i * 90 - Math.random() * 120,
         vx: (Math.random() - 0.5) * 60,
         vy: 0,
@@ -202,11 +210,11 @@ export default function FallingIcons() {
         body.x += body.vx * dt
         body.y += body.vy * dt
 
-        if (body.x - body.r < 0) {
-          body.x = body.r
+        if (body.x - body.r < WALL_GAP) {
+          body.x = body.r + WALL_GAP
           body.vx = -body.vx * WALL_RESTITUTION
-        } else if (body.x + body.r > width) {
-          body.x = width - body.r
+        } else if (body.x + body.r > width - WALL_GAP) {
+          body.x = width - body.r - WALL_GAP
           body.vx = -body.vx * WALL_RESTITUTION
         }
 
@@ -285,8 +293,8 @@ export default function FallingIcons() {
       }
 
       for (const body of bodies) {
-        if (body.x - body.r < 0) body.x = body.r
-        else if (body.x + body.r > width) body.x = width - body.r
+        if (body.x - body.r < WALL_GAP) body.x = body.r + WALL_GAP
+        else if (body.x + body.r > width - WALL_GAP) body.x = width - body.r - WALL_GAP
         if (body.y + body.r > floorY) body.y = floorY - body.r
 
         body.el.style.transform = `translate(${body.x - body.r}px, ${body.y - body.r}px)`
