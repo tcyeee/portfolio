@@ -11,6 +11,11 @@ interface Props {
 
 const { title, description = '个人作品展示网站', ogImage = '/images/avatar.jpg' } = Astro.props
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
+
+// The homepage hides the header behind its full-viewport hero, so it needs no
+// extra spacing. Every other page shows the header immediately, so content
+// needs top padding to clear the fixed header and avoid being covered by it.
+const isHome = Astro.url.pathname === '/'
 ---
 
 <!doctype html>
@@ -50,7 +55,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
   </head>
   <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
     <Header />
-    <main class="flex-1">
+    <main class={`flex-1 ${isHome ? '' : 'pt-20 md:pt-24'}`}>
       <slot />
     </main>
     <Footer />
@@ -69,10 +74,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
         // screen (and back) so the two are never both partially visible.
         // Once the user has scrolled past the second screen, snapping is
         // disabled so the rest of the page scrolls freely.
+        //
+        // `lock` (not `mandatory`) is deliberate: `mandatory` snaps to
+        // whichever point is nearest by distance, so it takes scrolling past
+        // the halfway mark before it advances. `lock` snaps by scroll
+        // direction instead, so any small downward scroll advances to the
+        // next screen (and any upward scroll goes back).
         const heroEl = document.getElementById('hero-screen')
         const secondScreenEl = document.getElementById('second-screen')
         if (heroEl && secondScreenEl) {
-          const snap = new Snap(lenis, { type: 'mandatory' })
+          const snap = new Snap(lenis, { type: 'lock', distanceThreshold: Infinity })
           snap.addElement(heroEl, { align: 'start' })
           snap.addElement(secondScreenEl, { align: 'start' })
 
