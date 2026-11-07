@@ -2,6 +2,7 @@
 import KeyboardScene from './KeyboardScene'
 import EmailBadge from './EmailBadge'
 import FallingIcons from './FallingIcons'
+import ScrollHint from './ScrollHint'
 ---
 
 <section id="hero-screen" class="relative isolate h-screen flex flex-col md:flex-row bg-[#F9F6F0] dark:bg-gray-900">
@@ -9,8 +10,9 @@ import FallingIcons from './FallingIcons'
   <div class="w-full md:w-1/2 h-1/2 md:h-full">
     <KeyboardScene client:only="react" />
   </div>
-  <div class="w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center px-6 md:px-12">
+  <div class="w-full md:w-1/2 h-1/2 md:h-full flex flex-col items-center justify-center gap-8 px-6 md:px-12">
     <slot />
+    <ScrollHint client:only="react" />
   </div>
   <FallingIcons client:only="react" />
   <EmailBadge client:only="react" />
