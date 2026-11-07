@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import EmailBadge from './EmailBadge'
-import MenuBadge from './MenuBadge'
 
 export default function KeyboardScene() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -116,7 +115,6 @@ export default function KeyboardScene() {
   return (
     <div className="relative w-full h-full" style={{ backgroundColor: '#F9F6F0' }}>
       <div ref={containerRef} className="w-full h-full" />
-      <MenuBadge />
       <EmailBadge />
     </div>
   )
