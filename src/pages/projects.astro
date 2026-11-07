@@ -111,9 +111,13 @@ export const categories = ['all', ...Object.values(ProjectCategory)] as const;
   }
   
   // 绑定筛选按钮事件
-  document.addEventListener('DOMContentLoaded', () => {
+  // 这个 <script> 标签在每次构建中内容都相同，客户端路由下 Astro 只会在本次会话
+  // 第一次访问本页时执行一次，之后通过前进/后退或站内链接再次进入本页不会重新执行。
+  // 所以绑定逻辑要挂在 `astro:page-load`（首次加载也会触发）上，而不是
+  // `DOMContentLoaded`（整个会话只会真正触发一次），否则再次进入本页时筛选按钮会失效。
+  document.addEventListener('astro:page-load', () => {
     const filterButtons = document.querySelectorAll('.filter-btn');
-    
+
     filterButtons.forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -124,14 +128,14 @@ export const categories = ['all', ...Object.values(ProjectCategory)] as const;
         }
       });
     });
-    
+
     // 初始化时根据 URL 参数筛选
     const currentCategory = getCurrentCategory();
     if (currentCategory !== 'all') {
       filterProjects(currentCategory);
     }
   });
-  
+
   // 监听浏览器前进/后退
   window.addEventListener('popstate', () => {
     const currentCategory = getCurrentCategory();

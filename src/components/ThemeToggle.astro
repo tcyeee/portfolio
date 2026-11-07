@@ -16,23 +16,31 @@
     if (typeof window === 'undefined') return
 
     const storageKey = 'theme'
-    const toggle = document.querySelector('[data-theme-toggle]')
-    if (!toggle) return
-    const emoji = toggle.querySelector('[data-emoji]')
 
-    const setState = (isDark) => {
-      document.documentElement.classList.toggle('dark', isDark)
-      localStorage.setItem(storageKey, isDark ? 'dark' : 'light')
-      toggle.setAttribute('aria-pressed', String(isDark))
-      toggle.setAttribute('aria-label', isDark ? '切换为浅色模式' : '切换为深色模式')
-      if (emoji) {
-        emoji.classList.toggle('icon-moon', !isDark)
-        emoji.classList.toggle('icon-sun', isDark)
-        emoji.style.transform = isDark ? 'rotate(-12deg) scale(1.1)' : 'rotate(0deg) scale(1)'
-      }
-    }
-
+    // This script tag is identical on every page, so under client-side
+    // routing Astro only executes it once per session rather than on every
+    // navigation. The toggle button itself is recreated on every swap (not
+    // persisted), so it has to be re-queried and rebound on every
+    // navigation via `astro:page-load` (which also fires on the initial
+    // load) instead of once at parse time — otherwise the button would go
+    // dead after the first client-side navigation.
     const init = () => {
+      const toggle = document.querySelector('[data-theme-toggle]')
+      if (!toggle) return
+      const emoji = toggle.querySelector('[data-emoji]')
+
+      const setState = (isDark) => {
+        document.documentElement.classList.toggle('dark', isDark)
+        localStorage.setItem(storageKey, isDark ? 'dark' : 'light')
+        toggle.setAttribute('aria-pressed', String(isDark))
+        toggle.setAttribute('aria-label', isDark ? '切换为浅色模式' : '切换为深色模式')
+        if (emoji) {
+          emoji.classList.toggle('icon-moon', !isDark)
+          emoji.classList.toggle('icon-sun', isDark)
+          emoji.style.transform = isDark ? 'rotate(-12deg) scale(1.1)' : 'rotate(0deg) scale(1)'
+        }
+      }
+
       const stored = localStorage.getItem(storageKey)
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
       const initial = stored ? stored === 'dark' : document.documentElement.classList.contains('dark') || prefersDark
@@ -44,10 +52,6 @@
       })
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init, { once: true })
-    } else {
-      init()
-    }
+    document.addEventListener('astro:page-load', init)
   })()
 </script>

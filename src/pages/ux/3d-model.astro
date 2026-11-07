@@ -342,10 +342,21 @@ import Layout from '../../layouts/Layout.astro'
 </style>
 
 <script>
-  ;(function () {
+  // Re-run on every navigation via `astro:page-load` (fires on the initial
+  // load too) rather than once at parse time: under client-side routing,
+  // Astro skips re-executing a script once it has already run with this
+  // exact content, so without this a repeat visit to this page would bind
+  // to the previous visit's now-detached `.stage` element and the demo
+  // would go dead.
+  let cancelPrevious = () => {}
+
+  document.addEventListener('astro:page-load', function () {
+    cancelPrevious()
+
     const stage = document.querySelector('.stage') as HTMLElement
     const consoleEl = document.querySelector('.console') as HTMLElement
     const shadowEl = document.querySelector('.shadow') as HTMLElement
+    if (!stage || !consoleEl || !shadowEl) return
 
     const REST = { rx: 8, ry: -16 }
     const MAX_RX = 22
@@ -355,6 +366,7 @@ import Layout from '../../layouts/Layout.astro'
     let target = { ...REST }
     let current = { ...REST }
     let hovering = false
+    let frameId = 0
 
     function updateTarget(clientX: number, clientY: number) {
       const rect = stage.getBoundingClientRect()
@@ -403,9 +415,10 @@ import Layout from '../../layouts/Layout.astro'
       const scale = 1 - drift * 0.18
       shadowEl.style.setProperty('--shadow-scale', scale.toFixed(3))
 
-      requestAnimationFrame(tick)
+      frameId = requestAnimationFrame(tick)
     }
 
-    requestAnimationFrame(tick)
-  })()
+    frameId = requestAnimationFrame(tick)
+    cancelPrevious = () => cancelAnimationFrame(frameId)
+  })
 </script>
