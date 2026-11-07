@@ -40,7 +40,7 @@ export default function EmailBadge() {
   }, [])
 
   return (
-    <div className="absolute bottom-4 right-4 flex items-center overflow-hidden rounded-md font-mono text-sm">
+    <div id="email-badge" className="absolute bottom-4 right-4 flex items-center overflow-hidden rounded-md font-mono text-sm">
       <span className="bg-primary-500 px-3 py-1.5 text-white">
         {text}
         <span className="ml-0.5 inline-block h-[1em] w-[2px] animate-pulse bg-white align-middle" />
