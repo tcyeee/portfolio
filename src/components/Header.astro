@@ -2,6 +2,10 @@
 import ThemeToggle from './ThemeToggle.astro'
 import { personalInfo } from '../config'
 
+// Only the homepage has a full-viewport hero screen for the header to hide
+// behind; everywhere else the header must be visible from the start.
+const isHome = Astro.url.pathname === '/'
+
 const navigation = [
   {
     name: '首页',
@@ -25,7 +29,7 @@ const navigation = [
 <header
   data-header-reveal
   class="fixed inset-x-0 top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 will-change-transform"
-  style="transform: translateY(-100%)">
+  style={isHome ? 'transform: translateY(-100%)' : undefined}>
   <nav class="container mx-auto px-4 py-4">
     <div class="flex items-center justify-between">
       <a
@@ -61,30 +65,47 @@ const navigation = [
     const header = document.querySelector('[data-header-reveal]') as HTMLElement | null
     if (!header) return
 
-    // Reveal is binary: fully hidden or fully shown. The nav stays off-screen
-    // for the first screen's worth of content and slides in once the user
-    // scrolls into the second screen; scrolling back up above that hides it again.
-    const DAMPING = 0.16
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    let current = 0
-    let target = 0
-    let frameId = 0
+    // Only the homepage has a full-viewport hero screen for the header to
+    // hide behind. Everywhere else the header is already visible (no inline
+    // transform) and stays put — no scroll-driven reveal needed.
+    if (document.getElementById('hero-screen')) {
+      // Reveal is binary: fully hidden or fully shown. The nav stays off-screen
+      // for the first screen's worth of content and slides in once the user
+      // scrolls into the second screen; scrolling back up above that hides it again.
+      const DAMPING = 0.16
 
-    const updateTarget = () => {
-      target = window.scrollY >= window.innerHeight ? 1 : 0
+      let current = 0
+      let target = 0
+      let frameId = 0
+
+      const updateTarget = () => {
+        target = window.scrollY >= window.innerHeight ? 1 : 0
+      }
+
+      const tick = () => {
+        updateTarget()
+        current += (target - current) * (reduceMotion ? 1 : DAMPING)
+        if (Math.abs(target - current) < 0.001) current = target
+        header.style.transform = `translateY(${(current - 1) * 100}%)`
+        frameId = requestAnimationFrame(tick)
+      }
+
+      tick()
+
+      window.addEventListener('pagehide', () => cancelAnimationFrame(frameId), { once: true })
     }
 
-    const tick = () => {
-      updateTarget()
-      current += (target - current) * (reduceMotion ? 1 : DAMPING)
-      if (Math.abs(target - current) < 0.001) current = target
-      header.style.transform = `translateY(${(current - 1) * 100}%)`
-      frameId = requestAnimationFrame(tick)
-    }
-
-    tick()
-
-    window.addEventListener('pagehide', () => cancelAnimationFrame(frameId), { once: true })
+    // On the homepage, clicking the logo or "首页" link should just scroll to
+    // top instead of reloading the page.
+    const homeLinks = header.querySelectorAll<HTMLAnchorElement>('a[href="/"]')
+    homeLinks.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        if (window.location.pathname !== '/') return
+        event.preventDefault()
+        window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' })
+      })
+    })
   })()
 </script>

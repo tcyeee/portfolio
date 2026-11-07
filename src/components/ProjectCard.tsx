@@ -1,4 +1,5 @@
 import type React from 'react';
+import { useState } from 'react';
 import { categoryColors, categoryLabels } from '../config';
 import type { Project } from '../domain';
 
@@ -7,6 +8,8 @@ interface Props {
 }
 
 export default function ProjectCard({ project }: Props) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const handleLinkClick = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
@@ -19,12 +22,18 @@ export default function ProjectCard({ project }: Props) {
     <div className="flex h-full flex-col">
       {(project.preview || project.banner) && (
         <div className="relative aspect-video overflow-hidden bg-gray-100 dark:bg-gray-700">
+          {!imageLoaded && (
+            <div className="absolute inset-0 animate-pulse bg-gray-200 dark:bg-gray-600" aria-hidden />
+          )}
           <img
             src={project.preview || project.banner}
             alt={project.title}
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            onLoad={() => setImageLoaded(true)}
+            className={`h-full w-full object-cover transition-all duration-500 group-hover:scale-105 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/15 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           <span
