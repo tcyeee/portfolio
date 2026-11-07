@@ -127,7 +127,14 @@ if (!markdownContent) {
     {
       image && (
         <div class="mb-8">
-          <img src={image} alt={title} loading="lazy" decoding="async" class="rounded-lg w-full h-[200px] object-cover" />
+          <img
+            src={image}
+            alt={title}
+            loading="lazy"
+            decoding="async"
+            class="rounded-lg w-full h-[200px] object-cover"
+            transition:name={`project-image-${project.slug}`}
+          />
         </div>
       )
     }

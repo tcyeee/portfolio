@@ -43,9 +43,20 @@ import Layout from '../../layouts/Layout.astro'
 </style>
 
 <script>
-  ;(function () {
+  // Re-run on every navigation via `astro:page-load` (fires on the initial
+  // load too) rather than once at parse time: under client-side routing,
+  // Astro skips re-executing a script once it has already run with this
+  // exact content, so without this a repeat visit to this page would bind
+  // to the previous visit's now-detached `.frame` element and the demo
+  // would go dead.
+  let cleanup = () => {}
+
+  document.addEventListener('astro:page-load', function () {
+    cleanup()
+
     const frame = document.querySelector('.frame') as HTMLElement
     const path = document.getElementById('borderPath') as unknown as SVGPathElement
+    if (!frame || !path) return
 
     // Tunable parameters
     const NATIVE_W = 586,
@@ -175,26 +186,35 @@ import Layout from '../../layouts/Layout.astro'
       }
 
       path.setAttribute('d', smoothPath(displaced))
-      requestAnimationFrame(tick)
+      frameId = requestAnimationFrame(tick)
     }
 
-    window.addEventListener('mousemove', (e) => {
+    const onMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX
       mouse.y = e.clientY
-    })
+    }
+    window.addEventListener('mousemove', onMouseMove)
 
     // mousemove stops firing once the cursor leaves the viewport, which would
     // otherwise freeze the deformation at its last position forever. Push the
     // mouse back out of range so every point's target -- and thus current --
     // eases back to 0, restoring the original shape.
-    document.addEventListener('mouseleave', () => {
+    const onMouseLeave = () => {
       mouse.x = -9999
       mouse.y = -9999
-    })
+    }
+    document.addEventListener('mouseleave', onMouseLeave)
 
     window.addEventListener('resize', buildRestPoints)
 
     buildRestPoints()
-    requestAnimationFrame(tick)
-  })()
+    let frameId = requestAnimationFrame(tick)
+
+    cleanup = () => {
+      cancelAnimationFrame(frameId)
+      window.removeEventListener('mousemove', onMouseMove)
+      document.removeEventListener('mouseleave', onMouseLeave)
+      window.removeEventListener('resize', buildRestPoints)
+    }
+  })
 </script>

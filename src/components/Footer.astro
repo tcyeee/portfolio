@@ -83,7 +83,17 @@ import '../styles/icon.scss'
 </footer>
 
 <script>
-  ;(() => {
+  // This script tag is identical on every page, so under client-side routing
+  // Astro only executes it once per session rather than on every navigation.
+  // The footer/spacer nodes are recreated on every swap (not persisted), so
+  // the bindings below have to be redone on every navigation via
+  // `astro:page-load` (which also fires on the initial load) instead of once
+  // at parse time — otherwise they'd keep driving the detached nodes from
+  // whichever page loaded first.
+  let cleanup = () => {}
+
+  const setup = () => {
+    cleanup()
     if (typeof window === 'undefined') return
 
     const footer = document.querySelector('[data-footer-reveal]') as HTMLElement | null
@@ -125,8 +135,15 @@ import '../styles/icon.scss'
     tick()
 
     window.addEventListener('resize', syncSpacerHeight)
-    new ResizeObserver(syncSpacerHeight).observe(footer)
+    const resizeObserver = new ResizeObserver(syncSpacerHeight)
+    resizeObserver.observe(footer)
 
-    window.addEventListener('pagehide', () => cancelAnimationFrame(frameId), { once: true })
-  })()
+    cleanup = () => {
+      cancelAnimationFrame(frameId)
+      window.removeEventListener('resize', syncSpacerHeight)
+      resizeObserver.disconnect()
+    }
+  }
+
+  document.addEventListener('astro:page-load', setup)
 </script>

@@ -59,7 +59,17 @@ const navigation = [
 </header>
 
 <script>
-  ;(() => {
+  // This script tag is identical on every page, so under client-side routing
+  // Astro only executes it once per session rather than on every navigation.
+  // Header.astro's own markup (and whether `#hero-screen` exists) differs per
+  // page, so the setup below has to be redone on every navigation via
+  // `astro:page-load` (which also fires on the initial load) instead of once
+  // at parse time — otherwise the reveal behavior would stick to whichever
+  // page happened to load first.
+  let cancelReveal = () => {}
+
+  const setup = () => {
+    cancelReveal()
     if (typeof window === 'undefined') return
 
     const header = document.querySelector('[data-header-reveal]') as HTMLElement | null
@@ -94,7 +104,7 @@ const navigation = [
 
       tick()
 
-      window.addEventListener('pagehide', () => cancelAnimationFrame(frameId), { once: true })
+      cancelReveal = () => cancelAnimationFrame(frameId)
     }
 
     // On the homepage, clicking the logo or "首页" link should just scroll to
@@ -107,5 +117,7 @@ const navigation = [
         window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' })
       })
     })
-  })()
+  }
+
+  document.addEventListener('astro:page-load', setup)
 </script>

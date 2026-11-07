@@ -31,6 +31,7 @@ export default function ProjectCard({ project }: Props) {
             loading="lazy"
             decoding="async"
             onLoad={() => setImageLoaded(true)}
+            style={slug ? { viewTransitionName: `project-image-${slug}` } : undefined}
             className={`h-full w-full object-cover transition-all duration-500 group-hover:scale-105 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
