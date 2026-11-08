@@ -27,6 +27,7 @@
     "marked-highlight": "^2.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "skinview3d": "^3.4.2",
     "three": "^0.185.1"
   },
   "devDependencies": {
