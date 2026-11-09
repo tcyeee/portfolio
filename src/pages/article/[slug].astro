@@ -94,7 +94,7 @@ const headings = await extractHeadings(content)
     <div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
       <!-- 目录：桌面端固定在左侧，随正文阅读位置同步高亮 -->
       <aside class="hidden lg:block">
-        <div class="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto">
+        <div class="sticky top-24 max-h-[min(1000px,40vh)] flex flex-col">
           <TableOfContents headings={headings} client:load />
         </div>
       </aside>
