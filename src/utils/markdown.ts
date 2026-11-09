@@ -1,5 +1,5 @@
 import { marked } from "marked";
-import { gfmHeadingId } from "marked-gfm-heading-id";
+import { gfmHeadingId, getHeadingList, resetHeadings } from "marked-gfm-heading-id";
 import { markedHighlight } from "marked-highlight";
 import hljs from "highlight.js";
 import katex from "katex";
@@ -121,6 +121,46 @@ export function processMathBlocks(content: string): string {
       return match;
     }
   });
+}
+
+export interface Heading {
+  level: number
+  text: string
+  id: string
+}
+
+/**
+ * 提取文章标题结构（用于生成目录）。
+ * id 与 renderMarkdown 渲染出的 heading id 保持一致（同一套 gfmHeadingId slugger 规则，
+ * 且每次渲染都会在 preprocess 阶段重置 slugger，故多次调用互不影响、结果确定）。
+ */
+export async function extractHeadings(content: string): Promise<Heading[]> {
+  const normalizedContent = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+  const processedContent = processMathBlocks(normalizedContent)
+  await marked(processedContent)
+  const headings = getHeadingList().map(({ level, raw, id }) => ({ level, text: raw, id }))
+  resetHeadings()
+  return headings
+}
+
+/**
+ * 估算阅读时间（分钟）：中文按字符数（约 400 字/分钟），英文按单词数（约 200 词/分钟）估算，
+ * 计算前去除代码块、数学公式和图片/链接等不计入阅读内容的部分。
+ */
+export function estimateReadingMinutes(content: string): number {
+  const stripped = content
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/\$\$[\s\S]*?\$\$/g, '')
+    .replace(/`[^`]*`/g, '')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[#>*_~\-=|]/g, '')
+
+  const cjkCount = (stripped.match(/[一-龥]/g) || []).length
+  const englishWordCount = (stripped.replace(/[一-龥]/g, '').match(/[a-zA-Z0-9]+/g) || []).length
+
+  const minutes = cjkCount / 400 + englishWordCount / 200
+  return Math.max(1, Math.round(minutes))
 }
 
 /**

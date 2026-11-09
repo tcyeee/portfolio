@@ -12,6 +12,6 @@ const htmlContent = await renderMarkdown(content, { imageBasePath });
 ---
 
 <article
-  class="prose prose-gray dark:prose-invert max-w-none"
+  class="prose prose-gray dark:prose-invert max-w-none [&_:is(h1,h2,h3,h4,h5,h6)]:scroll-mt-24"
   set:html={htmlContent}
 />

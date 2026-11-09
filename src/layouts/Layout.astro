@@ -13,9 +13,9 @@ interface Props {
 const { title, description = '个人作品展示网站', ogImage = '/images/avatar.jpg' } = Astro.props
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
 
-// The homepage hides the header behind its full-viewport hero, so it needs no
-// extra spacing. Every other page shows the header immediately, so content
-// needs top padding to clear the fixed header and avoid being covered by it.
+// The homepage's hero section fills the viewport and sits under the
+// translucent fixed header by design, so it needs no extra spacing. Every
+// other page's content needs top padding to clear the fixed header.
 const isHome = Astro.url.pathname === '/'
 ---
 

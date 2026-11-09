@@ -1,11 +1,13 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import MarkdownContent from '../../components/MarkdownContent.astro'
+import TableOfContents from '../../components/TableOfContents.tsx'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import matter from 'gray-matter'
 import { articleConfig } from '../../config/generate-config.js'
+import { extractHeadings, estimateReadingMinutes } from '../../utils/markdown'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -47,14 +49,13 @@ interface Props {
 // 从 props 获取文件名（getStaticPaths 已经确保匹配）
 const { fileSlug, fileName } = Astro.props
 
-// 从 params 获取 slug（Astro 会自动解码）
+// 从 params 获取 slug（Astro 会自动解码，仅用于下方的调试日志）
 const slugFromParams = Astro.params.slug
 
-// Validate slug to prevent path traversal
-if (slugFromParams && !/^[a-z0-9-_.]+$/i.test(slugFromParams)) {
-  return Astro.redirect('/articles')
-}
-
+// This is a static build: fileName always comes from the on-disk file list
+// in getStaticPaths above, never from user input, so no traversal check is
+// needed here (and article slugs/filenames may legitimately contain
+// non-ASCII characters or spaces, e.g. "如何优雅的在键盘上使用mac手势.md").
 const filePath = path.join(articleDir, fileName)
 
 // 检查文件是否存在
@@ -72,10 +73,14 @@ const title = frontmatter.title || fileSlug
 const created = frontmatter.created || ''
 const tags = frontmatter.tags || []
 const banner = frontmatter.banner || ''
+
+// 预估阅读时间与目录结构（目录 id 与正文渲染出的 heading id 一致）
+const readingMinutes = estimateReadingMinutes(content)
+const headings = await extractHeadings(content)
 ---
 
 <Layout title={title} ogImage={banner || undefined}>
-  <div class="container mx-auto px-4 py-16 max-w-4xl">
+  <div class="container mx-auto px-4 py-16 max-w-6xl">
     <!-- 返回按钮 -->
     <a
       href="/articles"
@@ -86,45 +91,57 @@ const banner = frontmatter.banner || ''
       返回文章列表
     </a>
 
-    <!-- 文章标题 -->
-    <header class="mb-8">
-      <h1 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-        {title}
-      </h1>
-      <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+    <div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
+      <!-- 目录：桌面端固定在左侧，随正文阅读位置同步高亮 -->
+      <aside class="hidden lg:block">
+        <div class="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto">
+          <TableOfContents headings={headings} client:load />
+        </div>
+      </aside>
+
+      <div class="max-w-4xl">
+        <!-- 文章标题 -->
+        <header class="mb-8">
+          <h1 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+            {title}
+          </h1>
+          <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+            <span>预计阅读 {readingMinutes} 分钟</span>
+            {
+              created && !isNaN(new Date(created).getTime()) && (
+                <time datetime={created}>
+                  {new Date(created).toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+              )
+            }
+            {
+              tags && tags.length > 0 && (
+                <div class="flex gap-2">
+                  {tags.map((tag: string) => (
+                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">{tag}</span>
+                  ))}
+                </div>
+              )
+            }
+          </div>
+        </header>
+
+        <!-- 横幅图片 -->
         {
-          created && !isNaN(new Date(created).getTime()) && (
-            <time datetime={created}>
-              {new Date(created).toLocaleDateString('zh-CN', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
-          )
-        }
-        {
-          tags && tags.length > 0 && (
-            <div class="flex gap-2">
-              {tags.map((tag: string) => (
-                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">{tag}</span>
-              ))}
+          banner && (
+            <div class="mb-8">
+              <img src={banner} alt={title} loading="lazy" decoding="async" class="rounded-lg w-full h-auto object-cover" />
             </div>
           )
         }
+
+        <!-- 文章内容 -->
+        <MarkdownContent content={content} />
       </div>
-    </header>
-
-    <!-- 横幅图片 -->
-    {
-      banner && (
-        <div class="mb-8">
-          <img src={banner} alt={title} loading="lazy" decoding="async" class="rounded-lg w-full h-auto object-cover" />
-        </div>
-      )
-    }
-
-    <!-- 文章内容 -->
-    <MarkdownContent content={content} />
+    </div>
   </div>
 </Layout>
