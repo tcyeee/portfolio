@@ -1,36 +1,54 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Heading } from '../utils/markdown'
 
 interface Props {
   headings: Heading[]
+  /** `rail` 为桌面端左侧轨道（带标题与阅读进度条），`list` 为移动端折叠面板里的纯列表 */
+  variant?: 'rail' | 'list'
+  /** 文章标题：正文 h1 滚出视口后在目录顶部淡入 */
+  title?: string
 }
 
 // 固定导航栏高度（对应 Layout 中 main 的 pt-24 顶部内边距），用作“阅读线”的位置
 const HEADER_OFFSET = 96
 
-export default function TableOfContents({ headings }: Props) {
+/** 进度条探针的字符数，用来换算单个字符宽度 */
+const PROBE_CELLS = 10
+
+interface Group {
+  head: Heading | null
+  subs: Heading[]
+}
+
+export default function TableOfContents({ headings, variant = 'rail', title }: Props) {
+  const isRail = variant === 'rail'
+
+  // 目录只收录 h2 / h3：更深的层级在窄轨道里会挤成一团
+  const items = useMemo(() => headings.filter((heading) => heading.level === 2 || heading.level === 3), [headings])
+
   const [activeId, setActiveId] = useState('')
   const [progress, setProgress] = useState(0)
+  const [cells, setCells] = useState(24)
+  const [titleVisible, setTitleVisible] = useState(false)
   const navRef = useRef<HTMLElement>(null)
 
+  // 阅读位置：取顶部已越过“阅读线”的最后一个标题。比 IntersectionObserver 的可见性
+  // 判断更直接——无论标题间距多大、是否短暂不可见都能命中。
   useEffect(() => {
-    const elements = headings.map((h) => document.getElementById(h.id)).filter((el): el is HTMLElement => el !== null)
-
+    if (items.length === 0) return
     let ticking = false
 
-    // 取标题顶部已经越过“阅读线”（紧贴固定导航栏下方）的最后一个标题作为当前阅读位置，
-    // 比用 IntersectionObserver 的可见区域判断更直接：无论标题之间间距多大、是否短暂不可见都能命中。
-    const updateActive = () => {
+    const update = () => {
       ticking = false
+      const elements = items
+        .map((heading) => document.getElementById(heading.id))
+        .filter((el): el is HTMLElement => el !== null)
 
       if (elements.length > 0) {
         let current = elements[0].id
         for (const el of elements) {
-          if (el.getBoundingClientRect().top - HEADER_OFFSET <= 1) {
-            current = el.id
-          } else {
-            break
-          }
+          if (el.getBoundingClientRect().top - HEADER_OFFSET <= 1) current = el.id
+          else break
         }
         setActiveId(current)
       }
@@ -42,93 +60,178 @@ export default function TableOfContents({ headings }: Props) {
     const onScroll = () => {
       if (ticking) return
       ticking = true
-      requestAnimationFrame(updateActive)
+      requestAnimationFrame(update)
     }
 
-    updateActive()
+    update()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
-  }, [headings])
+  }, [items])
 
-  // 阅读位置变化时，把当前标题滚动到目录可视区域的中间（居中显示）
+  // 正文 h1 完全滚出视口上方后，在目录顶部补一个文章标题
   useEffect(() => {
-    if (!activeId) return
+    if (!isRail || !title) return
+    const h1 = document.querySelector('main h1')
+    if (!h1) return
+    const observer = new IntersectionObserver(([entry]) => {
+      setTitleVisible(!entry.isIntersecting && entry.boundingClientRect.bottom < 0)
+    })
+    observer.observe(h1)
+    return () => observer.disconnect()
+  }, [isRail, title])
+
+  // 当前标题滚出目录可视区域时把它带回来（只做最小滚动，避免目录跟着乱跳）
+  useEffect(() => {
+    // 只在轨道模式下做：列表模式的外层不是滚动容器，scrollIntoView 会连带滚动整页
+    if (!isRail || !activeId) return
     const nav = navRef.current
     if (!nav) return
+    const link = nav.querySelector<HTMLElement>(`[data-heading-id="${CSS.escape(activeId)}"]`)
+    const container = nav.querySelector<HTMLElement>('.toc-scroll-container')
+    if (!link || !container) return
 
-    const items = nav.querySelectorAll<HTMLElement>('[data-heading-id]')
-    let active: HTMLElement | null = null
-    for (const item of items) {
-      if (item.dataset.headingId === activeId) {
-        active = item
-        break
-      }
+    const containerRect = container.getBoundingClientRect()
+    const linkRect = link.getBoundingClientRect()
+    if (linkRect.top < containerRect.top + 12 || linkRect.bottom > containerRect.bottom - 12) {
+      link.scrollIntoView({ block: 'nearest', inline: 'nearest' })
     }
-    if (!active) return
+  }, [isRail, activeId])
 
-    const navRect = nav.getBoundingClientRect()
-    const activeRect = active.getBoundingClientRect()
-    // 让当前标题的中心对齐到目录可视区域的中心
-    const targetTop =
-      activeRect.top - navRect.top + nav.scrollTop - (navRect.height - activeRect.height) / 2
-    const maxScroll = nav.scrollHeight - nav.clientHeight
-    nav.scrollTo({ top: Math.max(0, Math.min(maxScroll, targetTop)), behavior: 'smooth' })
-  }, [activeId])
+  // 进度条宽度随轨道宽度自适应：用一个不可见的探针测出等宽字符的实际宽度
+  const barRef = useRef<HTMLSpanElement>(null)
+  useEffect(() => {
+    const node = barRef.current
+    if (!node) return
+    const probe = node.querySelector<HTMLElement>('[data-cell-probe]')
+    const measure = () => {
+      const cellWidth = probe ? probe.getBoundingClientRect().width / PROBE_CELLS : 0
+      if (cellWidth > 0) setCells(Math.max(8, Math.floor(node.clientWidth / cellWidth)))
+    }
+    const observer = new ResizeObserver(measure)
+    observer.observe(node)
+    document.fonts?.ready.then(measure)
+    return () => observer.disconnect()
+  }, [isRail, items])
 
-  if (headings.length === 0) return null
+  const groups = useMemo(() => {
+    const result: Group[] = []
+    for (const heading of items) {
+      if (heading.level === 2) result.push({ head: heading, subs: [] })
+      else if (result.length === 0) result.push({ head: null, subs: [heading] })
+      else result[result.length - 1].subs.push(heading)
+    }
+    return result
+  }, [items])
 
-  const minLevel = Math.min(...headings.map((h) => h.level))
+  if (items.length === 0) return null
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     const target = document.getElementById(id)
     if (!target) return
-    e.preventDefault()
+    event.preventDefault()
     const lenis = (window as typeof window & { __lenis?: { scrollTo: (t: Element, opts?: Record<string, unknown>) => void } })
       .__lenis
-    if (lenis) {
-      lenis.scrollTo(target, { offset: -96 })
-    } else {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+    if (lenis) lenis.scrollTo(target, { offset: -HEADER_OFFSET })
+    else window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET, behavior: 'smooth' })
+    setActiveId(id)
     history.replaceState(null, '', `#${id}`)
   }
 
-  return (
-    <div className="flex flex-col h-full min-h-0">
-      <nav ref={navRef} aria-label="文章目录" className="text-sm overflow-y-auto min-h-0">
-        <p className="font-semibold text-gray-900 dark:text-white mb-3">目录</p>
-        <ul className="space-y-2">
-          {headings.map((heading) => (
-            <li key={heading.id} data-heading-id={heading.id} style={{ paddingLeft: `${(heading.level - minLevel) * 12}px` }}>
-              <a
-                href={`#${heading.id}`}
-                onClick={(e) => handleClick(e, heading.id)}
-                className={`block border-l-2 pl-3 py-0.5 transition-colors ${
-                  activeId === heading.id
-                    ? 'border-primary-500 text-primary-600 dark:text-primary-400 font-medium'
-                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+  const renderLink = (heading: Heading, indented: boolean) => {
+    const isActive = activeId === heading.id
+    return (
+      <a
+        key={heading.id}
+        href={`#${heading.id}`}
+        data-heading-id={heading.id}
+        onClick={(event) => handleClick(event, heading.id)}
+        aria-current={isActive ? 'location' : undefined}
+        className={`flex gap-2.5 py-[3px] text-[13px] leading-[1.6] transition-colors duration-200 ${
+          indented ? 'pl-[18px]' : ''
+        } ${isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>
+        <span
+          aria-hidden="true"
+          className={`shrink-0 font-mono transition-colors duration-200 ${
+            isActive ? 'text-accent' : 'text-muted-foreground/45'
+          }`}>
+          └
+        </span>
+        <span className="line-clamp-2 min-w-0">{heading.text}</span>
+      </a>
+    )
+  }
+
+  const list = (
+    <div>
+      {groups.map((group, index) => {
+        // 轨道模式下只展开“当前所在的那一节”的 h3，列表模式全部展开
+        const expanded =
+          !isRail || !group.head || group.head.id === activeId || group.subs.some((sub) => sub.id === activeId)
+        return (
+          <div key={group.head?.id ?? `lead-${index}`}>
+            {group.head && renderLink(group.head, false)}
+            {group.subs.length > 0 && (
+              <div
+                className={`grid transition-[grid-template-rows,visibility] duration-300 ease-[cubic-bezier(.19,1,.22,1)] motion-reduce:transition-none ${
+                  expanded ? 'visible grid-rows-[1fr]' : 'invisible grid-rows-[0fr]'
                 }`}>
-                {heading.text}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700 shrink-0">
-        <div
-          className="h-1 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden"
-          role="progressbar"
-          aria-label="阅读进度"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={Math.round(progress)}>
-          <div className="h-full rounded-full bg-primary-500 transition-[width]" style={{ width: `${progress}%` }} />
-        </div>
-      </div>
+                <div className="min-h-0 overflow-hidden">{group.subs.map((sub) => renderLink(sub, !!group.head))}</div>
+              </div>
+            )}
+          </div>
+        )
+      })}
     </div>
+  )
+
+  if (!isRail) {
+    return (
+      <nav ref={navRef} aria-label="文章目录">
+        <div className="toc-scroll-container">{list}</div>
+      </nav>
+    )
+  }
+
+  const filled = Math.round((progress / 100) * cells)
+
+  return (
+    <nav ref={navRef} aria-label="文章目录" className="flex max-h-[calc(100dvh-8rem)] flex-col">
+      {title && (
+        <div
+          aria-hidden={!titleVisible}
+          className={`shrink-0 overflow-hidden font-serif text-base font-semibold leading-snug text-foreground transition-[opacity,transform,max-height,margin] duration-[400ms] ease-[cubic-bezier(.19,1,.22,1)] motion-reduce:transition-none ${
+            titleVisible ? 'mb-6 max-h-60 translate-y-0 opacity-100' : 'max-h-0 translate-y-2 opacity-0'
+          }`}>
+          {title}
+        </div>
+      )}
+      <div className="mb-3 shrink-0 font-mono text-[11px] tracking-[0.2em] text-muted-foreground">目录</div>
+      <div className="toc-scroll-container toc-scrollbar min-h-0 overflow-y-auto overscroll-contain pr-2">{list}</div>
+      <div
+        className="mt-6 flex shrink-0 items-baseline gap-2.5 font-mono text-[12px]"
+        role="progressbar"
+        aria-label="阅读进度"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(progress)}>
+        <span
+          ref={barRef}
+          aria-hidden="true"
+          className="relative min-w-0 flex-1 overflow-hidden whitespace-nowrap text-muted-foreground/40">
+          <span className="text-accent">{'▓'.repeat(filled)}</span>
+          {'░'.repeat(Math.max(0, cells - filled))}
+          <span data-cell-probe className="invisible absolute left-0 top-0">
+            {'░'.repeat(PROBE_CELLS)}
+          </span>
+        </span>
+        <span className="shrink-0 tabular-nums text-muted-foreground">
+          {String(Math.round(progress)).padStart(2, '0')}%
+        </span>
+      </div>
+    </nav>
   )
 }

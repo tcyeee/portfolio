@@ -2,7 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   语义色令牌（文章列表 / 文章详情）
+   值为 "R G B" 三元组，便于 Tailwind 的 `/50` 透明度语法工作；
+   对应的工具类在 tailwind.config.mjs 中声明。
+   ============================================================ */
 @layer base {
+  :root {
+    --c-background: 254 253 252;
+    --c-surface: 250 249 247;
+    --c-card: 255 254 253;
+    --c-border: 229 228 226;
+    --c-foreground: 11 11 11;
+    --c-muted: 243 242 239;
+    --c-muted-foreground: 85 85 85;
+    --c-content-secondary: 61 61 61;
+    --c-secondary: 248 244 243;
+    --c-secondary-foreground: 11 11 11;
+    --c-accent: 212 9 36;
+    --c-accent-foreground: 253 253 253;
+  }
+
+  .dark {
+    --c-background: 9 14 19;
+    --c-surface: 15 20 26;
+    --c-card: 24 30 36;
+    --c-border: 40 47 53;
+    --c-foreground: 242 242 242;
+    --c-muted: 31 37 43;
+    --c-muted-foreground: 144 150 156;
+    --c-content-secondary: 178 184 191;
+    --c-secondary: 35 42 48;
+    --c-secondary-foreground: 232 232 232;
+    --c-accent: 249 65 68;
+    --c-accent-foreground: 6 6 6;
+  }
+
   body {
     @apply antialiased;
   }
@@ -37,12 +72,140 @@
   }
 }
 
-/* Markdown 内容样式 - 使用 Tailwind Typography 插件，这里只做自定义覆盖 */
-.prose a {
-  @apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300;
+/* ============================================================
+   列表 / 详情页的入场动画与目录滚动条
+   ============================================================ */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* 如果需要自定义其他样式，可以在这里添加 */
-/* typography 插件已经提供了完整的 markdown 样式，包括标题、段落、列表、代码块等 */
+.onload-animation {
+  opacity: 0;
+  animation: fade-in-up 0.32s ease-out forwards;
+  animation-delay: var(--content-delay, 0s);
+}
 
+@media (prefers-reduced-motion: reduce) {
+  .onload-animation {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+}
 
+.toc-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--c-border)) transparent;
+}
+
+.toc-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.toc-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.toc-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--c-border));
+  border-radius: 3px;
+}
+
+/* ============================================================
+   文章正文（Tailwind Typography 之上的自定义覆盖）
+   ============================================================ */
+.prose {
+  --tw-prose-body: rgb(var(--c-foreground) / 0.9);
+  --tw-prose-headings: rgb(var(--c-foreground));
+  --tw-prose-bold: rgb(var(--c-foreground));
+  --tw-prose-counters: rgb(var(--c-muted-foreground));
+  --tw-prose-bullets: rgb(var(--c-accent));
+  --tw-prose-quotes: rgb(var(--c-content-secondary));
+  --tw-prose-captions: rgb(var(--c-muted-foreground));
+  --tw-prose-hr: rgb(var(--c-border));
+  --tw-prose-th-borders: rgb(var(--c-border));
+  --tw-prose-td-borders: rgb(var(--c-border));
+}
+
+.dark .prose {
+  --tw-prose-body: rgb(var(--c-foreground));
+}
+
+.prose a {
+  @apply text-accent no-underline hover:underline transition-colors;
+}
+
+.prose :where(h1, h2, h3, h4) {
+  @apply font-serif font-bold text-foreground;
+}
+
+.prose h2 {
+  @apply text-3xl mt-12 mb-4;
+}
+
+.prose h3 {
+  @apply text-2xl mt-8 mb-3;
+}
+
+.prose h4 {
+  @apply text-xl;
+}
+
+.prose :where(p, li) {
+  @apply text-[16.5px] leading-[1.85];
+}
+
+.prose p {
+  @apply my-5;
+}
+
+.prose :where(ul, ol) {
+  @apply my-5 text-[16.5px];
+}
+
+.prose li {
+  @apply my-1.5;
+}
+
+.prose blockquote {
+  @apply border-l-2 border-accent pl-4 italic font-normal text-content-secondary;
+}
+
+.prose blockquote p {
+  @apply text-content-secondary;
+}
+
+.prose :not(pre) > code {
+  @apply bg-secondary text-accent rounded px-1.5 py-0.5 text-[0.875em] font-normal before:content-none after:content-none;
+}
+
+.prose pre {
+  @apply rounded-xl border border-border bg-secondary text-foreground shadow-none;
+}
+
+.prose hr {
+  @apply border-border my-8;
+}
+
+.prose thead th {
+  @apply bg-secondary font-medium px-4 py-2 text-left;
+}
+
+.prose tbody td {
+  @apply border-t border-border px-4 py-2;
+}
+
+.prose table {
+  @apply text-sm;
+}
+
+.prose img {
+  @apply rounded-xl border border-border;
+}

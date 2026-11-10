@@ -3,6 +3,7 @@ created: 2025-06-26 18:47
 tags:
   - keyboard
   - article
+category: 效率工具
 ---
 
 ## 摘要

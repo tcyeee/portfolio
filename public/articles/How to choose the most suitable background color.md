@@ -3,6 +3,7 @@ created: 2025-06-17 13:25
 tags:
   - article
   - English
+category: 设计笔记
 ---
 Using a suitable background color can attract more traffic to my website or post, here are some colors I collected from the internet.
 

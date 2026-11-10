@@ -27,6 +27,12 @@ const isHome = Astro.url.pathname === '/'
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap"
+    />
     <title>{title}</title>
     <link rel="canonical" href={canonicalURL.toString()} />
     <link rel="alternate" type="application/rss+xml" title="RSS" href={new URL('/rss.xml', Astro.site ?? Astro.url.origin).toString()} />
@@ -84,7 +90,7 @@ const isHome = Astro.url.pathname === '/'
       document.addEventListener('astro:page-load', () => sendPageview(20))
     </script>
   </head>
-  <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
+  <body class="font-sans bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
     <Header />
     <main class={`flex-1 ${isHome ? '' : 'pt-20 md:pt-24'}`} transition:animate="slide">
       <slot />
@@ -157,6 +163,6 @@ const isHome = Astro.url.pathname === '/'
 
 <style is:global>
   html {
-    font-family: system-ui, sans-serif;
+    font-family: Inter, 'Noto Sans SC', system-ui, sans-serif;
   }
 </style>

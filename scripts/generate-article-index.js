@@ -27,16 +27,19 @@ function extractFirstParagraph(content, maxLength = articleConfig.contentMaxLeng
   for (const line of lines) {
     const trimmedLine = line.trim();
 
+    // 引用块（`> …`）的内容本身可以作为摘要，但引用符号不应出现在列表里
+    const withoutQuote = trimmedLine.replace(/^>\s?/, '');
+
     if (paragraphLines.length === 0) {
       // 段落尚未开始：跳过空行、标题行、分隔线
-      if (!trimmedLine) continue;
-      if (trimmedLine.startsWith('#')) continue;
-      if (/^-{3,}$/.test(trimmedLine)) continue;
-      paragraphLines.push(trimmedLine);
+      if (!withoutQuote) continue;
+      if (withoutQuote.startsWith('#')) continue;
+      if (/^-{3,}$/.test(withoutQuote)) continue;
+      paragraphLines.push(withoutQuote);
     } else {
       // 段落已开始：遇到空行即结束
       if (!trimmedLine) break;
-      paragraphLines.push(trimmedLine);
+      paragraphLines.push(withoutQuote);
     }
   }
 
@@ -65,6 +68,44 @@ function extractFirstParagraph(content, maxLength = articleConfig.contentMaxLeng
   }
   
   return text || '';
+}
+
+/**
+ * 统计正文字数与估算阅读时间（分钟）。
+ * 口径与 src/utils/markdown.ts 的 estimateWordCount / estimateReadingMinutes 保持一致：
+ * 中文按字符数（约 400 字/分钟），英文按单词数（约 200 词/分钟），
+ * 统计前去除代码块、数学公式和图片/链接等不计入阅读内容的部分。
+ * （该脚本以纯 Node 运行，无法直接 import .ts 文件，故在此复制一份同口径实现。）
+ * @param {string} content - Markdown 内容（已去除 frontmatter）
+ * @returns {{ wordCount: number, readingMinutes: number }}
+ */
+function estimateStats(content) {
+  const stripped = content
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/\$\$[\s\S]*?\$\$/g, '')
+    .replace(/`[^`]*`/g, '')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[#>*_~\-=|]/g, '');
+
+  const cjkCount = (stripped.match(/[一-龥]/g) || []).length;
+  const englishWordCount = (stripped.replace(/[一-龥]/g, '').match(/[a-zA-Z0-9]+/g) || []).length;
+
+  const wordCount = cjkCount + englishWordCount;
+  const readingMinutes = Math.max(1, Math.round(cjkCount / 400 + englishWordCount / 200));
+  return { wordCount, readingMinutes };
+}
+
+/**
+ * 规范化分类字段：frontmatter 里可能写成字符串、数组或留空，
+ * 统一取第一个非空值，缺省时落到配置中的默认分类。
+ * @param {unknown} raw - frontmatter 中的 category 字段
+ * @returns {string} - 分类名
+ */
+function normalizeCategory(raw) {
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  const text = typeof value === 'string' ? value.trim() : '';
+  return text || articleConfig.defaultCategory;
 }
 
 /**
@@ -110,20 +151,26 @@ function generateArticleIndex() {
       const { data: frontmatter, content } = matter(fileContent);
 
       // 提取所需字段
+      const { wordCount, readingMinutes } = estimateStats(content);
       const article = {
         slug: getSlugFromFilename(file),
         title: frontmatter.title || getTitleFromFilename(file),
         content: extractFirstParagraph(content, articleConfig.contentMaxLength),
         created: frontmatter.created || '',
+        category: normalizeCategory(frontmatter.category),
         tags: frontmatter.tags || [],
         banner: frontmatter.banner || '',
+        pinned: frontmatter.pinned === true,
+        wordCount,
+        readingMinutes,
       };
 
       articles.push(article);
     }
 
-    // 按创建时间倒序排序（最新的在前）
+    // 置顶文章排在最前，其余按创建时间倒序排序（最新的在前）
     articles.sort((a, b) => {
+      if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
       if (!a.created && !b.created) return 0;
       if (!a.created) return 1;
       if (!b.created) return -1;

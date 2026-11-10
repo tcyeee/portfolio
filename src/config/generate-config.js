@@ -15,6 +15,10 @@ export const articleConfig = {
   indexFile: '/src/config/cache/articles.json',
   // 提取文章第一段内容的字数限制
   contentMaxLength: 100,
+  // frontmatter 未声明 category 时使用的默认分类名
+  defaultCategory: '未分类',
+  // 列表页每页展示的文章数量
+  pageSize: 10,
 };
 
 export const projectConfig = {

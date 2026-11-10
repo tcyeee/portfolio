@@ -7,7 +7,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import matter from 'gray-matter'
 import { articleConfig } from '../../config/generate-config.js'
-import { extractHeadings, estimateReadingMinutes } from '../../utils/markdown'
+import { extractHeadings, estimateReadingMinutes, estimateWordCount } from '../../utils/markdown'
+import { articles } from '../../config'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -71,77 +72,252 @@ const fileContent = fs.readFileSync(filePath, 'utf-8')
 const { data: frontmatter, content } = matter(fileContent)
 const title = frontmatter.title || fileSlug
 const created = frontmatter.created || ''
-const tags = frontmatter.tags || []
+const tags: string[] = frontmatter.tags || []
 const banner = frontmatter.banner || ''
+const rawCategory = Array.isArray(frontmatter.category) ? frontmatter.category[0] : frontmatter.category
+const category = (typeof rawCategory === 'string' && rawCategory.trim()) || articleConfig.defaultCategory
 
-// 预估阅读时间与目录结构（目录 id 与正文渲染出的 heading id 一致）
+// 日期统一展示为 YYYY-MM-DD（frontmatter 里可能带时分，如 `2025-06-17 13:25`）
+const dateMatch = /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/.exec(String(created).trim())
+const displayDate = dateMatch ? `${dateMatch[1]}-${dateMatch[2].padStart(2, '0')}-${dateMatch[3].padStart(2, '0')}` : ''
+
+// 预估字数、阅读时间与目录结构（目录 id 与正文渲染出的 heading id 一致）
 const readingMinutes = estimateReadingMinutes(content)
+const wordCount = estimateWordCount(content)
 const headings = await extractHeadings(content)
+
+// 上一篇 / 下一篇：articles 已按创建时间倒序排列，前一项更新、后一项更旧
+const currentIndex = articles.findIndex((a) => a.slug === fileSlug)
+const newerArticle = currentIndex > 0 ? articles[currentIndex - 1] : undefined
+const olderArticle = currentIndex >= 0 && currentIndex < articles.length - 1 ? articles[currentIndex + 1] : undefined
+
+const categoryHref = `/articles?category=${encodeURIComponent(category)}`
 ---
 
 <Layout title={title} ogImage={banner || undefined}>
-  <div class="container mx-auto px-4 py-16 max-w-6xl">
-    <!-- 返回按钮 -->
-    <a
-      href="/articles"
-      class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors">
-      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-      </svg>
-      返回文章列表
-    </a>
+  <div class="min-h-screen bg-background pb-4">
+    <div class="px-6">
+      <!-- 返回列表 -->
+      <div class="max-w-[44rem] mx-auto">
+        <a
+          href="/articles"
+          class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors mb-8 group">
+          <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          返回文章列表
+        </a>
 
-    <div class="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
-      <!-- 目录：桌面端固定在左侧，随正文阅读位置同步高亮 -->
-      <aside class="hidden lg:block">
-        <div class="sticky top-24 max-h-[min(1000px,40vh)] flex flex-col">
-          <TableOfContents headings={headings} client:load />
-        </div>
-      </aside>
-
-      <div class="max-w-4xl">
-        <!-- 文章标题 -->
-        <header class="mb-8">
-          <h1 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-            {title}
+        <header class="mb-8 xl:mb-12">
+          <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight mb-6 flex items-start gap-3">
+            <span class="w-1.5 h-8 sm:h-10 shrink-0 bg-accent rounded-full mt-[0.15em] sm:mt-[0.3em]"></span>
+            <span class="text-pretty">{title}</span>
           </h1>
-          <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-            <span>预计阅读 {readingMinutes} 分钟</span>
+
+          <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground mb-6">
             {
-              created && !isNaN(new Date(created).getTime()) && (
-                <time datetime={created}>
-                  {new Date(created).toLocaleDateString('zh-CN', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </time>
+              displayDate && (
+                <span class="flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7h8M8 11h8m-6 4h6m2-9a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2z"
+                    />
+                  </svg>
+                  {displayDate}
+                </span>
               )
             }
+            <a href={categoryHref} class="inline-flex items-center gap-2 hover:text-accent transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10"></path>
+              </svg>
+              {category}
+            </a>
             {
-              tags && tags.length > 0 && (
-                <div class="flex gap-2">
-                  {tags.map((tag: string) => (
-                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-xs">{tag}</span>
-                  ))}
-                </div>
-              )
+              tags.map((tag: string) => (
+                <a
+                  href={`/articles?tag=${encodeURIComponent(tag)}`}
+                  class="inline-flex items-center gap-2 hover:text-accent transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 7h.01M7 3a4 4 0 0 0-4 4v10a4 4 0 0 0 4 4h10a4 4 0 0 0 4-4V7a4 4 0 0 0-4-4H7z"
+                    />
+                  </svg>
+                  {tag}
+                </a>
+              ))
             }
           </div>
-        </header>
 
+          <div class="flex items-center justify-between py-4 border-y border-border">
+            <div class="flex items-center gap-4 text-sm text-muted-foreground">
+              <span>{wordCount} 字</span>
+              <span class="flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path>
+                </svg>
+                {readingMinutes} 分钟
+              </span>
+            </div>
+          </div>
+        </header>
+      </div>
+
+      <!-- 顶部阅读进度条（窄屏替代左侧轨道上的进度条） -->
+      <div
+        data-reading-progress
+        aria-hidden="true"
+        class="pointer-events-none fixed inset-x-0 top-0 z-[55] h-px origin-left scale-x-0 bg-accent xl:hidden">
+      </div>
+
+      <!-- 窄屏目录：折叠面板 -->
+      {
+        headings.length > 0 && (
+          <div class="xl:hidden max-w-[44rem] mx-auto mb-4">
+            <details open class="group border border-border/60 bg-card/60 rounded-xl">
+              <summary class="list-none cursor-pointer px-4 py-3 flex items-center justify-between text-sm text-foreground">
+                <span class="inline-flex items-center gap-2">
+                  <span class="w-1 h-4 bg-accent rounded-full" />
+                  目录
+                </span>
+                <span class="text-muted-foreground transition-transform group-open:rotate-180">⌄</span>
+              </summary>
+              <div class="px-4 pb-3 pt-1 border-t border-border/50 max-h-72 overflow-y-auto overscroll-auto toc-scrollbar">
+                <TableOfContents headings={headings} variant="list" client:media="(max-width: 1279px)" />
+              </div>
+            </details>
+          </div>
+        )
+      }
+
+      <div class="relative max-w-[44rem] mx-auto">
         <!-- 横幅图片 -->
         {
           banner && (
             <div class="mb-8">
-              <img src={banner} alt={title} loading="lazy" decoding="async" class="rounded-lg w-full h-auto object-cover" />
+              <img
+                src={banner}
+                alt={title}
+                loading="lazy"
+                decoding="async"
+                class="rounded-xl border border-border w-full h-auto object-cover"
+              />
             </div>
           )
         }
 
-        <!-- 文章内容 -->
         <MarkdownContent content={content} />
+
+        <!--
+          左侧目录轨道：宽度取 18rem 与「正文左侧剩余空间 − 1.5rem 页边」的较小者，
+          窄屏（<xl）不渲染，避免贴到视口边缘。
+        -->
+        {
+          headings.length > 0 && (
+            <aside class="hidden xl:block absolute top-0 right-full pr-10 w-[min(18rem,calc(50vw-22rem-1.5rem))] h-full">
+              <div class="sticky top-24">
+                <TableOfContents headings={headings} variant="rail" title={title} client:media="(min-width: 1280px)" />
+              </div>
+            </aside>
+          )
+        }
       </div>
+
+      <footer class="mt-6 pt-4 border-t border-border max-w-[44rem] mx-auto">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="text-sm text-muted-foreground">标签：</span>
+          <div class="flex flex-wrap gap-2">
+            {
+              tags.map((tag: string) => (
+                <a
+                  href={`/articles?tag=${encodeURIComponent(tag)}`}
+                  class="px-3 py-1 text-xs bg-secondary text-secondary-foreground rounded-full hover:bg-accent hover:text-accent-foreground transition-colors">
+                  {tag}
+                </a>
+              ))
+            }
+            <a
+              href={categoryHref}
+              class="px-3 py-1 text-xs bg-secondary text-secondary-foreground rounded-full hover:bg-accent hover:text-accent-foreground transition-colors">
+              {category}
+            </a>
+          </div>
+        </div>
+
+        {
+          (olderArticle || newerArticle) && (
+            <div class="grid sm:grid-cols-2 gap-4">
+              {olderArticle ? (
+                <a
+                  href={`/article/${olderArticle.slug}`}
+                  class="group p-4 border border-border rounded-xl hover:border-accent/30 transition-colors">
+                  <span class="text-xs text-muted-foreground mb-1 block">上一篇</span>
+                  <span class="text-sm font-medium text-foreground group-hover:text-accent transition-colors line-clamp-1">
+                    {olderArticle.title}
+                  </span>
+                </a>
+              ) : (
+                <div />
+              )}
+              {newerArticle && (
+                <a
+                  href={`/article/${newerArticle.slug}`}
+                  class="group p-4 border border-border rounded-xl hover:border-accent/30 transition-colors text-right sm:col-start-2">
+                  <span class="text-xs text-muted-foreground mb-1 block">下一篇</span>
+                  <span class="text-sm font-medium text-foreground group-hover:text-accent transition-colors line-clamp-1">
+                    {newerArticle.title}
+                  </span>
+                </a>
+              )}
+            </div>
+          )
+        }
+      </footer>
     </div>
   </div>
 </Layout>
+
+<script>
+  // 窄屏（<xl，没有左侧目录轨道）时，用顶部细线表示阅读进度。
+  // 该 script 每页相同，客户端路由下只会执行一次，所以绑定放在 `astro:page-load` 里重做。
+  let cleanup = () => {}
+
+  const setup = () => {
+    cleanup()
+    const bar = document.querySelector('[data-reading-progress]') as HTMLElement | null
+    if (!bar) return
+
+    let ticking = false
+    const update = () => {
+      ticking = false
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight
+      const ratio = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0
+      bar.style.transform = `scaleX(${ratio})`
+    }
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    cleanup = () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }
+
+  document.addEventListener('astro:page-load', setup)
+</script>
