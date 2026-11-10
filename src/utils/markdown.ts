@@ -144,10 +144,10 @@ export async function extractHeadings(content: string): Promise<Heading[]> {
 }
 
 /**
- * 估算阅读时间（分钟）：中文按字符数（约 400 字/分钟），英文按单词数（约 200 词/分钟）估算，
- * 计算前去除代码块、数学公式和图片/链接等不计入阅读内容的部分。
+ * 去除代码块、数学公式和图片/链接等不计入阅读内容的部分后，
+ * 统计中文字符数与英文单词数（阅读时间、字数统计共用同一套口径）。
  */
-export function estimateReadingMinutes(content: string): number {
+function countContentUnits(content: string): { cjkCount: number; englishWordCount: number } {
   const stripped = content
     .replace(/```[\s\S]*?```/g, '')
     .replace(/\$\$[\s\S]*?\$\$/g, '')
@@ -159,8 +159,24 @@ export function estimateReadingMinutes(content: string): number {
   const cjkCount = (stripped.match(/[一-龥]/g) || []).length
   const englishWordCount = (stripped.replace(/[一-龥]/g, '').match(/[a-zA-Z0-9]+/g) || []).length
 
+  return { cjkCount, englishWordCount }
+}
+
+/**
+ * 估算阅读时间（分钟）：中文按字符数（约 400 字/分钟），英文按单词数（约 200 词/分钟）估算。
+ */
+export function estimateReadingMinutes(content: string): number {
+  const { cjkCount, englishWordCount } = countContentUnits(content)
   const minutes = cjkCount / 400 + englishWordCount / 200
   return Math.max(1, Math.round(minutes))
+}
+
+/**
+ * 估算正文字数：中文按字符数、英文按单词数累加。
+ */
+export function estimateWordCount(content: string): number {
+  const { cjkCount, englishWordCount } = countContentUnits(content)
+  return cjkCount + englishWordCount
 }
 
 /**

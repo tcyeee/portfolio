@@ -18,10 +18,14 @@ export interface Project {
 export interface Article {
     slug: string;
     title: string;
-    content: string;
+    content: string;  // 列表页摘要（正文第一段截断）
     created: string;
+    category: string; // 分类（frontmatter.category，缺省为「未分类」）
     banner?: string;
     tags?: string[];
+    pinned?: boolean; // 是否置顶
+    wordCount: number; // 正文字数
+    readingMinutes: number; // 预计阅读分钟数
 }
 
 export interface IndexApp {

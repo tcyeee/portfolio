@@ -7,6 +7,9 @@ export const personalInfo = {
   name: 'Lucas',
   title: '全栈开发工程师',
   bio: '8年全栈经验，热爱编程，擅长Java，Rust相关技术栈和区块链技术。喜欢构建有用的工具和应用，享受创造的过程，当然绝大多数作品都会开源，或许有你需要的😊',
+  // 文章列表页左侧名片使用的一句话签名与状态
+  motto: '喜欢构建有用的工具，享受从 0 到 1 的创造过程',
+  status: '正在折腾：Rust & Web3',
   avatar: '/images/avatar.jpg',
   location: '中国',
   email: 'tcyeee@outlook.com',
