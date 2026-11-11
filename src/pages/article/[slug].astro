@@ -95,7 +95,12 @@ const categoryHref = `/articles?category=${encodeURIComponent(category)}`
 ---
 
 <Layout title={title} ogImage={banner || undefined}>
-  <div class="min-h-screen bg-background pb-4">
+  <!-- `Layout`'s <main> adds pt-20/md:pt-24 to clear the fixed header, but that
+       padding is taller than the header and shows the body's bg-gray-50 through
+       the gap. Pull this background up behind the header (negative margin) and
+       re-add the same padding here so the gap is painted bg-background instead,
+       matching the rest of the page with no visible seam. -->
+  <div class="min-h-screen bg-background pb-4 -mt-20 pt-20 md:-mt-24 md:pt-24">
     <div class="px-6">
       <!-- 返回列表 -->
       <div class="max-w-[44rem] mx-auto">
