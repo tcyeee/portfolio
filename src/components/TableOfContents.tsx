@@ -150,16 +150,9 @@ export default function TableOfContents({ headings, variant = 'rail', title }: P
         data-heading-id={heading.id}
         onClick={(event) => handleClick(event, heading.id)}
         aria-current={isActive ? 'location' : undefined}
-        className={`flex gap-2.5 py-[3px] text-[13px] leading-[1.6] transition-colors duration-200 ${
+        className={`flex py-[3px] text-[13px] leading-[1.6] transition-colors duration-200 ${
           indented ? 'pl-[18px]' : ''
-        } ${isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>
-        <span
-          aria-hidden="true"
-          className={`shrink-0 font-mono transition-colors duration-200 ${
-            isActive ? 'text-accent' : 'text-muted-foreground/45'
-          }`}>
-          └
-        </span>
+        } ${isActive ? 'text-accent' : 'text-muted-foreground hover:text-foreground'}`}>
         <span className="line-clamp-2 min-w-0">{heading.text}</span>
       </a>
     )

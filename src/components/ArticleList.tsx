@@ -25,7 +25,6 @@ export interface SocialLink {
 }
 
 interface Props {
-  title?: string
   articles: Article[]
   categories: CategoryCount[]
   tags: string[]
@@ -78,7 +77,7 @@ function CardHeading({ children }: { children: React.ReactNode }) {
   )
 }
 
-export default function ArticleList({ title = '全部文章', articles, categories, tags, pageSize = 10, profile }: Props) {
+export default function ArticleList({ articles, categories, tags, pageSize = 10, profile }: Props) {
   const [activeCategory, setActiveCategory] = useState<string>(ALL)
   const [activeTag, setActiveTag] = useState<string>('')
   const [page, setPage] = useState(1)
@@ -142,14 +141,16 @@ export default function ArticleList({ title = '全部文章', articles, categori
   const shownTags = tagsExpanded ? tags : tags.slice(0, COLLAPSED_TAG_COUNT)
 
   return (
-    <section id="article-list" className="article-list-root min-h-screen px-6 py-16 bg-surface">
+    <section
+      id="article-list"
+      // `Layout`'s <main> adds pt-20/md:pt-24 to clear the fixed header, but that
+      // padding is taller than the header and shows the body's bg-gray-50 through
+      // the gap. Pull this section's background up behind the header (negative
+      // margin) and fold that same amount into the top padding (pt-36 = pt-20 +
+      // py-16's 4rem, md:pt-40 = md:pt-24 + 4rem) so the gap is painted bg-surface
+      // instead and the heading keeps its original position.
+      className="article-list-root min-h-screen px-6 pb-16 bg-surface -mt-20 pt-36 md:-mt-24 md:pt-40">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-10 onload-animation" style={{ '--content-delay': '50ms' } as React.CSSProperties}>
-          <h1 className="font-serif text-2xl font-bold leading-tight tracking-tight text-foreground sm:text-3xl lg:text-[2.625rem]">
-            {title}
-          </h1>
-        </div>
-
         <div className="flex flex-col lg:flex-row gap-8">
           {/* 左侧栏：名片 / 分类 / 标签 */}
           <div className="order-2 lg:order-1 onload-animation" style={{ '--content-delay': '100ms' } as React.CSSProperties}>
