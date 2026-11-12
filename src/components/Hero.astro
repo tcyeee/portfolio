@@ -14,7 +14,9 @@ import ScrollHint from './ScrollHint'
     <slot />
     <ScrollHint client:only="react" />
   </div>
-  <FallingIcons client:only="react" />
+  <div class="hidden">
+    <FallingIcons client:only="react" />
+  </div>
   <EmailBadge client:only="react" />
 </section>
 
