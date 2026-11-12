@@ -17,23 +17,30 @@ export default function ScrollHint() {
 
     window.dispatchEvent(new CustomEvent('hero-dismiss-icons'))
 
-    const secondScreen = document.getElementById('second-screen')
-    if (!secondScreen) return
+    // `#obsidian-reveal` (when present) sits between the hero and
+    // `#second-screen` — jumping straight to `#second-screen` would skip its
+    // whole scroll-driven animation. Not looked up via `nextElementSibling`:
+    // Astro wraps hydrated components in `<astro-island>` (itself
+    // `display: contents`, so its getBoundingClientRect is always zero-size)
+    // and can inject a bootstrap `<script>` as a sibling ahead of it, so
+    // DOM-order traversal lands on the wrong node.
+    const nextScreen = document.getElementById('obsidian-reveal') ?? document.getElementById('second-screen')
+    if (!nextScreen) return
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const scrollToSecondScreen = () => {
+    const scrollToNextScreen = () => {
       const lenis = (window as typeof window & { __lenis?: LenisLike }).__lenis
       if (lenis) {
-        lenis.scrollTo(secondScreen)
+        lenis.scrollTo(nextScreen)
       } else {
-        secondScreen.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' })
+        nextScreen.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' })
       }
     }
 
     if (prefersReducedMotion) {
-      scrollToSecondScreen()
+      scrollToNextScreen()
     } else {
-      window.setTimeout(scrollToSecondScreen, ICON_DISMISS_MS)
+      window.setTimeout(scrollToNextScreen, ICON_DISMISS_MS)
     }
   }
 
