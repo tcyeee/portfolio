@@ -95,21 +95,22 @@ export default function ObsidianReveal({ projects }: Props) {
 
         <div
           aria-hidden={shiftT < 0.05}
-          className="absolute right-0 top-1/2 w-full max-w-md px-6 md:px-12"
+          className="absolute right-0 top-1/2 w-full max-w-lg px-6 md:px-12"
           style={{
             opacity: shiftT,
             transform: `translateY(-50%) translateX(${(1 - shiftT) * 60}px)`,
             pointerEvents: shiftT > 0.5 ? 'auto' : 'none',
           }}>
-          <div className="flex max-h-[65vh] flex-col gap-4 overflow-y-auto pr-2">
+          {/* 平铺网格：7 个插件一次性铺开，不额外滚动，避免叠加在页面滚动之上 */}
+          <div className="grid grid-cols-2 gap-3">
             {projects.map((project) => (
               <a
                 key={project.slug}
                 href={`/project/${project.slug}`}
                 tabIndex={shiftT < 0.05 ? -1 : undefined}
-                className="rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur-md transition-colors hover:bg-white/20">
-                <h3 className="font-semibold text-white">{project.title}</h3>
-                <p className="mt-1 line-clamp-2 text-sm text-white/70">{project.description}</p>
+                className="flex flex-col items-center gap-2 rounded-xl border border-white/20 bg-white/10 p-4 text-center backdrop-blur-md transition-colors hover:bg-white/20">
+                <img src="/icons/falling/obsidian.svg" alt="" aria-hidden="true" className="h-8 w-8" />
+                <h3 className="text-sm font-semibold leading-snug text-white">{project.title}</h3>
               </a>
             ))}
           </div>
