@@ -1,4 +1,3 @@
-import type React from 'react';
 import { useState } from 'react';
 import { categoryColors, categoryLabels } from '../config';
 import type { Project, IndexApp } from '../domain';
@@ -12,16 +11,16 @@ interface Props {
 export default function ProjectCard({ project, app }: Props) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const handleLinkClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
   const slug = project.slug || '';
   const cardBaseClass =
     'group relative flex h-full flex-col overflow-hidden rounded-2xl border border-gray-100/70 bg-white/90 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 dark:border-gray-700/60 dark:bg-gray-800/90';
 
+  // 卡片本身不能是 <a>：里面还有演示/下载/GitHub/AppIcon 这些独立的链接，
+  // <a> 不能嵌套 <a>（会被浏览器的 HTML 解析器拆散，导致和 SSR 结构不一致而 hydration 失败）。
+  // 改用「背景占位链接」模式：铺满卡片的透明 <a> 负责点击跳转，独立链接用 z-10 浮在它上面。
   const cardContent = (
     <div className="flex h-full flex-col">
+      {slug && <a href={`/project/${slug}`} aria-label={project.title} className="absolute inset-0 z-0" />}
       {(project.preview || project.banner) && (
         <div className="relative aspect-video overflow-hidden bg-gray-100 dark:bg-gray-700">
           {!imageLoaded && (
@@ -33,6 +32,11 @@ export default function ProjectCard({ project, app }: Props) {
             loading="lazy"
             decoding="async"
             onLoad={() => setImageLoaded(true)}
+            ref={(img) => {
+              // client:visible 延迟 hydration，原生 loading="lazy" 可能先于 React 挂载完成，
+              // 此时 load 事件已经错过 onLoad 监听器，需要在挂载时补一次 complete 检查。
+              if (img?.complete) setImageLoaded(true);
+            }}
             style={slug ? { viewTransitionName: `project-image-${slug}` } : undefined}
             className={`h-full w-full object-cover transition-all duration-500 group-hover:scale-105 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
@@ -44,6 +48,14 @@ export default function ProjectCard({ project, app }: Props) {
           >
             {categoryLabels[project.category]}
           </span>
+          {project.tags?.includes('Obsidian') && (
+            <span
+              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur dark:bg-gray-900/80"
+              title="Obsidian 插件"
+            >
+              <span className="icon-obsidian icon-size-18 text-violet-600 dark:text-violet-400" aria-hidden />
+            </span>
+          )}
         </div>
       )}
       {app && (project.preview || project.banner) && (
@@ -54,13 +66,12 @@ export default function ProjectCard({ project, app }: Props) {
       <div className="flex flex-1 flex-col gap-3 p-6">
         <div className="flex items-start justify-between gap-3">
           <h3 className="flex-1 text-xl font-bold leading-tight text-gray-900 dark:text-white">{project.title}</h3>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="relative z-10 flex flex-wrap items-center gap-2">
             {project.demoUrl && (
               <a
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={handleLinkClick}
                 className="inline-flex items-center gap-1 rounded-full bg-primary-50 px-3 py-1.5 text-xs font-semibold text-primary-700 transition hover:bg-primary-100 dark:bg-primary-900/40 dark:text-primary-200 dark:hover:bg-primary-900/60"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-primary-500" aria-hidden />
@@ -68,23 +79,12 @@ export default function ProjectCard({ project, app }: Props) {
               </a>
             )}
             {project.downloadUrl && (
-              <a
-                href={project.downloadUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={handleLinkClick}
-                aria-label="下载"
-              >
+              <a href={project.downloadUrl} target="_blank" rel="noopener noreferrer" aria-label="下载">
                 <span className="icon-download icon-size-22 text-current" />
               </a>
             )}
             {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={handleLinkClick}
-                aria-label="GitHub" >
+              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <span className="icon-github icon-size-25 text-current" />
               </a>
             )}
@@ -118,21 +118,6 @@ export default function ProjectCard({ project, app }: Props) {
     </div>
   );
 
-  if (slug) {
-    return (
-      <a
-        href={`/project/${slug}`}
-        className={cardBaseClass}
-      >
-        {cardContent}
-      </a>
-    );
-  }
-
-  return (
-    <div className={cardBaseClass}>
-      {cardContent}
-    </div>
-  );
+  return <div className={cardBaseClass}>{cardContent}</div>;
 }
 

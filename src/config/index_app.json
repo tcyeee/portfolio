@@ -71,5 +71,13 @@
     "type": "miniprogram",
     "url": "https://github.com/tcyeee/santa-hat",
     "description": "santa-hat"
+  },
+  {
+    "id": "10",
+    "name": "Vialite",
+    "icon": "/images/icons/vialite.svg",
+    "type": "app",
+    "url": "https://github.com/tcyeee/vialite",
+    "description": "Vialite"
   }
 ]

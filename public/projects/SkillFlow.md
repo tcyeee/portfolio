@@ -5,6 +5,7 @@ tags:
   - Obsidian
   - TypeScript
   - Plugin
+banner: /projects/assets/skillflow-banner.svg
 githubUrl: https://github.com/tcyeee/obsidian-skillflow
 downloadUrl: 
 demoUrl: 
