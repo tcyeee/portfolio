@@ -70,7 +70,7 @@ export default function ObsidianReveal({ projects }: Props) {
             width: canvasDiameter,
             height: canvasDiameter,
             transform: 'translate(-50%, -50%)',
-            background: 'radial-gradient(circle at 35% 30%, #7c3aed 0%, #5b21b6 55%, #3b0764 100%)',
+            background: 'radial-gradient(circle at 35% 30%, #FBF4E4 0%, #ECDDB8 55%, #D6BF8F 100%)',
           }}
         />
 
@@ -88,8 +88,8 @@ export default function ObsidianReveal({ projects }: Props) {
               filter: 'drop-shadow(0 12px 30px rgba(0,0,0,0.35))',
             }}
           />
-          <p className="mt-6 whitespace-nowrap text-center font-semibold text-white" style={{ opacity: growT, fontSize: 18 + growT * 10 }}>
-            Obsidian 作品
+          <p className="mt-6 whitespace-nowrap text-center font-semibold text-stone-700" style={{ opacity: growT, fontSize: 18 + growT * 10 }}>
+            Obsidian 插件
           </p>
         </div>
 
@@ -108,12 +108,12 @@ export default function ObsidianReveal({ projects }: Props) {
                 key={project.slug}
                 href={`/project/${project.slug}`}
                 tabIndex={shiftT < 0.05 ? -1 : undefined}
-                className="flex flex-col items-center gap-2 rounded-xl border border-white/20 bg-white/10 p-4 text-center backdrop-blur-md transition-colors hover:bg-white/20">
+                className="flex flex-col items-center gap-2 rounded-xl border border-stone-900/10 bg-stone-900/5 p-4 text-center backdrop-blur-md transition-colors hover:bg-stone-900/10">
                 <img src="/icons/falling/obsidian.svg" alt="" aria-hidden="true" className="h-8 w-8" />
-                <h3 className="text-sm font-semibold leading-snug text-white">{project.title}</h3>
-                <p className="line-clamp-2 text-xs leading-snug text-white/70">{project.description}</p>
+                <h3 className="text-sm font-semibold leading-snug text-stone-800">{project.title}</h3>
+                <p className="line-clamp-2 text-xs leading-snug text-stone-700/70">{project.description}</p>
                 {project.downloads && (
-                  <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-white/15 px-2 py-0.5 text-[11px] text-white/80">
+                  <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-stone-900/10 px-2 py-0.5 text-[11px] text-stone-700/80">
                     ⬇ {project.downloads} downloads
                   </span>
                 )}
@@ -125,7 +125,7 @@ export default function ObsidianReveal({ projects }: Props) {
             target="_blank"
             rel="noopener noreferrer"
             tabIndex={shiftT < 0.05 ? -1 : undefined}
-            className="mt-4 inline-block rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-violet-700 transition hover:bg-white/90">
+            className="mt-4 inline-block rounded-lg bg-stone-800 px-5 py-2.5 text-sm font-semibold text-[#F9F6F0] transition hover:bg-stone-700">
             在 GitHub 查看更多 →
           </a>
         </div>
