@@ -11,6 +11,7 @@ downloadUrl: https://github.com/tcyeee/obsidian-bases-lock/releases
 demoUrl: 
 description: A small Obsidian plugin to hide the Obsidian Bases toolbar and lock header interaction on demand.
 downloads: 4k
+pluginId: bases-lock
 ---
 
 

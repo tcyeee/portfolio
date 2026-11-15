@@ -1,13 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import { projects, personalInfo, apps, homeDisplayCount } from '../config'
+import { projects, personalInfo, apps, homeDisplayCount, IndexAppType } from '../config'
 import ProjectCard from '../components/ProjectCard'
 import AppList from '../components/AppList'
 import Hero from '../components/Hero.astro'
 import ObsidianReveal from '../components/ObsidianReveal'
 
-const featuredProjects = projects.slice(0, homeDisplayCount)
 const obsidianProjects = projects.filter((project) => project.tags?.includes('Obsidian'))
+const otherProjects = projects.filter((project) => !project.tags?.includes('Obsidian'))
+const featuredProjects = otherProjects.slice(0, homeDisplayCount)
+const nonPluginApps = apps.filter((app) => app.type !== IndexAppType.PLUGIN)
 ---
 
 <Layout title={`${personalInfo.name} | ${personalInfo.title}`} description={personalInfo.bio}>
@@ -53,12 +55,12 @@ const obsidianProjects = projects.filter((project) => project.tags?.includes('Ob
   <div id="second-screen" class="container mx-auto px-4 py-16">
     <!-- APP列表 -->
     <div class="mt-[20vh] mb-[10vh]">
-      <AppList client:visible apps={apps} />
+      <AppList client:visible apps={nonPluginApps} />
     </div>
 
     <!-- Featured Projects -->
     <section class="mb-20">
-      <h2 class="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">开源作品</h2>
+      <h2 class="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">其他开源作品</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {featuredProjects.map((project) => <ProjectCard client:visible project={project} />)}
       </div>

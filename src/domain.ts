@@ -13,7 +13,8 @@ export interface Project {
     downloadUrl?: string; // 下载地址
     githubUrl?: string; // GitHub地址
     description: string; // 项目描述
-    downloads?: string; // Obsidian 社区插件下载量（如 "4k"）
+    downloads?: string; // Obsidian 社区插件下载量；若设置了 pluginId，构建时会用实时数据覆盖 frontmatter 里手填的值
+    pluginId?: string; // Obsidian 社区插件市场的 plugin id（manifest.json 的 id，不一定等于仓库名/slug），用于构建时拉取实时下载量
 }
 
 export interface Article {
