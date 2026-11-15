@@ -145,54 +145,57 @@ export default function KeyboardScene() {
     if (!container || !canvas) return
 
     let cancelled = false
-    let viewer: { width: number; height: number; dispose: () => void } | undefined
+    let viewer: { width: number; height: number; animation: unknown; dispose: () => void; loadSkin: (url: string) => Promise<unknown> } | undefined
+    let heroAnimation: { targetYaw: number } | undefined
     let handlePointerMove: ((event: PointerEvent) => void) | undefined
-    let handleResize: (() => void) | undefined
+    let resizeObserver: ResizeObserver | undefined
 
     import('skinview3d').then(({ PlayerAnimation, SkinViewer }) => {
       if (cancelled) return
 
-      viewer = new SkinViewer({
-        canvas,
-        width: container.clientWidth,
-        height: container.clientHeight,
-        enableControls: false,
-        zoom: 0.45,
-      })
-
       const HeroAnimation = createHeroAnimation(PlayerAnimation)
-      const heroAnimation = new HeroAnimation()
-      viewer.animation = heroAnimation
 
-      viewer
-        .loadSkin('/images/skin.png')
-        .catch((error: unknown) => {
-          console.error('Failed to load skin.png', error)
-        })
-        .finally(() => {
-          if (!cancelled) setReady(true)
-        })
+      // Right after an Astro page transition back to the homepage, the container can
+      // briefly report zero size before layout settles. Creating the renderer at that size
+      // produces zero-sized WebGL textures/framebuffers (spammed every animation frame), so
+      // wait for a real size via ResizeObserver instead of reading clientWidth/Height once.
+      resizeObserver = new ResizeObserver((entries) => {
+        const { width, height } = entries[0].contentRect
+        if (width <= 0 || height <= 0) return
 
-      handlePointerMove = (event: PointerEvent) => {
-        // Normalize against the full viewport width (not just this half of the hero) so
-        // the model keeps tracking the cursor as it moves across the right-hand content too.
-        const x = (event.clientX / window.innerWidth) * 2 - 1
-        heroAnimation.targetYaw = clamp(x, -1, 1)
-      }
-      window.addEventListener('pointermove', handlePointerMove)
+        if (!viewer) {
+          viewer = new SkinViewer({ canvas, width, height, enableControls: false, zoom: 0.45 })
+          heroAnimation = new HeroAnimation()
+          viewer.animation = heroAnimation
 
-      handleResize = () => {
-        if (!viewer) return
-        viewer.width = container.clientWidth
-        viewer.height = container.clientHeight
-      }
-      window.addEventListener('resize', handleResize)
+          viewer
+            .loadSkin('/images/skin.png')
+            .catch((error: unknown) => {
+              console.error('Failed to load skin.png', error)
+            })
+            .finally(() => {
+              if (!cancelled) setReady(true)
+            })
+
+          handlePointerMove = (event: PointerEvent) => {
+            // Normalize against the full viewport width (not just this half of the hero) so
+            // the model keeps tracking the cursor as it moves across the right-hand content too.
+            const x = (event.clientX / window.innerWidth) * 2 - 1
+            heroAnimation!.targetYaw = clamp(x, -1, 1)
+          }
+          window.addEventListener('pointermove', handlePointerMove)
+        } else {
+          viewer.width = width
+          viewer.height = height
+        }
+      })
+      resizeObserver.observe(container)
     })
 
     return () => {
       cancelled = true
       if (handlePointerMove) window.removeEventListener('pointermove', handlePointerMove)
-      if (handleResize) window.removeEventListener('resize', handleResize)
+      resizeObserver?.disconnect()
       viewer?.dispose()
     }
   }, [])

@@ -5,6 +5,7 @@ tags:
   - Obsidian
   - TypeScript
   - Plugin
+banner: /projects/assets/link-trace-banner.svg
 githubUrl: https://github.com/tcyeee/obsidian-link-trace
 downloadUrl: https://github.com/tcyeee/obsidian-link-trace/releases
 demoUrl: 
