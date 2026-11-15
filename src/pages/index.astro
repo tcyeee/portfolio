@@ -1,15 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import { projects, personalInfo, apps, homeDisplayCount, IndexAppType } from '../config'
+import { projects, personalInfo, apps, homeDisplayCount } from '../config'
 import ProjectCard from '../components/ProjectCard'
-import AppList from '../components/AppList'
 import Hero from '../components/Hero.astro'
 import ObsidianReveal from '../components/ObsidianReveal'
 
 const obsidianProjects = projects.filter((project) => project.tags?.includes('Obsidian'))
 const otherProjects = projects.filter((project) => !project.tags?.includes('Obsidian'))
 const featuredProjects = otherProjects.slice(0, homeDisplayCount)
-const nonPluginApps = apps.filter((app) => app.type !== IndexAppType.PLUGIN)
+
+// 首页 APP 图标区域与「其他开源作品」卡片合并：按 GitHub 地址匹配项目对应的 APP 图标
+const normalizeUrl = (url?: string) => (url ?? '').trim().toLowerCase().replace(/\/$/, '')
+const appByGithubUrl = new Map(apps.filter((app) => app.url).map((app) => [normalizeUrl(app.url), app]))
 ---
 
 <Layout title={`${personalInfo.name} | ${personalInfo.title}`} description={personalInfo.bio}>
@@ -53,16 +55,15 @@ const nonPluginApps = apps.filter((app) => app.type !== IndexAppType.PLUGIN)
   <ObsidianReveal client:visible projects={obsidianProjects} />
 
   <div id="second-screen" class="container mx-auto px-4 py-16">
-    <!-- APP列表 -->
-    <div class="mt-[20vh] mb-[10vh]">
-      <AppList client:visible apps={nonPluginApps} />
-    </div>
-
-    <!-- Featured Projects -->
-    <section class="mb-20">
+    <!-- Featured Projects（含首页 APP 图标，按 GitHub 地址匹配后悬浮展示在卡片封面图上） -->
+    <section class="mt-[10vh] mb-20">
       <h2 class="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">其他开源作品</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {featuredProjects.map((project) => <ProjectCard client:visible project={project} />)}
+        {
+          featuredProjects.map((project) => (
+            <ProjectCard client:visible project={project} app={appByGithubUrl.get(normalizeUrl(project.githubUrl))} />
+          ))
+        }
       </div>
       <div class="text-center mt-8">
         <a

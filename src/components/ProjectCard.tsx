@@ -1,13 +1,15 @@
 import type React from 'react';
 import { useState } from 'react';
 import { categoryColors, categoryLabels } from '../config';
-import type { Project } from '../domain';
+import type { Project, IndexApp } from '../domain';
+import AppIcon from './AppIcon';
 
 interface Props {
   project: Project;
+  app?: IndexApp; // 对应的首页 APP 图标（有则悬浮展示在封面图与内容区交界处）
 }
 
-export default function ProjectCard({ project }: Props) {
+export default function ProjectCard({ project, app }: Props) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleLinkClick = (e: React.MouseEvent) => {
@@ -42,6 +44,11 @@ export default function ProjectCard({ project }: Props) {
           >
             {categoryLabels[project.category]}
           </span>
+        </div>
+      )}
+      {app && (project.preview || project.banner) && (
+        <div className="relative z-10 -mt-8 ml-6 h-16 w-16 overflow-hidden rounded-2xl bg-white shadow-lg ring-4 ring-white dark:bg-gray-800 dark:ring-gray-800">
+          <AppIcon app={app} />
         </div>
       )}
       <div className="flex flex-1 flex-col gap-3 p-6">
