@@ -11,6 +11,7 @@ downloadUrl: https://github.com/tcyeee/obsidian-minimalism-ui/releases
 demoUrl: https://community.obsidian.md/plugins/minimalism-ui
 description: A minimal, Typora-style writing UI for Obsidian — hides distractions, merges Outline and Properties into one panel, and keeps attention on the content.
 downloads: 1k
+pluginId: minimalism-ui
 ---
 
 

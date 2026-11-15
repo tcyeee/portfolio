@@ -16,6 +16,12 @@ export const categories = ['all', ...Object.values(ProjectCategory)] as const;
       开源项目
     </h1>
     
+    <!-- 标签筛选提示：通过 ?tag= 进入本页时显示，例如从首页 Obsidian 区块跳转过来 -->
+    <p id="tag-filter-info" class="hidden text-center text-gray-500 dark:text-gray-400 mb-8">
+      当前显示标签 "<strong id="tag-filter-name" class="text-gray-900 dark:text-white"></strong>" 下的项目 ·
+      <a href="/projects" class="underline hover:text-primary-600">清除筛选</a>
+    </p>
+
     <!-- Category Filter -->
     <div class="flex flex-wrap gap-3 justify-center mb-12" id="category-filter">
       {categories.map((category) => (
@@ -36,7 +42,7 @@ export const categories = ['all', ...Object.values(ProjectCategory)] as const;
     <div id="projects-container">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
         {projects.map((project) => (
-          <div data-category={project.category} class="project-item">
+          <div data-category={project.category} data-tags={(project.tags || []).join(',')} class="project-item">
             <ProjectCard client:visible project={project} />
           </div>
         ))}
@@ -56,7 +62,13 @@ export const categories = ['all', ...Object.values(ProjectCategory)] as const;
     const params = new URLSearchParams(window.location.search);
     return params.get('category') || 'all';
   }
-  
+
+  // 获取当前标签筛选（从 URL 参数，如 ?tag=Obsidian），与分类筛选是「与」的关系
+  function getCurrentTag() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('tag');
+  }
+
   // 更新 URL 参数
   function updateURL(category) {
     const url = new URL(window.location.href);
@@ -68,18 +80,31 @@ export const categories = ['all', ...Object.values(ProjectCategory)] as const;
     window.history.pushState({}, '', url.toString());
   }
   
-  // 筛选项目
+  // 筛选项目：按分类 + 标签（如果 URL 带了 ?tag=）同时筛选
   function filterProjects(category) {
+    const tag = getCurrentTag();
     const projectItems = document.querySelectorAll('.project-item');
     const emptyMessage = document.getElementById('empty-message');
     const projectsGrid = document.getElementById('projects-grid');
-    
+
+    const tagFilterInfo = document.getElementById('tag-filter-info');
+    const tagFilterName = document.getElementById('tag-filter-name');
+    if (tagFilterInfo && tagFilterName) {
+      if (tag) {
+        tagFilterName.textContent = tag;
+        tagFilterInfo.classList.remove('hidden');
+      } else {
+        tagFilterInfo.classList.add('hidden');
+      }
+    }
+
     let visibleCount = 0;
-    
+
     projectItems.forEach((item) => {
       const itemCategory = item.getAttribute('data-category');
-      const shouldShow = category === 'all' || itemCategory === category;
-      
+      const itemTags = (item.getAttribute('data-tags') || '').split(',').filter(Boolean);
+      const shouldShow = (category === 'all' || itemCategory === category) && (!tag || itemTags.includes(tag));
+
       if (shouldShow) {
         item.style.display = '';
         visibleCount++;
@@ -131,7 +156,7 @@ export const categories = ['all', ...Object.values(ProjectCategory)] as const;
 
     // 初始化时根据 URL 参数筛选
     const currentCategory = getCurrentCategory();
-    if (currentCategory !== 'all') {
+    if (currentCategory !== 'all' || getCurrentTag()) {
       filterProjects(currentCategory);
     }
   });

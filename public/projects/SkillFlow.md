@@ -10,6 +10,7 @@ downloadUrl:
 demoUrl: 
 description: Turn AI Skills into one-click menu items inside Obsidian — no chat window, every Skill acts on the current note or selection the moment it's clicked. Early concept / pre-alpha.
 downloads: 4
+pluginId: skillflow
 ---
 
 
