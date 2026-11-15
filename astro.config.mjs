@@ -8,6 +8,10 @@ export default defineConfig({
   integrations: [react(), tailwind(), sitemap()],
   output: 'static',
   site: 'https://tcyeee.top',
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover',
+  },
   devToolbar: {
     enabled: false,
   },

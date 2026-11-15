@@ -103,8 +103,8 @@ const isHome = Astro.url.pathname === '/'
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const lenis = new Lenis({ autoRaf: true })
 
-        // Exposed so other components (e.g. FallingIcons) can react to scroll
-        // velocity without each needing their own Lenis instance.
+        // Exposed so other components (e.g. ScrollHint, TableOfContents) can
+        // drive scrolling without each needing their own Lenis instance.
         ;(window as typeof window & { __lenis?: Lenis }).__lenis = lenis
 
         // This script tag is identical on every page, so under client-side

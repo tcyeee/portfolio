@@ -1,7 +1,6 @@
 ---
 import KeyboardScene from './KeyboardScene'
 import EmailBadge from './EmailBadge'
-import FallingIcons from './FallingIcons'
 import ScrollHint from './ScrollHint'
 ---
 
@@ -13,9 +12,6 @@ import ScrollHint from './ScrollHint'
   <div class="w-full md:w-1/2 h-1/2 md:h-full flex flex-col items-center justify-center gap-8 px-6 md:px-12">
     <slot />
     <ScrollHint client:only="react" />
-  </div>
-  <div class="hidden">
-    <FallingIcons client:only="react" />
   </div>
   <EmailBadge client:only="react" />
 </section>
