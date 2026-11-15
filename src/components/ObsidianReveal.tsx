@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import type { Project } from '../domain'
 
 interface Props {
@@ -13,6 +14,14 @@ const CIRCLE_SPEED = 3
 
 // 每个插件用不同的强调色区分图标色块，弥补目前所有插件共用同一张图标素材的问题。
 const ACCENT_COLORS = ['#6366F1', '#F59E0B', '#10B981', '#EC4899', '#0EA5E9', '#EF4444', '#8B5CF6']
+
+// 悬浮态的强调色竖线、投影、chip 底色都需要按 alpha 混合同一个色值，这里统一转换。
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
 
 // 下载量形如 "4k" / "4"，索引脚本未对该字段做类型归一化，frontmatter 写的纯数字会变成 number 而非 string，这里统一转成字符串再解析。
 function parseDownloads(value?: string | number): number {
@@ -129,6 +138,15 @@ export default function ObsidianReveal({ projects }: Props) {
               style={{ opacity: shiftT }}>
               {projects.length} 款插件 · 持续更新
             </p>
+            <a
+              href="https://community.obsidian.md/users/lucas"
+              target="_blank"
+              rel="noopener noreferrer"
+              tabIndex={shiftT < 0.05 ? -1 : undefined}
+              style={{ opacity: shiftT }}
+              className="mt-6 inline-block whitespace-nowrap rounded-lg bg-stone-800 px-5 py-2.5 text-sm font-semibold text-[#F9F6F0] transition hover:bg-stone-700">
+              查看Obsidian开发者主页 →
+            </a>
           </div>
 
           {/* 右侧纵向列表：类似 App Store 列表行，按下载量从高到低排序 */}
@@ -141,35 +159,65 @@ export default function ObsidianReveal({ projects }: Props) {
               pointerEvents: shiftT > 0.5 ? 'auto' : 'none',
             }}>
             <div className="divide-y divide-stone-900/10 rounded-2xl border border-stone-900/10 bg-stone-900/[0.03] backdrop-blur-md">
-              {sortedProjects.map((project, i) => (
-                <a
-                  key={project.slug}
-                  href={`/project/${project.slug}`}
-                  tabIndex={shiftT < 0.05 ? -1 : undefined}
-                  className="flex items-center gap-4 px-4 py-3 transition-colors hover:bg-stone-900/5">
+              {sortedProjects.map((project, i) => {
+                const obsidianUrl = project.demoUrl || (project.pluginId ? `https://obsidian.md/plugins?id=${project.pluginId}` : undefined)
+                const linkTabIndex = shiftT < 0.05 ? -1 : undefined
+                const accent = ACCENT_COLORS[i % ACCENT_COLORS.length]
+                const chipClass =
+                  'inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-stone-800 shadow-sm transition hover:brightness-95'
+                const chipStyle = { background: hexToRgba(accent, 0.12), border: `1px solid ${hexToRgba(accent, 0.3)}` }
+                return (
                   <div
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
-                    style={{ background: `${ACCENT_COLORS[i % ACCENT_COLORS.length]}1A` }}>
-                    <img src="/icons/falling/obsidian.svg" alt="" aria-hidden="true" className="h-5 w-5" />
+                    key={project.slug}
+                    className="group relative"
+                    style={{ '--accent-hover': hexToRgba(accent, 0.1) } as CSSProperties}>
+                    {/* 悬浮时浮现的插件专属强调色竖线，呼应图标色块 */}
+                    <div
+                      className="absolute inset-y-1 left-0 w-[3px] origin-left scale-x-0 rounded-full transition-transform duration-200 group-hover:scale-x-100 group-focus-within:scale-x-100"
+                      style={{ background: accent }}
+                      aria-hidden="true"
+                    />
+                    <div className="flex items-center gap-4 py-3 pl-[1.125rem] pr-4 transition-colors group-hover:bg-[var(--accent-hover)] group-focus-within:bg-[var(--accent-hover)]">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg" style={{ background: hexToRgba(accent, 0.1) }}>
+                        <img src="/icons/falling/obsidian.svg" alt="" aria-hidden="true" className="h-5 w-5" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="truncate text-sm font-semibold leading-snug text-stone-800">{project.title}</h3>
+                        <p className="truncate text-xs leading-snug text-stone-700/70">{project.description}</p>
+                      </div>
+                      {project.downloads && (
+                        <span className="shrink-0 whitespace-nowrap text-xs tabular-nums text-stone-700/60 transition-opacity group-hover:opacity-0 group-focus-within:opacity-0">
+                          ⬇ {formatDownloads(project.downloads)}
+                        </span>
+                      )}
+                    </div>
+                    <div
+                      className="grid grid-rows-[0fr] overflow-hidden opacity-0 pointer-events-none transition-[grid-template-rows,opacity] duration-200 group-hover:grid-rows-[1fr] group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:grid-rows-[1fr] group-focus-within:opacity-100 group-focus-within:pointer-events-auto">
+                      <div className="min-h-0 border-t" style={{ borderColor: hexToRgba(accent, 0.16) }}>
+                        <div className="flex flex-wrap items-center gap-2 px-4 py-3 pl-[1.125rem]">
+                          {project.githubUrl && (
+                            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={linkTabIndex} className={chipClass} style={chipStyle}>
+                              <span className="icon-github icon-size-12" aria-hidden="true" />
+                              GitHub
+                            </a>
+                          )}
+                          {obsidianUrl && (
+                            <a href={obsidianUrl} target="_blank" rel="noopener noreferrer" tabIndex={linkTabIndex} className={chipClass} style={chipStyle}>
+                              <img src="/icons/falling/obsidian.svg" alt="" aria-hidden="true" className="h-3 w-3" />
+                              产品页
+                            </a>
+                          )}
+                          <a href={`/project/${project.slug}`} tabIndex={linkTabIndex} className={chipClass} style={chipStyle}>
+                            插件详情
+                            <span aria-hidden="true">→</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="truncate text-sm font-semibold leading-snug text-stone-800">{project.title}</h3>
-                    <p className="truncate text-xs leading-snug text-stone-700/70">{project.description}</p>
-                  </div>
-                  {project.downloads && (
-                    <span className="shrink-0 whitespace-nowrap text-xs tabular-nums text-stone-700/60">⬇ {formatDownloads(project.downloads)}</span>
-                  )}
-                </a>
-              ))}
+                )
+              })}
             </div>
-            <a
-              href="https://community.obsidian.md/users/lucas"
-              target="_blank"
-              rel="noopener noreferrer"
-              tabIndex={shiftT < 0.05 ? -1 : undefined}
-              className="mt-4 inline-block rounded-lg bg-stone-800 px-5 py-2.5 text-sm font-semibold text-[#F9F6F0] transition hover:bg-stone-700">
-              查看Obsidian开发者页面 →
-            </a>
           </div>
         </div>
       </div>
