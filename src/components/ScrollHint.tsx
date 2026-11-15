@@ -1,9 +1,5 @@
 import { useState } from 'react'
 
-// How long the falling-icons dismiss animation (see FallingIcons.tsx) takes to
-// finish, so the auto-scroll only starts once the hero is visually clear.
-const ICON_DISMISS_MS = 450
-
 interface LenisLike {
   scrollTo: (target: string | HTMLElement, opts?: Record<string, unknown>) => void
 }
@@ -14,8 +10,6 @@ export default function ScrollHint() {
   function handleClick() {
     if (dismissed) return
     setDismissed(true)
-
-    window.dispatchEvent(new CustomEvent('hero-dismiss-icons'))
 
     // `#obsidian-reveal` (when present) sits between the hero and
     // `#second-screen` — jumping straight to `#second-screen` would skip its
@@ -37,11 +31,7 @@ export default function ScrollHint() {
       }
     }
 
-    if (prefersReducedMotion) {
-      scrollToNextScreen()
-    } else {
-      window.setTimeout(scrollToNextScreen, ICON_DISMISS_MS)
-    }
+    scrollToNextScreen()
   }
 
   return (
