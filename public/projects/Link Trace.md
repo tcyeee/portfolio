@@ -9,6 +9,7 @@ githubUrl: https://github.com/tcyeee/obsidian-link-trace
 downloadUrl: https://github.com/tcyeee/obsidian-link-trace/releases
 demoUrl: 
 description: Turn any Obsidian note into a shareable web page — publish it as a short link with view tracking, or export it as a standalone HTML file.
+downloads: 1k
 ---
 
 

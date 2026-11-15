@@ -13,6 +13,7 @@ export interface Project {
     downloadUrl?: string; // 下载地址
     githubUrl?: string; // GitHub地址
     description: string; // 项目描述
+    downloads?: string; // Obsidian 社区插件下载量（如 "4k"）
 }
 
 export interface Article {

@@ -111,6 +111,12 @@ export default function ObsidianReveal({ projects }: Props) {
                 className="flex flex-col items-center gap-2 rounded-xl border border-white/20 bg-white/10 p-4 text-center backdrop-blur-md transition-colors hover:bg-white/20">
                 <img src="/icons/falling/obsidian.svg" alt="" aria-hidden="true" className="h-8 w-8" />
                 <h3 className="text-sm font-semibold leading-snug text-white">{project.title}</h3>
+                <p className="line-clamp-2 text-xs leading-snug text-white/70">{project.description}</p>
+                {project.downloads && (
+                  <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-white/15 px-2 py-0.5 text-[11px] text-white/80">
+                    ⬇ {project.downloads} downloads
+                  </span>
+                )}
               </a>
             ))}
           </div>

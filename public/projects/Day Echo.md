@@ -10,6 +10,7 @@ githubUrl: https://github.com/tcyeee/obsidian-day-echo
 downloadUrl: https://github.com/tcyeee/obsidian-day-echo/releases
 demoUrl: 
 description: Day Echo gathers your scattered daily notes into one scrollable vertical timeline, so months and years of journaling can be scanned at a glance.
+downloads: 1k
 ---
 
 

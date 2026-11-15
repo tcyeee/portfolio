@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react'
-import { PlayerAnimation, SkinViewer } from 'skinview3d'
+import { useEffect, useRef, useState } from 'react'
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
@@ -93,36 +92,40 @@ function walkCycle(skin: any, t: number) {
 
 // Drives the mouse-follow yaw and the idle/walk/crouch/sit choreography on the standard
 // Minecraft player rig (no bones file needed - skinview3d already provides the pivots).
-class HeroAnimation extends PlayerAnimation {
-  maxYaw = 0.35
-  targetYaw = 0
-  private currentYaw = 0
+// Built from a factory rather than `extends PlayerAnimation` at module scope, since
+// `PlayerAnimation` only exists after skinview3d's dynamic import resolves (see below).
+function createHeroAnimation(PlayerAnimationBase: any) {
+  return class HeroAnimation extends PlayerAnimationBase {
+    maxYaw = 0.35
+    targetYaw = 0
+    private currentYaw = 0
 
-  animate(player: any, delta: number) {
-    this.currentYaw = lerp(this.currentYaw, this.targetYaw, clamp(delta * 3, 0, 1))
-    player.rotation.y = this.currentYaw * this.maxYaw
+    animate(player: any, delta: number) {
+      this.currentYaw = lerp(this.currentYaw, this.targetYaw, clamp(delta * 3, 0, 1))
+      player.rotation.y = this.currentYaw * this.maxYaw
 
-    const skin = player.skin
-    const t = this.progress % CYCLE
+      const skin = player.skin
+      const t = this.progress % CYCLE
 
-    if (t < IDLE_END) {
-      applyPose(skin, player, STAND, STAND, 1)
-      idleSway(skin, t)
-    } else if (t < WALK_END) {
-      applyPose(skin, player, STAND, STAND, 1)
-      walkCycle(skin, t - IDLE_END)
-    } else if (t < TO_BEND_END) {
-      applyPose(skin, player, STAND, BEND, smoothstep((t - WALK_END) / (TO_BEND_END - WALK_END)))
-    } else if (t < BEND_END) {
-      applyPose(skin, player, BEND, BEND, 1)
-    } else if (t < TO_SIT_END) {
-      applyPose(skin, player, BEND, SIT, smoothstep((t - BEND_END) / (TO_SIT_END - BEND_END)))
-    } else if (t < SIT_END) {
-      applyPose(skin, player, SIT, SIT, 1)
-    } else if (t < TO_STAND_END) {
-      applyPose(skin, player, SIT, STAND, smoothstep((t - SIT_END) / (TO_STAND_END - SIT_END)))
-    } else {
-      applyPose(skin, player, STAND, STAND, 1)
+      if (t < IDLE_END) {
+        applyPose(skin, player, STAND, STAND, 1)
+        idleSway(skin, t)
+      } else if (t < WALK_END) {
+        applyPose(skin, player, STAND, STAND, 1)
+        walkCycle(skin, t - IDLE_END)
+      } else if (t < TO_BEND_END) {
+        applyPose(skin, player, STAND, BEND, smoothstep((t - WALK_END) / (TO_BEND_END - WALK_END)))
+      } else if (t < BEND_END) {
+        applyPose(skin, player, BEND, BEND, 1)
+      } else if (t < TO_SIT_END) {
+        applyPose(skin, player, BEND, SIT, smoothstep((t - BEND_END) / (TO_SIT_END - BEND_END)))
+      } else if (t < SIT_END) {
+        applyPose(skin, player, SIT, SIT, 1)
+      } else if (t < TO_STAND_END) {
+        applyPose(skin, player, SIT, STAND, smoothstep((t - SIT_END) / (TO_STAND_END - SIT_END)))
+      } else {
+        applyPose(skin, player, STAND, STAND, 1)
+      }
     }
   }
 }
@@ -130,53 +133,82 @@ class HeroAnimation extends PlayerAnimation {
 export default function KeyboardScene() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  // skinview3d bundles three.js into a ~500KB chunk - by far the largest script on the
+  // site. Loading it via a static top-level import would block the hero's first paint
+  // on every navigation to the homepage, so it's fetched lazily here instead, behind a
+  // skeleton placeholder shown until the skin finishes loading.
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     const container = containerRef.current
     const canvas = canvasRef.current
     if (!container || !canvas) return
 
-    const viewer = new SkinViewer({
-      canvas,
-      width: container.clientWidth,
-      height: container.clientHeight,
-      enableControls: false,
-      zoom: 0.45,
+    let cancelled = false
+    let viewer: { width: number; height: number; dispose: () => void } | undefined
+    let handlePointerMove: ((event: PointerEvent) => void) | undefined
+    let handleResize: (() => void) | undefined
+
+    import('skinview3d').then(({ PlayerAnimation, SkinViewer }) => {
+      if (cancelled) return
+
+      viewer = new SkinViewer({
+        canvas,
+        width: container.clientWidth,
+        height: container.clientHeight,
+        enableControls: false,
+        zoom: 0.45,
+      })
+
+      const HeroAnimation = createHeroAnimation(PlayerAnimation)
+      const heroAnimation = new HeroAnimation()
+      viewer.animation = heroAnimation
+
+      viewer
+        .loadSkin('/images/skin.png')
+        .catch((error: unknown) => {
+          console.error('Failed to load skin.png', error)
+        })
+        .finally(() => {
+          if (!cancelled) setReady(true)
+        })
+
+      handlePointerMove = (event: PointerEvent) => {
+        // Normalize against the full viewport width (not just this half of the hero) so
+        // the model keeps tracking the cursor as it moves across the right-hand content too.
+        const x = (event.clientX / window.innerWidth) * 2 - 1
+        heroAnimation.targetYaw = clamp(x, -1, 1)
+      }
+      window.addEventListener('pointermove', handlePointerMove)
+
+      handleResize = () => {
+        if (!viewer) return
+        viewer.width = container.clientWidth
+        viewer.height = container.clientHeight
+      }
+      window.addEventListener('resize', handleResize)
     })
-
-    const heroAnimation = new HeroAnimation()
-    viewer.animation = heroAnimation
-
-    viewer.loadSkin('/images/skin.png').catch((error) => {
-      console.error('Failed to load skin.png', error)
-    })
-
-    function handlePointerMove(event: PointerEvent) {
-      // Normalize against the full viewport width (not just this half of the hero) so the
-      // model keeps tracking the cursor as it moves across the right-hand content too.
-      const x = (event.clientX / window.innerWidth) * 2 - 1
-      heroAnimation.targetYaw = clamp(x, -1, 1)
-    }
-    window.addEventListener('pointermove', handlePointerMove)
-
-    function handleResize() {
-      if (!container) return
-      viewer.width = container.clientWidth
-      viewer.height = container.clientHeight
-    }
-    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener('pointermove', handlePointerMove)
-      window.removeEventListener('resize', handleResize)
-      viewer.dispose()
+      cancelled = true
+      if (handlePointerMove) window.removeEventListener('pointermove', handlePointerMove)
+      if (handleResize) window.removeEventListener('resize', handleResize)
+      viewer?.dispose()
     }
   }, [])
 
   return (
     <div className="relative w-full h-full">
+      {!ready && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="h-24 w-24 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700" />
+        </div>
+      )}
       <div ref={containerRef} className="w-full h-full">
-        <canvas ref={canvasRef} className="block w-full h-full" />
+        <canvas
+          ref={canvasRef}
+          className={`block h-full w-full transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}
+        />
       </div>
     </div>
   )

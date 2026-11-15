@@ -10,6 +10,7 @@ githubUrl: https://github.com/tcyeee/obsidian-better-link-display
 downloadUrl: https://github.com/tcyeee/obsidian-better-link-display/releases
 demoUrl: https://community.obsidian.md/plugins/better-link-display
 description: Turn a plain web link in your note into a bookmark with the site's real title and icon — still an ordinary Markdown link underneath.
+downloads: 2k
 ---
 
 
