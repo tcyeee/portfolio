@@ -38,27 +38,6 @@ export enum IndexAppType {
 // 首页显示作品数量
 export const homeDisplayCount = 6;
 
-export const appCloudConfig = {
-  // APP图标大小（单位：px）
-  iconSize: {
-    mobile: 60,   // 移动端图标大小
-    tablet: 70,   // 平板图标大小
-    desktop: 80,  // 桌面端图标大小
-  },
-  // 每行APP数量
-  itemsPerRow: {
-    mobile: 4,    // 移动端每行4个
-    tablet: 5,    // 平板每行5个
-    desktop: 6,   // 桌面端每行6个
-  },
-  // APP间距（单位：px）
-  gap: {
-    mobile: 16,   // 移动端间距
-    tablet: 20,   // 平板间距
-    desktop: 24,  // 桌面端间距
-  },
-};
-
 // ==============[ 项目分类标签配置 Start ]=================
 
 /* 项目分类： 项目卡片中，项目名称右侧的标签，每个项目仅属于一个分类 */
