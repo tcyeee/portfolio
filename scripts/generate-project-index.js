@@ -74,6 +74,7 @@ function generateProjectIndex() {
         downloadUrl: frontmatter.downloadUrl || '',
         githubUrl: frontmatter.githubUrl || '',
         description: frontmatter.description || '',
+        downloads: frontmatter.downloads || '',
       };
 
       projects.push(project);

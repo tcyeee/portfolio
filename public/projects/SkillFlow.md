@@ -9,6 +9,7 @@ githubUrl: https://github.com/tcyeee/obsidian-skillflow
 downloadUrl: 
 demoUrl: 
 description: Turn AI Skills into one-click menu items inside Obsidian — no chat window, every Skill acts on the current note or selection the moment it's clicked. Early concept / pre-alpha.
+downloads: 4
 ---
 
 

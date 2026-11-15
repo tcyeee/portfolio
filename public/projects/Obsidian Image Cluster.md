@@ -10,6 +10,7 @@ githubUrl: https://github.com/tcyeee/obsidian-image-cluster
 downloadUrl: https://github.com/tcyeee/obsidian-image-cluster/releases
 demoUrl: 
 description: Obsidian Image Cluster helps you easily combine multiple images together in your notes, making your note interface more beautiful and organized.
+downloads: 3k
 ---
 
 
